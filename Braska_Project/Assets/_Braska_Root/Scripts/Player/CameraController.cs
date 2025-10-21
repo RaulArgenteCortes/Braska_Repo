@@ -3,13 +3,14 @@ using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
-    public float cameraRotation;
-    [SerializeField] float rotationChange;
-    [SerializeField] float rotationDirection;
+    [SerializeField] float startingRotation; // Rotación inicial
+    public float cameraRotation; // Rotación actual
+    [SerializeField] float rotationSpeed; // Velocidad de rotación
+    [SerializeField] float rotationDirection; // Dirección hacia donde rota la cámara
 
     void Start()
     {
-        rotationDirection = 0;
+        cameraRotation = startingRotation;
     }
 
     void Update()
@@ -19,6 +20,7 @@ public class CameraController : MonoBehaviour
 
     void FixedUpdate()
     {
+        // Actualiza la rotación de Y con cameraRotation
         transform.eulerAngles = new Vector3(
             transform.eulerAngles.x,
             cameraRotation,
@@ -28,7 +30,8 @@ public class CameraController : MonoBehaviour
 
     void RotateCamera()
     {
-        cameraRotation += rotationChange * rotationDirection;
+        // Modifica cameraRotation
+        cameraRotation += rotationSpeed * rotationDirection;
     }
 
     #region Input Methods

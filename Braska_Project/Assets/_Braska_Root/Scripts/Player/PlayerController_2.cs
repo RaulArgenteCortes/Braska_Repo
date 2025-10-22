@@ -11,16 +11,6 @@ public class CharacterController : MonoBehaviour
     public float moveX;
     public float moveZ;
     public Vector2 moveInput;
-    /*public bool canMovePX;
-    public bool canMoveNX;
-    public bool canMovePZ;
-    public bool canMoveNZ;*/
-
-    [Header("Ramp behavior")]
-    public GameObject rampCheck;
-    [SerializeField] float rampCheckRadius;
-    [SerializeField] LayerMask rampLayer;
-    [SerializeField] bool isOnRamp;
 
     [Header("References")]
     public Rigidbody playerRb;
@@ -30,7 +20,6 @@ public class CharacterController : MonoBehaviour
     private void Awake()
     {
         playerRb = GetComponent<Rigidbody>();
-        rampCheck = GameObject.Find("RampCheck");
         playerMesh = GameObject.Find("PlayerMesh");
         worldAxsis = GameObject.Find("WorldAxsis");
     }
@@ -43,8 +32,6 @@ public class CharacterController : MonoBehaviour
     private void Update()
     {
         SetMoveDirection();
-
-        RampCheck();
     }
 
     private void FixedUpdate()
@@ -90,33 +77,12 @@ public class CharacterController : MonoBehaviour
 
     private void PlayerRotate()
     {
-        transform.eulerAngles = new Vector3(
-            transform.eulerAngles.x,
-            0 + worldAxsis.transform.eulerAngles.y,
-            transform.eulerAngles.z
-        );
-
+        // Controls mesh rotation regardless of its parent
         playerMesh.transform.eulerAngles = new Vector3(
             playerMesh.transform.eulerAngles.x,
             0,
             playerMesh.transform.eulerAngles.z
         );
-    }
-
-    private void RampCheck()
-    {
-        isOnRamp = Physics.CheckSphere(rampCheck.transform.position, rampCheckRadius, rampLayer);
-
-        if (isOnRamp)
-        {
-            playerRb.useGravity = false;
-
-            playerRb.angularVelocity = new Vector3(0, 0, 0);
-        }
-        else
-        {
-            playerRb.useGravity = true;
-        }
     }
 
     #region Input Methods

@@ -12,6 +12,10 @@ public class CharacterController : MonoBehaviour
     public float moveZ;
     public Vector2 moveInput;
 
+    [Header("Rotation stats")]
+    public float playerAngle;
+    public float rotationSpeed;
+
     [Header("References")]
     public Rigidbody playerRb;
     public GameObject playerMesh;
@@ -31,17 +35,17 @@ public class CharacterController : MonoBehaviour
 
     private void Update()
     {
-        SetMoveDirection();
+        //SetMoveDirection();
     }
 
     private void FixedUpdate()
     {
-        PlayerMove();
+        PlayerRotation();
 
-        PlayerRotate();
+        PlayerMove();
     }
 
-    private void SetMoveDirection() // Sets de move direction of the player
+    /*private void SetMoveDirection() // Sets de move direction of the player
     {
         if (moveInput.x > 0)
         {
@@ -68,20 +72,31 @@ public class CharacterController : MonoBehaviour
         {
             moveZ = 0;
         }
-    }
+    }*/
 
     private void PlayerMove()
     {
-        playerRb.transform.localPosition += new Vector3(moveX * moveSpeed, 0, moveZ * moveSpeed);
+        //playerRb.transform.localPosition += new Vector3(moveX * moveSpeed, 0, moveZ * moveSpeed);
+        if (moveInput != new Vector2(0, 0))
+        {
+            transform.position += transform.forward * moveSpeed * Time.deltaTime;
+        }
     }
 
-    private void PlayerRotate()
+    private void PlayerRotation()
     {
-        // Controls mesh rotation regardless of its parent
-        playerMesh.transform.eulerAngles = new Vector3(
+        // Defines where should the player rotate
+        Vector3 targetRotation = new Vector3(
             playerMesh.transform.eulerAngles.x,
-            0,
+            playerAngle,
             playerMesh.transform.eulerAngles.z
+        );
+
+        // Rotates the player
+        transform.rotation = Quaternion.RotateTowards(
+        transform.rotation,
+        Quaternion.Euler(targetRotation),
+        rotationSpeed * Time.deltaTime
         );
     }
 
@@ -90,6 +105,11 @@ public class CharacterController : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
+
+        if (!context.canceled)
+        {
+            playerAngle = Mathf.Atan2(moveInput.x, moveInput.y) * Mathf.Rad2Deg;
+        }
     }
 
     public void OnBark(InputAction.CallbackContext context)

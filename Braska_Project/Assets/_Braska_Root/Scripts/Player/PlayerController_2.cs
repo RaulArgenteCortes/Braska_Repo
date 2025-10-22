@@ -8,7 +8,7 @@ public class CharacterController : MonoBehaviour
 
     [Header("Components")]
     public Rigidbody playerRb;
-    public Transform cam;
+    public GameObject cam;
 
     void Start()
     {

@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using static UnityEngine.GridBrushBase;
 
@@ -15,38 +16,42 @@ public class CharacterController : MonoBehaviour
     public bool canMovePZ;
     public bool canMoveNZ;*/
 
+    [Header("Ramp behavior")]
+    public GameObject rampCheck;
+    [SerializeField] float rampCheckRadius;
+    [SerializeField] LayerMask rampLayer;
+    [SerializeField] bool isOnRamp;
+
     [Header("References")]
     public Rigidbody playerRb;
-    public GameObject groundCheck;
-    public GameObject cam;
+    public GameObject playerMesh;
+    public GameObject worldAxsis;
 
     private void Awake()
     {
         playerRb = GetComponent<Rigidbody>();
-        groundCheck = GameObject.Find("GroundCheck");
+        rampCheck = GameObject.Find("RampCheck");
+        playerMesh = GameObject.Find("PlayerMesh");
+        worldAxsis = GameObject.Find("WorldAxsis");
     }
 
     private void Start()
     {
-
+        playerRb.useGravity = true;
     }
 
     private void Update()
     {
         SetMoveDirection();
+
+        RampCheck();
     }
 
     private void FixedUpdate()
     {
         PlayerMove();
-    }
-    private void OnTriggerStay(Collider other)
-    {
-        // Moves the player upwards when touching a ramp
-        if (other.gameObject.layer == 6)
-        {
-            playerRb.transform.position += new Vector3(0, moveSpeed, 0);
-        }
+
+        PlayerRotate();
     }
 
     private void SetMoveDirection() // Sets de move direction of the player
@@ -80,7 +85,38 @@ public class CharacterController : MonoBehaviour
 
     private void PlayerMove()
     {
-        playerRb.transform.position += new Vector3(moveX * moveSpeed, 0, moveZ * moveSpeed);
+        playerRb.transform.localPosition += new Vector3(moveX * moveSpeed, 0, moveZ * moveSpeed);
+    }
+
+    private void PlayerRotate()
+    {
+        transform.eulerAngles = new Vector3(
+            transform.eulerAngles.x,
+            0 + worldAxsis.transform.eulerAngles.y,
+            transform.eulerAngles.z
+        );
+
+        playerMesh.transform.eulerAngles = new Vector3(
+            playerMesh.transform.eulerAngles.x,
+            0,
+            playerMesh.transform.eulerAngles.z
+        );
+    }
+
+    private void RampCheck()
+    {
+        isOnRamp = Physics.CheckSphere(rampCheck.transform.position, rampCheckRadius, rampLayer);
+
+        if (isOnRamp)
+        {
+            playerRb.useGravity = false;
+
+            playerRb.angularVelocity = new Vector3(0, 0, 0);
+        }
+        else
+        {
+            playerRb.useGravity = true;
+        }
     }
 
     #region Input Methods

@@ -9,6 +9,15 @@ public class CameraController : MonoBehaviour
     [SerializeField] float rotationSpeed; // Velocidad de rotación
     [SerializeField] float rotationDirection; // Dirección hacia donde rota la cámara
 
+    [Header("Camera stats")]
+    public GameObject player;
+    public Vector3 playerPos;
+
+    private void Awake()
+    {
+        player = GameObject.Find("Player");
+    }
+
     void Start()
     {
         cameraRotation = startingRotation;
@@ -31,8 +40,12 @@ public class CameraController : MonoBehaviour
 
     void RotateCamera()
     {
+        playerPos = player.transform.localPosition;
+
         // Modifica cameraRotation
         cameraRotation += rotationSpeed * rotationDirection;
+
+        player.transform.localPosition = playerPos;
     }
 
     #region Input Methods

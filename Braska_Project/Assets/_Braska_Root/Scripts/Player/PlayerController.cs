@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
         Vector2 input = moveAction.ReadValue<Vector2>();
         Vector3 move = new Vector3(input.x, 0f, input.y);
 
-        // Movimiento relativo a la c�mara
+        // Movimiento relativo a la cámara
         Vector3 camForward = cam.forward;
         Vector3 camRight = cam.right;
         camForward.y = 0f;
@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviour
             rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, 10f * Time.fixedDeltaTime);
         }
     }
-            private bool OnSlope()
+    private bool OnSlope()
     {
         // Raycast hacia abajo del jugador
         if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight / 2f + slopeRayLength))

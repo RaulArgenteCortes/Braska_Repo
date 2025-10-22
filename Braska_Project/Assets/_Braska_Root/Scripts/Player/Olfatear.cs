@@ -12,7 +12,7 @@ public class Olfatear : MonoBehaviour
     [SerializeField] GameObject orbe;
     [SerializeField] GameObject excavar;
     [SerializeField] bool luzEncendida = false;
-    [SerializeField] bool PerroEnTrigger = false;
+    //[SerializeField] bool PerroEnTrigger = false;
     [SerializeField] TextoExcavar textoexcavar;
     #endregion
     #region "Voids"

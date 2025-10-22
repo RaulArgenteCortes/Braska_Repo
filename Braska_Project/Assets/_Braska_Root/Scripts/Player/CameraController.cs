@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
+    [Header("Camera stats")]
     [SerializeField] float startingRotation; // Rotación inicial
     public float cameraRotation; // Rotación actual
     [SerializeField] float rotationSpeed; // Velocidad de rotación

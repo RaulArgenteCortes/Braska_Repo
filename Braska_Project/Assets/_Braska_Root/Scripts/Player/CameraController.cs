@@ -4,10 +4,10 @@ using UnityEngine.InputSystem;
 public class CameraController : MonoBehaviour
 {
     [Header("Camera stats")]
-    [SerializeField] float startingRotation; // Rotación inicial
+    public float startingRotation; // Rotación inicial
     public float cameraRotation; // Rotación actual
-    [SerializeField] float rotationSpeed; // Velocidad de rotación
-    [SerializeField] float rotationDirection; // Dirección hacia donde rota la cámara
+    public float rotationSpeed; // Velocidad de rotación
+    public float rotationDirection; // Dirección hacia donde rota la cámara
 
     void Start()
     {

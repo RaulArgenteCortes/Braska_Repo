@@ -28,7 +28,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "negative",
+                    "name": "Positive",
                     "id": "aa76b7c6-400f-4748-9c15-08be4f0e50c0",
                     "path": "<Keyboard>/q",
                     "interactions": "",
@@ -39,7 +39,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "positive",
+                    "name": "Negative",
                     "id": "8c85492c-4730-43d6-9564-9bbb63eb52ef",
                     "path": "<Keyboard>/e",
                     "interactions": "",
@@ -61,7 +61,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "negative",
+                    "name": "Positive",
                     "id": "21bdca92-6b31-469c-aac9-1d7b61947efd",
                     "path": "<Keyboard>/leftArrow",
                     "interactions": "",
@@ -72,7 +72,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "positive",
+                    "name": "Negative",
                     "id": "e927f440-2676-4ecb-b49e-b94cc7b09f8c",
                     "path": "<Keyboard>/rightArrow",
                     "interactions": "",

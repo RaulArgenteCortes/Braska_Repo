@@ -31,7 +31,8 @@ public class CharacterController : MonoBehaviour
     {
         playerRb = GetComponent<Rigidbody>();
         playerMesh = GameObject.Find("PlayerMesh");
-        worldAxsis = GameObject.Find("WorldAxsis");
+        slopeCheck = GameObject.Find("SlopeCheck");
+        worldAxsis = GameObject.Find("PF_WorldAxsis");
     }
 
     private void Start()
@@ -41,7 +42,7 @@ public class CharacterController : MonoBehaviour
 
     private void Update()
     {
-        
+        SlopeCheck();
     }
 
     private void FixedUpdate()
@@ -49,6 +50,11 @@ public class CharacterController : MonoBehaviour
         PlayerRotation();
 
         PlayerMove();
+    }
+
+    private void SlopeCheck()
+    {
+        isOnSlope = Physics.CheckSphere(slopeCheck.transform.position, slopeCheckRadious, slopeLayer);
     }
 
     private void PlayerRotation()

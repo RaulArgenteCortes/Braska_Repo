@@ -6,11 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_Braska_Root/Scenes/SCN_Test_Antoni.unity
-    guid: 98e05eab286efe040a30180883bafbde
+    path: Assets/_Braska_Root/Scenes/SCN_Level0.unity
+    guid: 6c5701e8c60daec4bafc375d08a0a9ee
+  - enabled: 1
+    path: Assets/_Braska_Root/Scenes/SCN_Lobby.unity
+    guid: 3f71c4e7275207249b5684f900ffe1e3
   - enabled: 1
     path: Assets/Resources/_Pruebas_Root/Scenes/SCN_Raul.unity
     guid: 194e4e507d2df754f8c02d9b1858e6f8
+  - enabled: 1
+    path: Assets/_Braska_Root/Scenes/SCN_Test_Antoni.unity
+    guid: 98e05eab286efe040a30180883bafbde
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

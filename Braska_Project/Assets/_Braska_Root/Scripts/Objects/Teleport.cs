@@ -5,6 +5,9 @@ public class Teleport : MonoBehaviour
 {
     [Header("Teleport stats")]
     public string sceneToLoad;
+    public Vector3 spawnPoint;
+    public Vector3 spawnView;
+    public bool isActive;
     [SerializeField] bool playerInside;
 
     void Start()
@@ -22,7 +25,7 @@ public class Teleport : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && isActive)
         {
             playerInside = true;
         }
@@ -35,33 +38,6 @@ public class Teleport : MonoBehaviour
             playerInside = false;
         }
     }
-
-    /*private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerInside = true;
-
-            barkArea bark = other.GetComponent<barkArea>();
-            if (bark != null)
-            {
-                bark.OnBarkEvent += TeleportPlayer;
-            }
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerInside = false;
-
-            barkArea ladrido = other.GetComponent<barkArea>();
-            if (ladrido != null)
-            {
-                ladrido.OnBarkEvent -= TeleportPlayer;
-            }
-        }
-    }*/
 
     private void TeleportPlayer()
     {

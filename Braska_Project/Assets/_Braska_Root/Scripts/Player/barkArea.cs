@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Ladrido : MonoBehaviour
+public class barkArea : MonoBehaviour
 {
     #region "Variables"
     [Header("Configuración de ladrido")]

@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -7,6 +8,7 @@ using static UnityEngine.GridBrushBase;
 public class CharacterController : MonoBehaviour
 {
     [Header("Movement stats")]
+    public bool canMove;
     public float moveSpeed;
     public float accelerationSpeed;
     public float maxSpeed;
@@ -55,6 +57,7 @@ public class CharacterController : MonoBehaviour
         barkArea.SetActive(false);
 
         canBark = true;
+        canMove = true;
     }
 
     private void Update()
@@ -103,7 +106,7 @@ public class CharacterController : MonoBehaviour
 
     private void PlayerMove()
     {
-        if (moveInput != new Vector2(0, 0) && (groundAhead || slopeAhead)) // Accelerates the player when it starts moving (and there's ground/slope).
+        if (moveInput != new Vector2(0, 0) && canMove && (groundAhead || slopeAhead)) // Accelerates the player when it can and starts moving (and there's ground/slope).
         {
             // Prevents the player from going too fast.
             if (moveSpeed <= maxSpeed)
@@ -160,16 +163,22 @@ public class CharacterController : MonoBehaviour
         // lee la rotacion del jugador de 0 a 1. Restale 0.5 y multiplicalo por 45*2. Usa el resultado en la rotación del mesh.
     }
 
-    private void Bark()
+    private void StartBark()
     {
         if (canBark)
         {
             canBark = false;
+            canMove = false;
             barkArea.SetActive(true);
-            barkArea.SetActive(false);
-            canBark = true;
-            Debug.Log("I barked :)");
+            Invoke(nameof(FinishBark), 0.5f);
         }
+    }
+
+    private void FinishBark()
+    {
+        barkArea.SetActive(false);
+        canMove = true;
+        canBark = true;
     }
 
     #region Input Methods
@@ -186,7 +195,7 @@ public class CharacterController : MonoBehaviour
 
     public void OnBark(InputAction.CallbackContext context)
     {
-        Bark();
+        StartBark();
     }
 
     public void OnDig(InputAction.CallbackContext context)

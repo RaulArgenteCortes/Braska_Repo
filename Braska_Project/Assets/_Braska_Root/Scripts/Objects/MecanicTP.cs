@@ -14,7 +14,7 @@ public class MecanicTP : MonoBehaviour
         {
             playerinside = true;
 
-            Ladrido ladrido = other.GetComponent<Ladrido>();
+            barkArea ladrido = other.GetComponent<barkArea>();
             if (ladrido != null)
             {
                 ladrido.OnBarkEvent += TeleportPlayer;
@@ -27,7 +27,7 @@ public class MecanicTP : MonoBehaviour
         {
             playerinside = false;
 
-            Ladrido ladrido = other.GetComponent<Ladrido>();
+            barkArea ladrido = other.GetComponent<barkArea>();
             if (ladrido != null)
             {
                 ladrido.OnBarkEvent -= TeleportPlayer;

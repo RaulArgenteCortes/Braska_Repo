@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Excavacion
   - runa
+  - Bark
   layers:
   - Default
   - TransparentFX

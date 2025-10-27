@@ -9,6 +9,8 @@ public class PlatformMove : MonoBehaviour
     [SerializeField] private Transform PuntoA;
     [SerializeField] private Transform PuntoB;
     [SerializeField] private float velocidad = 2f;
+    [SerializeField] private float delayInicio = 1f;
+
 
     [SerializeField] bool enMovimiento = false;
     [SerializeField] bool HaciaB = true;
@@ -38,13 +40,19 @@ public class PlatformMove : MonoBehaviour
     #region "Activar y desactivar movimiento plataforma"
     public void ActivarMovimiento()
     {
-      
+
+        Invoke(nameof(EmpezarMovimiento), delayInicio);
+       
+    }
+    public void EmpezarMovimiento()
+    {
         enMovimiento = true;
         HaciaB = true;
     }
     public void DetenerMovimiento()
     {
         enMovimiento = false;
+        CancelInvoke(nameof(EmpezarMovimiento));
     }
     #endregion
     #region "Collision pj y plataforma"

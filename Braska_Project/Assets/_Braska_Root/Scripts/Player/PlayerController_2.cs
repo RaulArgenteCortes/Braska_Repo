@@ -18,6 +18,9 @@ public class CharacterController : MonoBehaviour
     public Vector3 meshTargetRotation;
     public float rotationSpeed;
 
+    [Header("Actions stats")]
+    public bool canBark;
+
     [Header("LayerCheck stats")]
     [SerializeField] GameObject borderCheck;
     [SerializeField] float borderCheckRadius;
@@ -34,12 +37,14 @@ public class CharacterController : MonoBehaviour
     [Header("References")]
     public Rigidbody playerRb;
     public GameObject playerMesh;
+    public GameObject barkArea;
     public GameObject worldAxsis;
 
     private void Awake()
     {
         playerRb = GetComponent<Rigidbody>();
         playerMesh = GameObject.Find("PlayerMesh");
+        barkArea = GameObject.Find("BarkArea");
         layerCheck = GameObject.Find("LayerCheck");
         borderCheck = GameObject.Find("BorderCheck");
         worldAxsis = GameObject.Find("PF_WorldAxsis");
@@ -47,7 +52,9 @@ public class CharacterController : MonoBehaviour
 
     private void Start()
     {
-        
+        barkArea.SetActive(false);
+
+        canBark = true;
     }
 
     private void Update()
@@ -153,6 +160,18 @@ public class CharacterController : MonoBehaviour
         // lee la rotacion del jugador de 0 a 1. Restale 0.5 y multiplicalo por 45*2. Usa el resultado en la rotación del mesh.
     }
 
+    private void Bark()
+    {
+        if (canBark)
+        {
+            canBark = false;
+            barkArea.SetActive(true);
+            barkArea.SetActive(false);
+            canBark = true;
+            Debug.Log("I barked :)");
+        }
+    }
+
     #region Input Methods
 
     public void OnMove(InputAction.CallbackContext context)
@@ -167,7 +186,7 @@ public class CharacterController : MonoBehaviour
 
     public void OnBark(InputAction.CallbackContext context)
     {
-
+        Bark();
     }
 
     public void OnDig(InputAction.CallbackContext context)

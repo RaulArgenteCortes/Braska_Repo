@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using static UnityEngine.GridBrushBase;
 
-public class CharacterController : MonoBehaviour
+public class PlayerController_2 : MonoBehaviour
 {
     [Header("Movement stats")]
     [SerializeField] bool canMove;

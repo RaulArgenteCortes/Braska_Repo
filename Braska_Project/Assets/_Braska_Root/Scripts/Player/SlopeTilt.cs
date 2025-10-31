@@ -7,13 +7,15 @@ public class SlopeTilt : MonoBehaviour // lee la rotacion del jugador de 0 a 1. 
     public float XTilt;
     public float tiltSpeed;
 
+    [Header("Other rotations")]
+    public float slopeRotation;
     [SerializeField] float playerRotation;
 
-    [Header("Slope stats")]
-    public float slopeRotation;
-
     [Header("Object references")]
-    public GameObject playerMesh;
+    private GameObject playerMesh;
+
+    [Header("Script references")]
+    public PlayerController_2 playerController_2;
 
     private void Awake()
     {
@@ -24,23 +26,17 @@ public class SlopeTilt : MonoBehaviour // lee la rotacion del jugador de 0 a 1. 
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Slope"))
         {
-            targetTilt = new Vector3(
-                XTilt,
-                0,
-                0
-            );
-        }
+            targetTilt = new Vector3(XTilt, 0, 0);
+
+            slopeRotation = other.transform.eulerAngles.y;
+        } 
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Slope"))
         {
-            targetTilt = new Vector3(
-                0,
-                0,
-                0
-            );
+            targetTilt = Vector3.zero;
         }
     }
 
@@ -51,16 +47,9 @@ public class SlopeTilt : MonoBehaviour // lee la rotacion del jugador de 0 a 1. 
 
     private void ChangeTilt()
     {
-        if (transform.parent.eulerAngles.y == 0)
-        {
-            playerRotation = 360;
-        }
-        else
-        {
-            playerRotation = transform.parent.eulerAngles.y;
-        }
+        playerRotation = Quaternion.Angle(transform.parent.rotation, Quaternion.Euler(0, slopeRotation, 0));
 
-        XTilt = (playerRotation - 180);
+        XTilt = ((playerRotation + -90) / 90) * -45;
     }
 
     private void FixedUpdate()

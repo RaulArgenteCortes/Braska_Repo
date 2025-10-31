@@ -36,7 +36,7 @@ public class CharacterController : MonoBehaviour
     [SerializeField] bool slopeAhead;
     [SerializeField] bool isOnSlope;
 
-    [Header("References")]
+    [Header("Object references")]
     public Rigidbody playerRb;
     public GameObject playerMesh;
     public GameObject barkArea;
@@ -58,11 +58,32 @@ public class CharacterController : MonoBehaviour
 
         canBark = true;
         canMove = true;
+
+        SpawnTransform();
+    }
+
+    private void SpawnTransform()
+    {
+        transform.position = ScenesManager.instance.spawnPoint;
+
+        transform.eulerAngles = new Vector3(
+            transform.eulerAngles.x,
+            ScenesManager.instance.spawnView,
+            transform.eulerAngles.z
+        );       
     }
 
     private void Update()
     {
         CheckUpdate();
+    }
+
+    private void CheckUpdate()
+    {
+        groundAhead = Physics.CheckSphere(borderCheck.transform.position, borderCheckRadius, groundLayer);
+        slopeAhead = Physics.CheckSphere(borderCheck.transform.position, borderCheckRadius, slopeLayer);
+
+        isOnSlope = Physics.CheckSphere(layerCheck.transform.position, layerCheckRadius, slopeLayer);
     }
 
     private void FixedUpdate()
@@ -74,26 +95,17 @@ public class CharacterController : MonoBehaviour
         //MeshRotation();
     }
 
-    private void CheckUpdate()
-    {
-        groundAhead = Physics.CheckSphere(borderCheck.transform.position, borderCheckRadius, groundLayer);
-        slopeAhead = Physics.CheckSphere(borderCheck.transform.position, borderCheckRadius, slopeLayer);
-
-        isOnSlope = Physics.CheckSphere(layerCheck.transform.position, layerCheckRadius, slopeLayer);
-    }
-
     private void PlayerRotation()
     {
         // Defines where should the player rotate.
-        targetRotation = new Vector3
-        (
+        targetRotation = new Vector3(
             transform.eulerAngles.x,
             playerAngle + worldAxsis.transform.eulerAngles.y, // Adds the camera rotation.
             transform.eulerAngles.z
         );
 
         // Rotates the player.
-        if (moveInput != new Vector2(0, 0))
+        if (moveInput != new Vector2(0, 0) && canMove)
         {
             transform.rotation = Quaternion.RotateTowards
             (
@@ -101,7 +113,7 @@ public class CharacterController : MonoBehaviour
                 Quaternion.Euler(targetRotation),
                 rotationSpeed * Time.deltaTime
             );
-        } 
+        }
     }
 
     private void PlayerMove()

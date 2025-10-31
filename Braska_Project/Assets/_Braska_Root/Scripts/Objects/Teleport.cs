@@ -5,10 +5,13 @@ public class Teleport : MonoBehaviour
 {
     [Header("Teleport stats")]
     public string sceneToLoad;
-    public Vector3 spawnPoint;
-    public Vector3 spawnView;
+    public Vector3 newSpawnPoint;
+    public float newSpawnView;
     public bool isActive;
     [SerializeField] bool playerInside;
+
+    [Header("Script references")]
+    [SerializeField] ScenesManager ScenesManager;
 
     void Start()
     {
@@ -19,7 +22,7 @@ public class Teleport : MonoBehaviour
     {
         if (other.CompareTag("Bark") && playerInside)
         {
-            TeleportPlayer();
+            OrderTeleport();
         }
     }
 
@@ -39,8 +42,8 @@ public class Teleport : MonoBehaviour
         }
     }
 
-    private void TeleportPlayer()
+    private void OrderTeleport()
     {
-        SceneManager.LoadScene(sceneToLoad);
+        ScenesManager.instance.TeleportPlayer(sceneToLoad, newSpawnPoint, newSpawnView);
     }
 }

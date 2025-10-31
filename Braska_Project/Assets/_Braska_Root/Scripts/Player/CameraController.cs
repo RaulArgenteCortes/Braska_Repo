@@ -4,28 +4,45 @@ using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
-    [Header("Camera stats")]
+    [Header("Rotation stats")]
     public float startingRotation;
     public float cameraRotation; // Current rotation of the camera
-    public float rotationAcceleration;
-    public float rotationMaxSpeed;
-    public float rotationSpeed;
-    public float rotationInput;
-    public float rotationDirection;
+    [SerializeField] float rotationMaxSpeed;
+    [SerializeField] float rotationTargetSpeed;
+    [SerializeField] float rotationSpeed;
+    [SerializeField] float rotationInput;
 
-    void Start()
+    private void Start()
     {
         cameraRotation = startingRotation;
     }
 
-    void Update()
+    private void Update()
     {
-        RotateCamera();
+        TargetRotation();
     }
 
-    void FixedUpdate()
+    private void TargetRotation()
     {
-        // Actualiza la rotación de Y con cameraRotation
+        if (rotationInput > 0)
+        {
+            rotationTargetSpeed = rotationMaxSpeed;
+        }
+        else if (rotationInput < 0)
+        {
+            rotationTargetSpeed = -rotationMaxSpeed;
+        }
+        else
+        {
+            rotationTargetSpeed = 0;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        RotateCamera();
+
+        // Updates Y with cameraRotation
         transform.eulerAngles = new Vector3(
             transform.eulerAngles.x,
             cameraRotation,
@@ -33,37 +50,17 @@ public class CameraController : MonoBehaviour
         );
     }
 
-    void RotateCamera()
+    private void RotateCamera()
     {
-        if (rotationInput != 0)
+        // Gradually increases rotationSpeed
+        rotationSpeed = Mathf.Lerp(rotationSpeed, rotationTargetSpeed, Time.deltaTime * rotationMaxSpeed * 2);
+
+        if (rotationSpeed < 0.1 && rotationSpeed > -0.1 && rotationInput == 0)
         {
-            if (rotationSpeed < rotationMaxSpeed && rotationSpeed > -rotationMaxSpeed)
-            {
-                rotationSpeed += rotationAcceleration * rotationDirection;
-            }
-        }
-        else
-        {
-            if (rotationSpeed > rotationAcceleration)
-            {
-                rotationSpeed += rotationAcceleration * -rotationDirection;
-            }
-            else if (rotationSpeed < -rotationAcceleration)
-            {
-                rotationSpeed += rotationAcceleration * -rotationDirection;
-            }
-            else
-            {
-                rotationSpeed = 0;
-            }
+            rotationSpeed = 0;
         }
 
-        if (rotationSpeed > rotationMaxSpeed && rotationSpeed < -rotationMaxSpeed)
-        {
-            rotationSpeed = rotationMaxSpeed * rotationDirection;
-        }
-
-        // Modifica cameraRotation
+        // Modifies cameraRotation
         cameraRotation += rotationSpeed;
     }
 
@@ -72,15 +69,6 @@ public class CameraController : MonoBehaviour
     public void OnCameraRotate(InputAction.CallbackContext context)
     {
         rotationInput = context.ReadValue<float>();
-
-        if (rotationInput > 0)
-        {
-            rotationDirection = 1;
-        }
-        else if (rotationInput < 0)
-        {
-            rotationDirection = -1;
-        }
     }
 
     #endregion

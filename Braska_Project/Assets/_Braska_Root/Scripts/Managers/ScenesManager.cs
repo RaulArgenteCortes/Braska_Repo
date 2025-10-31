@@ -9,31 +9,25 @@ public class ScenesManager : MonoBehaviour
     public Vector3 spawnPoint;
     public float spawnView;
 
-    [Header("Object references")]
-    public GameObject player;
-
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
-
-        instance = this;
+        // Makes sure that there's always 1 instance.
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     public void TeleportPlayer(string sceneToLoad, Vector3 newSpawnPoint, float newSpawnView)
     {
-        SceneManager.LoadScene(sceneToLoad);
-
         spawnPoint = newSpawnPoint;
         spawnView = newSpawnView;
 
-        /*player = GameObject.Find("PF_Player");
-
-        player.transform.position = newSpawnPoint;
-
-        player.transform.eulerAngles = new Vector3(
-            transform.eulerAngles.x,
-            newSpawnView,
-            transform.eulerAngles.z
-        );*/
+        SceneManager.LoadScene(sceneToLoad);
     }
 }

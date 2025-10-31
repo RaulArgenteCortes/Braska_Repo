@@ -8,17 +8,17 @@ using static UnityEngine.GridBrushBase;
 public class CharacterController : MonoBehaviour
 {
     [Header("Movement stats")]
-    public bool canMove;
-    public float moveSpeed;
-    public float accelerationSpeed;
-    public float maxSpeed;
-    public Vector2 moveInput; // Input from controller.
+    [SerializeField] bool canMove;
+    [SerializeField] float moveSpeed;
+    [SerializeField] float accelerationSpeed;
+    [SerializeField] float maxSpeed;
+    [SerializeField] Vector2 moveInput; // Input from controller.
 
     [Header("Rotation stats")]
-    public float playerAngle;
-    public Vector3 targetRotation;
-    public Vector3 meshTargetRotation;
-    public float rotationSpeed;
+    [SerializeField] float playerAngle;
+    [SerializeField] Vector3 targetRotation;
+    [SerializeField] Vector3 meshTargetRotation;
+    [SerializeField] float rotationSpeed;
 
     [Header("Actions stats")]
     public bool canBark;
@@ -37,10 +37,10 @@ public class CharacterController : MonoBehaviour
     [SerializeField] bool isOnSlope;
 
     [Header("Object references")]
-    public Rigidbody playerRb;
-    public GameObject playerMesh;
-    public GameObject barkArea;
-    public GameObject worldAxsis;
+    private Rigidbody playerRb;
+    private GameObject playerMesh;
+    private GameObject barkArea;
+    private GameObject worldAxsis;
 
     private void Awake()
     {
@@ -172,7 +172,7 @@ public class CharacterController : MonoBehaviour
             rotationSpeed * Time.deltaTime
         );
 
-        // lee la rotacion del jugador de 0 a 1. Restale 0.5 y multiplicalo por 45*2. Usa el resultado en la rotación del mesh.
+        // lee la rotacion del jugador de 0 a 1. Réstale 0.5 y multiplicalo por 45*2. Usa el resultado en la rotación del mesh.
     }
 
     private void StartBark()

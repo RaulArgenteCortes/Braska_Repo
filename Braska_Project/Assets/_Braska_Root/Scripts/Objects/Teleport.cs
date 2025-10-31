@@ -4,16 +4,13 @@ using UnityEngine.SceneManagement;
 public class Teleport : MonoBehaviour
 {
     [Header("Teleport stats")]
-    public string sceneToLoad;
-    public Vector3 newSpawnPoint;
-    public float newSpawnView;
+    [SerializeField] string sceneToLoad;
+    [SerializeField] Vector3 newSpawnPoint;
+    [SerializeField] float newSpawnView;
     public bool isActive;
     [SerializeField] bool playerInside;
 
-    [Header("Script references")]
-    [SerializeField] ScenesManager ScenesManager;
-
-    void Start()
+    private void Start()
     {
         playerInside = false;
     }

@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/_Braska_Root/Scenes/SCN_Level0.unity
     guid: 6c5701e8c60daec4bafc375d08a0a9ee
   - enabled: 1
+    path: Assets/_Braska_Root/Scenes/SCN_Level1.unity
+    guid: cffe6ed49e4c802438d7137ed233713d
+  - enabled: 1
     path: Assets/_Braska_Root/Scenes/SCN_Lobby.unity
     guid: 3f71c4e7275207249b5684f900ffe1e3
   - enabled: 1

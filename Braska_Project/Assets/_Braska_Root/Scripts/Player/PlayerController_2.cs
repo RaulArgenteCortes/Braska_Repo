@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using static UnityEngine.GridBrushBase;
 
 public class PlayerController_2 : MonoBehaviour
@@ -26,15 +27,12 @@ public class PlayerController_2 : MonoBehaviour
     [Header("LayerCheck stats")]
     [SerializeField] GameObject borderCheck;
     [SerializeField] float borderCheckRadius;
-    [SerializeField] GameObject layerCheck;
-    [SerializeField] float layerCheckRadius;
     // Layers:
     [SerializeField] LayerMask groundLayer;
     [SerializeField] LayerMask slopeLayer;
     // Bools:
     [SerializeField] bool groundAhead;
     [SerializeField] bool slopeAhead;
-    [SerializeField] bool isOnSlope;
 
     [Header("Object references")]
     private Rigidbody playerRb;
@@ -47,7 +45,6 @@ public class PlayerController_2 : MonoBehaviour
         playerRb = GetComponent<Rigidbody>();
         playerMesh = GameObject.Find("PlayerMesh");
         barkArea = GameObject.Find("BarkArea");
-        layerCheck = GameObject.Find("LayerCheck");
         borderCheck = GameObject.Find("BorderCheck");
         worldAxsis = GameObject.Find("PF_WorldAxsis");
     }
@@ -62,7 +59,7 @@ public class PlayerController_2 : MonoBehaviour
         SpawnTransform();
     }
 
-    private void SpawnTransform()
+    private void SpawnTransform() // Spawns the player where it should be.
     {
         transform.position = ScenesManager.instance.spawnPoint;
 
@@ -78,12 +75,10 @@ public class PlayerController_2 : MonoBehaviour
         CheckUpdate();
     }
 
-    private void CheckUpdate()
+    private void CheckUpdate() // Updates all terrain checks.
     {
         groundAhead = Physics.CheckSphere(borderCheck.transform.position, borderCheckRadius, groundLayer);
         slopeAhead = Physics.CheckSphere(borderCheck.transform.position, borderCheckRadius, slopeLayer);
-
-        isOnSlope = Physics.CheckSphere(layerCheck.transform.position, layerCheckRadius, slopeLayer);
     }
 
     private void FixedUpdate()
@@ -91,8 +86,6 @@ public class PlayerController_2 : MonoBehaviour
         PlayerRotation();
 
         PlayerMove();
-
-        //MeshRotation();
     }
 
     private void PlayerRotation()
@@ -130,6 +123,11 @@ public class PlayerController_2 : MonoBehaviour
                 moveSpeed = maxSpeed;
             }
         }
+        else if (!(groundAhead || slopeAhead)) // Deaccelerates the player when there is not terrain ahead.
+        {
+            moveSpeed = 0;
+            moveSpeed -= accelerationSpeed;
+        }
         else if (moveSpeed > 0) // Deaccelerates the player when it stops moving.
         {
             moveSpeed -= accelerationSpeed * 2;
@@ -139,40 +137,7 @@ public class PlayerController_2 : MonoBehaviour
             moveSpeed = 0;
         }
 
-        transform.position += transform.forward * moveSpeed * Time.deltaTime; // Moves the player forward.   
-    }
-
-    private void MeshRotation()
-    {
-        // Defines where should the player mesh rotate.
-        if (isOnSlope)
-        {
-            meshTargetRotation = new Vector3
-            (
-                -45,
-                playerMesh.transform.eulerAngles.y,
-                playerMesh.transform.eulerAngles.z
-            );
-        }
-        else
-        {
-            meshTargetRotation = new Vector3
-            (
-                0,
-                playerMesh.transform.eulerAngles.y,
-                playerMesh.transform.eulerAngles.z
-            );
-        }
-
-        // Rotates the player mesh.
-        playerMesh.transform.rotation = Quaternion.RotateTowards
-        (
-            playerMesh.transform.rotation,
-            Quaternion.Euler(meshTargetRotation),
-            rotationSpeed * Time.deltaTime
-        );
-
-        // lee la rotacion del jugador de 0 a 1. Réstale 0.5 y multiplicalo por 45*2. Usa el resultado en la rotación del mesh.
+        transform.position += moveSpeed * Time.deltaTime * transform.forward; // Moves the player forward.
     }
 
     private void StartBark()

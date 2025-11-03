@@ -24,14 +24,12 @@ public class PlayerController_2 : MonoBehaviour
     [Header("Actions stats")]
     public bool canBark;
 
-    [Header("LayerCheck stats")]
+    [Header("Border stats")]
     [SerializeField] GameObject borderCheck;
     [SerializeField] float borderCheckRadius;
-    // Layers:
     [SerializeField] LayerMask groundLayer;
-    [SerializeField] LayerMask slopeLayer;
-    // Bools:
     [SerializeField] bool groundAhead;
+    [SerializeField] LayerMask slopeLayer;
     [SerializeField] bool slopeAhead;
 
     [Header("Object references")]
@@ -123,14 +121,14 @@ public class PlayerController_2 : MonoBehaviour
                 moveSpeed = maxSpeed;
             }
         }
-        else if (!(groundAhead || slopeAhead)) // Deaccelerates the player when there is not terrain ahead.
+        else if (!(groundAhead || slopeAhead)) // Stops and deaccelerates the player when there is not terrain ahead.
         {
             moveSpeed = 0;
-            moveSpeed -= accelerationSpeed;
+            moveSpeed -= accelerationSpeed * 1.1f;
         }
         else if (moveSpeed > 0) // Deaccelerates the player when it stops moving.
         {
-            moveSpeed -= accelerationSpeed * 2;
+            moveSpeed -= accelerationSpeed * 2f;
         }
         else if (moveSpeed != 0) // Prevents the player from moving while still.
         {

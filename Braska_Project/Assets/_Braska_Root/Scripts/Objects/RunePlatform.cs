@@ -2,11 +2,8 @@ using UnityEngine;
 
 public class RunePlatform : MonoBehaviour
 {
-    [Header("Position stats")]
-    public float moveTime;
+    [Header("Move stats")]
     public float distance;
-    public bool canMove;
-    public bool onPoint_A;
 
     [Header("Object references")]
     public GameObject point_A;
@@ -15,10 +12,7 @@ public class RunePlatform : MonoBehaviour
     private void Start()
     {
         transform.position = point_A.transform.position;
-        onPoint_A = true;
         distance = Vector3.Distance(point_A.transform.position, point_B.transform.position);
-
-        //canMove = true;
     }
 
     private void FixedUpdate()
@@ -28,37 +22,25 @@ public class RunePlatform : MonoBehaviour
 
     public void MovePlatform()
     {
-        if (onPoint_A && canMove)
+        if (ObjectManager.instance.runeOnPointA && ObjectManager.instance.runeCanMove)
         {
             transform.position = Vector3.MoveTowards(
                 transform.position,
                 point_B.transform.position,
-                moveTime * Time.deltaTime * distance
+                ObjectManager.instance.runeMoveTime * Time.deltaTime * distance
             );
-
-            if (transform.position == point_B.transform.position)
-            {
-                onPoint_A = false;
-                canMove = false;
-            }
         }
-        else if (canMove)
+        else if (ObjectManager.instance.runeCanMove)
         {
             transform.position = Vector3.MoveTowards(
                 transform.position,
                 point_A.transform.position,
-                moveTime * Time.deltaTime * distance
+                ObjectManager.instance.runeMoveTime * Time.deltaTime * distance
             );
-
-            if (transform.position == point_A.transform.position)
-            {
-                onPoint_A = true;
-                canMove = false;
-            }
         }
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnCollisionStay(Collision other)
     {
         if (other.gameObject.CompareTag("Player"))
         {

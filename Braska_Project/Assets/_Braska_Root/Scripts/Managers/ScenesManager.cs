@@ -28,6 +28,8 @@ public class ScenesManager : MonoBehaviour
         spawnPoint = newSpawnPoint;
         spawnView = newSpawnView;
 
+        ObjectManager.instance.runeOnPointA = true; // Makes sure that the runes are on place
+
         SceneManager.LoadScene(sceneToLoad);
     }
 }

@@ -8,9 +8,15 @@ public class ObjectManager : MonoBehaviour
     [Header("Rune stats")]
     public bool runeCanTrigger;
     public bool runeCanMove;
+    public bool runeOnPointA;
     public float runeMoveTime;
     public float runeCooldownTime;
-    public bool runeOnPointA;
+
+    [Header("Geyser stats")]
+    public float geyserOffset;
+    public float geyserMoveTime;
+    public float geyserCooldownTime;
+    public bool geyserIsUp;
 
     private void Awake()
     {
@@ -31,6 +37,8 @@ public class ObjectManager : MonoBehaviour
         runeCanTrigger = true;
         runeCanMove = false;
         runeOnPointA = true;
+
+        geyserIsUp = false;
     }
 
     #region Rune Functions
@@ -54,6 +62,17 @@ public class ObjectManager : MonoBehaviour
         runeCanMove = false;
         runeOnPointA = !runeOnPointA;
         runeCanTrigger = true;
+    }
+
+    #endregion
+
+    #region Rune Functions
+
+    public void GeyserPosition()
+    {
+        geyserIsUp = !geyserIsUp;
+
+        Invoke(nameof(GeyserPosition), geyserCooldownTime);
     }
 
     #endregion

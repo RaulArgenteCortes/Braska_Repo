@@ -39,6 +39,7 @@ public class ObjectManager : MonoBehaviour
         runeOnPointA = true;
 
         geyserIsUp = false;
+        GeyserPosition();
     }
 
     #region Rune Functions

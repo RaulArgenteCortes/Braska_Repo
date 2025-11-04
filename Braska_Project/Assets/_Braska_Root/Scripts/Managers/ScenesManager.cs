@@ -28,7 +28,8 @@ public class ScenesManager : MonoBehaviour
         spawnPoint = newSpawnPoint;
         spawnView = newSpawnView;
 
-        ObjectManager.instance.runeOnPointA = true; // Makes sure that the runes are on place
+        ObjectManager.instance.runeOnPointA = true; // Makes sure that the runes are on place.
+        ObjectManager.instance.geyserIsUp = false; // Makes sure that the geysers are on place.
 
         SceneManager.LoadScene(sceneToLoad);
     }

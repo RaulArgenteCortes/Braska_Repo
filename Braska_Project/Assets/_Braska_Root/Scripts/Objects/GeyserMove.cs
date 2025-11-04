@@ -19,12 +19,18 @@ public class GeyserMove : MonoBehaviour
 
     private void Update()
     {
-        MoveWater();
+        WarpWater();
     }
 
-    private void MoveWater()
+    private void WarpWater()
     {
         water.transform.localPosition = geyserPlatform.transform.localPosition / 2;
+
+        water.transform.localScale = new Vector3(
+            water.transform.localScale.x,
+            geyserPlatform.transform.localPosition.y / 2,
+            water.transform.localScale.z
+        );
     }
 
     private void FixedUpdate()

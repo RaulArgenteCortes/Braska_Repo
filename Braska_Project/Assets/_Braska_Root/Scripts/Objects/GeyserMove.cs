@@ -42,7 +42,7 @@ public class GeyserMove : MonoBehaviour
     {
         if (ObjectManager.instance.geyserIsUp)
         {
-            geyserPlatform.transform.position = Vector3.SmoothDamp( // SmoothDamp adds acceleration and deacceleration to the movement.
+            geyserPlatform.transform.position = Vector3.SmoothDamp( // SmoothDamp adds acceleration and deceleration to the movement.
                 geyserPlatform.transform.position,
                 new Vector3(
                     geyserPlatform.transform.position.x,

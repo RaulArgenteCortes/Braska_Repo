@@ -32,12 +32,15 @@ public class PlayerController_2 : MonoBehaviour
     [SerializeField] bool groundAhead;
 
     [Header("Object references")]
+    private Rigidbody playerRb;
     [SerializeField] GameObject playerMesh;
     [SerializeField] GameObject barkArea;
     private GameObject worldAxsis;
 
     private void Awake()
     {
+        playerRb = GetComponent<Rigidbody>();
+
         worldAxsis = GameObject.Find("PF_WorldAxsis");
     }
 
@@ -70,8 +73,8 @@ public class PlayerController_2 : MonoBehaviour
     private void CheckUpdate() // Updates all terrain checks.
     {
         groundAhead =
-            Physics.CheckSphere(borderCheckA.transform.position, borderCheckRadius, groundLayer) &&
-            Physics.CheckSphere(borderCheckB.transform.position, borderCheckRadius, groundLayer);
+            Physics.CheckSphere(borderCheckA.transform.position, borderCheckRadius, groundLayer)
+            && Physics.CheckSphere(borderCheckB.transform.position, borderCheckRadius, groundLayer);
     }
 
     private void FixedUpdate()
@@ -116,18 +119,21 @@ public class PlayerController_2 : MonoBehaviour
                 moveSpeed = maxSpeed;
             }
         }
-        else if (!groundAhead) // Stops and deaccelerates the player when there is not terrain ahead.
+        else if (!groundAhead) // Stops and decelerates the player when there is not terrain ahead.
         {
             moveSpeed = 0;
             moveSpeed -= accelerationSpeed * 1.1f;
         }
-        else if (moveSpeed > 0) // Deaccelerates the player when it stops moving.
+        else if (moveSpeed > 0) // Decelerates the player when it stops moving.
         {
             moveSpeed -= accelerationSpeed * 2f;
         }
-        else if (moveSpeed != 0) // Prevents the player from moving while still.
+        else if (moveSpeed != 0) // Completely stops the player from moving while still.
         {
             moveSpeed = 0;
+
+            playerRb.linearVelocity = Vector3.zero;
+            playerRb.angularVelocity = Vector3.zero;
         }
 
         transform.position += moveSpeed * Time.deltaTime * transform.forward; // Moves the player forward.

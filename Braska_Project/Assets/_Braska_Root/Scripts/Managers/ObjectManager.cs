@@ -55,10 +55,10 @@ public class ObjectManager : MonoBehaviour
     {
         runeCanMove = true;
 
-        Invoke(nameof(RuneStop), runeMoveTime * (runeMoveTime * 16) + runeCooldownTime); // Stops the rune exactly when it reaches the other point + the cooldown.
+        Invoke(nameof(RuneStop), runeMoveTime * 8.25f + runeCooldownTime); // Stops the rune exactly when it reaches the other point + the cooldown.
     }
 
-    private void RuneStop()
+    public void RuneStop()
     {
         runeCanMove = false;
         runeOnPointA = !runeOnPointA;

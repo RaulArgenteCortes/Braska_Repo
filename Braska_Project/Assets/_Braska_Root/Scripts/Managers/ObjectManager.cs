@@ -55,7 +55,7 @@ public class ObjectManager : MonoBehaviour
     {
         runeCanMove = true;
 
-        Invoke(nameof(RuneStop), runeMoveTime * 4 + runeCooldownTime);
+        Invoke(nameof(RuneStop), runeMoveTime * (runeMoveTime * 16) + runeCooldownTime); // Stops the rune exactly when it reaches the other point + the cooldown.
     }
 
     private void RuneStop()
@@ -67,7 +67,7 @@ public class ObjectManager : MonoBehaviour
 
     #endregion
 
-    #region Rune Functions
+    #region Geyser Functions
 
     public void GeyserPosition()
     {

@@ -12,29 +12,21 @@ public class SlopeTilt : MonoBehaviour // lee la rotacion del jugador de 0 a 1. 
     [SerializeField] float playerRotation;
 
     [Header("Object references")]
-    private GameObject playerMesh;
-
-    [Header("Script references")]
-    public PlayerController_2 playerController_2;
-
-    private void Awake()
-    {
-        playerMesh = GameObject.Find("PlayerMesh");
-    }
+    [SerializeField] GameObject playerMesh;
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Slope"))
+        if (other.CompareTag("Slope"))
         {
             targetTilt = new Vector3(XTilt, 0, 0);
 
             slopeRotation = other.transform.eulerAngles.y;
-        } 
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Slope"))
+        if (other.CompareTag("Slope"))
         {
             targetTilt = Vector3.zero;
         }

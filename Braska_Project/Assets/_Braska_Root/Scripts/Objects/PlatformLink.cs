@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class PlatformLink : MonoBehaviour
 {
-    private void OnCollisionStay(Collision other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
-        {;
-            other.transform.SetParent(this.transform);;
+        {
+            other.transform.SetParent(this.transform);
         }
     }
 
-    private void OnCollisionExit(Collision other)
+    private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {

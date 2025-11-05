@@ -25,25 +25,19 @@ public class PlayerController_2 : MonoBehaviour
     public bool canBark;
 
     [Header("Border stats")]
-    [SerializeField] GameObject borderCheck;
+    [SerializeField] GameObject borderCheckA;
+    [SerializeField] GameObject borderCheckB;
     [SerializeField] float borderCheckRadius;
     [SerializeField] LayerMask groundLayer;
     [SerializeField] bool groundAhead;
-    [SerializeField] LayerMask slopeLayer;
-    [SerializeField] bool slopeAhead;
 
     [Header("Object references")]
-    private Rigidbody playerRb;
-    private GameObject playerMesh;
-    private GameObject barkArea;
+    [SerializeField] GameObject playerMesh;
+    [SerializeField] GameObject barkArea;
     private GameObject worldAxsis;
 
     private void Awake()
     {
-        playerRb = GetComponent<Rigidbody>();
-        playerMesh = GameObject.Find("PlayerMesh");
-        barkArea = GameObject.Find("BarkArea");
-        borderCheck = GameObject.Find("BorderCheck");
         worldAxsis = GameObject.Find("PF_WorldAxsis");
     }
 
@@ -75,8 +69,9 @@ public class PlayerController_2 : MonoBehaviour
 
     private void CheckUpdate() // Updates all terrain checks.
     {
-        groundAhead = Physics.CheckSphere(borderCheck.transform.position, borderCheckRadius, groundLayer);
-        slopeAhead = Physics.CheckSphere(borderCheck.transform.position, borderCheckRadius, slopeLayer);
+        groundAhead =
+            Physics.CheckSphere(borderCheckA.transform.position, borderCheckRadius, groundLayer) &&
+            Physics.CheckSphere(borderCheckB.transform.position, borderCheckRadius, groundLayer);
     }
 
     private void FixedUpdate()
@@ -109,7 +104,7 @@ public class PlayerController_2 : MonoBehaviour
 
     private void PlayerMove()
     {
-        if (moveInput != new Vector2(0, 0) && canMove && (groundAhead || slopeAhead)) // Accelerates the player when it can and starts moving (and there's ground/slope).
+        if (moveInput != new Vector2(0, 0) && canMove && groundAhead) // Accelerates the player when it can and starts moving (and there's ground/slope).
         {
             // Prevents the player from going too fast.
             if (moveSpeed <= maxSpeed)
@@ -121,7 +116,7 @@ public class PlayerController_2 : MonoBehaviour
                 moveSpeed = maxSpeed;
             }
         }
-        else if (!(groundAhead || slopeAhead)) // Stops and deaccelerates the player when there is not terrain ahead.
+        else if (!groundAhead) // Stops and deaccelerates the player when there is not terrain ahead.
         {
             moveSpeed = 0;
             moveSpeed -= accelerationSpeed * 1.1f;

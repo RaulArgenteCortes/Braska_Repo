@@ -30,10 +30,10 @@ EditorBuildSettings:
     path: Assets/_Braska_Root/Scenes/SCN_Test_Antoni.unity
     guid: 98e05eab286efe040a30180883bafbde
   - enabled: 1
-    path: Assets/_Braska_Root/Scenes/MainMenu.unity
+    path: Assets/_Braska_Root/Scenes/SCN_MainMenu.unity
     guid: c63591ecc02a7154395d776e546428a2
   - enabled: 1
-    path: Assets/_Braska_Root/Scenes/MenuOptions.unity
+    path: Assets/_Braska_Root/Scenes/SCN_MenuOptions.unity
     guid: c217226899b27db40add1058466c11be
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

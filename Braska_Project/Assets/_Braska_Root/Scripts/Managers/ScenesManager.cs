@@ -9,6 +9,9 @@ public class ScenesManager : MonoBehaviour
     public Vector3 spawnPoint;
     public float spawnView;
 
+    [Header("Progress stats")]
+    public int collectedOrbs;
+
     private void Awake()
     {
         // Makes sure that there's always 1 instance.
@@ -21,6 +24,8 @@ public class ScenesManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        collectedOrbs = -1;
     }
 
     public void TeleportPlayer(string sceneToLoad, Vector3 newSpawnPoint, float newSpawnView)

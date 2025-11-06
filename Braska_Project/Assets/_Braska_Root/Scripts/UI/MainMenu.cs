@@ -3,9 +3,12 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    #region "Variables"
     [SerializeField] string sceneToLoad;
     [SerializeField] string sceneToLoad1;
     [SerializeField] string sceneToLoad2;
+    #endregion
+    #region "Voids"
     public void Play()
     {
         AudioManager.Instance.PlaySFX(0);
@@ -32,4 +35,9 @@ public class MainMenu : MonoBehaviour
         AudioManager.Instance.PlayMusic(0);
     }
 
+    public void Replay()
+    {
+        SceneManager.LoadScene(sceneToLoad);
+    }
+    #endregion
 }

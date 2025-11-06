@@ -3,9 +3,11 @@ using UnityEngine.UI;
 
 public class MenuOption : MonoBehaviour
 {
+    #region "Variables"
     [SerializeField] private Slider MusicSlider;
     [SerializeField] private Slider sfxSlider;
-    
+    #endregion
+    #region Voids
     void Start()
     {
         float savedMusic = PlayerPrefs.GetFloat("MusicVolume", 1f);
@@ -31,5 +33,5 @@ public class MenuOption : MonoBehaviour
         PlayerPrefs.SetFloat("SFXVolume", value);
         PlayerPrefs.Save();
     }
-
-    }
+    #endregion
+}

@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    //Desclaración de Singleton
     public static AudioManager Instance;
 
+    #region"Variables
     [Header("Audio Source References")]
     [SerializeField] AudioSource musicSource;
     [SerializeField] AudioSource sfxSource;
@@ -15,8 +15,8 @@ public class AudioManager : MonoBehaviour
     [Header("Audio Clip Arrays")]
     public AudioClip[] musiclist;
     public AudioClip[] sfxList;
-
-
+    #endregion
+    #region Void
     private void Awake()
     {
         if (Instance == null)
@@ -35,7 +35,8 @@ public class AudioManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
+    #endregion
+    #region Musica&SFX
     public void PlayMusic(int musicIndex)
     {
         if (musicIndex < 0 || musicIndex >= musiclist.Length)
@@ -64,4 +65,5 @@ public class AudioManager : MonoBehaviour
     {
         sfxSource.volume = volume;
     }
+    #endregion
 }

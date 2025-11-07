@@ -26,6 +26,7 @@ public class ScenesManager : MonoBehaviour
         }
 
         collectedOrbs = -1;
+
         ProgressCorrector();
     }
 
@@ -36,6 +37,11 @@ public class ScenesManager : MonoBehaviour
 
         ObjectManager.instance.runeOnPointA = true; // Makes sure that the runes are on place.
         ObjectManager.instance.geyserIsUp = false; // Makes sure that the geysers are on place.
+
+        if (ObjectManager.instance.hasOrb)
+        {
+            collectedOrbs += 1;
+        } 
 
         SceneManager.LoadScene(sceneToLoad);
     }

@@ -5,6 +5,9 @@ public class ObjectManager : MonoBehaviour
 {
     public static ObjectManager instance;
 
+    [Header("Orb stats")]
+    public bool hasOrb;
+
     [Header("Rune stats")]
     public bool runeCanTrigger;
     public bool runeCanMove;
@@ -17,6 +20,9 @@ public class ObjectManager : MonoBehaviour
     public float geyserMoveTime;
     public float geyserCooldownTime;
     public bool geyserIsUp;
+
+    [Header("Object stats")]
+    [SerializeField] GameObject orb;
 
     private void Awake()
     {
@@ -34,12 +40,32 @@ public class ObjectManager : MonoBehaviour
 
     private void Start()
     {
+        hasOrb = false;
+
         runeCanTrigger = true;
         runeCanMove = false;
         runeOnPointA = true;
 
         geyserIsUp = false;
         GeyserPosition();
+    }
+
+    public void LocateOrb()
+    {
+        orb = GameObject.Find("PF_Orb");
+
+        if (orb != null)
+        {
+            Invoke(nameof(ShowOrb), 0.5f);
+        }
+    }
+
+    private void ShowOrb()
+    {
+        if (!hasOrb)
+        {
+            Debug.Log("Particles!");
+        }
     }
 
     #region Rune Functions

@@ -23,6 +23,7 @@ public class PlayerController_2 : MonoBehaviour
 
     [Header("Actions stats")]
     public bool canBark;
+    public bool canDig;
 
     [Header("Border stats")]
     [SerializeField] GameObject borderCheckA;
@@ -34,21 +35,26 @@ public class PlayerController_2 : MonoBehaviour
     [Header("Object references")]
     private Rigidbody playerRb;
     [SerializeField] GameObject playerMesh;
-    [SerializeField] GameObject barkArea;
+    [SerializeField] GameObject areaBark;
+    [SerializeField] GameObject areaDig;
     private GameObject worldAxsis;
+    [SerializeField] GameObject orb;
 
     private void Awake()
     {
         playerRb = GetComponent<Rigidbody>();
 
         worldAxsis = GameObject.Find("PF_WorldAxsis");
+        orb = GameObject.Find("PF_Orb");
     }
 
     private void Start()
     {
-        barkArea.SetActive(false);
+        areaBark.SetActive(false);
+        areaDig.SetActive(false);
 
         canBark = true;
+        canDig = true;
         canMove = true;
 
         SpawnTransform();
@@ -141,20 +147,39 @@ public class PlayerController_2 : MonoBehaviour
 
     private void StartBark()
     {
-        if (canBark)
+        if (canBark && canDig)
         {
             canBark = false;
+            canDig = false;
             canMove = false;
-            barkArea.SetActive(true);
-            Invoke(nameof(FinishBark), 0.5f);
+            areaBark.SetActive(true);
+
+            Invoke(nameof(FinishAction), 0.5f);
         }
     }
 
-    private void FinishBark()
+    private void StartDig()
     {
-        barkArea.SetActive(false);
+        if (canDig && canBark)
+        {
+            canBark = false;
+            canDig = false;
+            canMove = false;
+            areaDig.SetActive(true);
+
+            ObjectManager.instance.LocateOrb();
+
+            Invoke(nameof(FinishAction), 1f);
+        }
+    }
+
+    private void FinishAction()
+    {
+        areaBark.SetActive(false);
+        areaDig.SetActive(false);
         canMove = true;
         canBark = true;
+        canDig = true;
     }
 
     #region Input Methods
@@ -176,7 +201,7 @@ public class PlayerController_2 : MonoBehaviour
 
     public void OnDig(InputAction.CallbackContext context)
     {
-
+        StartDig();
     }
 
     #endregion

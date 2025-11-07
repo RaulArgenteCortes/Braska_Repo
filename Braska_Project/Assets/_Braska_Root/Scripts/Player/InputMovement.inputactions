@@ -1,5 +1,4 @@
 {
-    "version": 1,
     "name": "InputMovement",
     "maps": [
         {
@@ -93,7 +92,7 @@
                 {
                     "name": "",
                     "id": "2d3ff813-4bbe-4335-815b-195610929060",
-                    "path": "<Keyboard>/r",
+                    "path": "<Keyboard>/leftShift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

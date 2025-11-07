@@ -28,7 +28,7 @@ public class LightningController : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "SCN_Lobby")
         {
             RenderSettings.skybox = matDark;
-            dayLight.GetComponent<Light>().colorTemperature = 5000; // Changes the sun's warmt.
+            dayLight.GetComponent<Light>().colorTemperature = 4500; // Changes the sun's warmt.
         }
         else
         {
@@ -40,17 +40,17 @@ public class LightningController : MonoBehaviour
             else if (ScenesManager.instance.collectedOrbs == -1 || ScenesManager.instance.collectedOrbs == 2)
             {
                 RenderSettings.skybox = matDay;
-                dayLight.GetComponent<Light>().colorTemperature = 7000;
+                dayLight.GetComponent<Light>().colorTemperature = 7500;
             }
             else if (ScenesManager.instance.collectedOrbs == 0 || ScenesManager.instance.collectedOrbs == 1)
             {
                 RenderSettings.skybox = matMidDay;
-                dayLight.GetComponent<Light>().colorTemperature = 8000;
+                dayLight.GetComponent<Light>().colorTemperature = 9000;
             }
             else if (ScenesManager.instance.collectedOrbs == 4)
             {
                 RenderSettings.skybox = matNight;
-                dayLight.GetComponent<Light>().colorTemperature = 9000;
+                dayLight.GetComponent<Light>().colorTemperature = 10500;
             }
         }
     }
@@ -65,7 +65,7 @@ public class LightningController : MonoBehaviour
                 dayLight.transform.eulerAngles.z
             ); // Changes the sun's angle.
 
-            dayLight.GetComponent<Light>().intensity = 0.25f; // Changes the sun's intensity.
+            dayLight.GetComponent<Light>().intensity = 0.1f; // Changes the sun's intensity.
         }
         else
         {
@@ -87,7 +87,7 @@ public class LightningController : MonoBehaviour
                     dayLight.transform.eulerAngles.z
                 );
 
-                dayLight.GetComponent<Light>().intensity = 0.25f;
+                dayLight.GetComponent<Light>().intensity = 0.1f;
             } 
         }
     }

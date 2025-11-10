@@ -3,9 +3,10 @@ using UnityEngine;
 public class SlopeTilt : MonoBehaviour // lee la rotacion del jugador de 0 a 1. Réstale 0.5 y multiplicalo por 45*2. Usa el resultado en la rotación del mesh.
 {
     [Header("Tilt stats")]
-    public Vector3 targetTilt;
-    public float XTilt;
+    public Vector3 tiltTarget;
+    public float tiltX;
     public float tiltSpeed;
+    public float tiltMax;
 
     [Header("Other rotations")]
     public float slopeRotation;
@@ -18,7 +19,7 @@ public class SlopeTilt : MonoBehaviour // lee la rotacion del jugador de 0 a 1. 
     {
         if (other.CompareTag("Slope"))
         {
-            targetTilt = new Vector3(XTilt, 0, 0);
+            tiltTarget = new Vector3(tiltX, 0, 0);
 
             slopeRotation = other.transform.eulerAngles.y;
         }
@@ -28,7 +29,7 @@ public class SlopeTilt : MonoBehaviour // lee la rotacion del jugador de 0 a 1. 
     {
         if (other.CompareTag("Slope"))
         {
-            targetTilt = Vector3.zero;
+            tiltTarget = Vector3.zero;
         }
     }
 
@@ -41,7 +42,7 @@ public class SlopeTilt : MonoBehaviour // lee la rotacion del jugador de 0 a 1. 
     {
         playerRotation = Quaternion.Angle(transform.parent.rotation, Quaternion.Euler(0, slopeRotation, 0));
 
-        XTilt = ((playerRotation + -90) / 90) * -45;
+        tiltX = ((playerRotation + -90) / 90) * -tiltMax;
     }
 
     private void FixedUpdate()
@@ -51,12 +52,12 @@ public class SlopeTilt : MonoBehaviour // lee la rotacion del jugador de 0 a 1. 
 
     private void MeshTilt()
     {
-        if (playerMesh.transform.eulerAngles != targetTilt)
+        if (playerMesh.transform.eulerAngles != tiltTarget)
         {
             playerMesh.transform.localRotation = Quaternion.RotateTowards
             (
                 playerMesh.transform.localRotation,
-                Quaternion.Euler(targetTilt),
+                Quaternion.Euler(tiltTarget),
                 tiltSpeed * Time.deltaTime
             );
         }

@@ -3,7 +3,7 @@ using UnityEngine;
 public class OrbFollow : MonoBehaviour
 {
     [Header("Progress stats")]
-    [SerializeField] int level;
+    [SerializeField] int currentLevel;
 
     [Header("Follow stats")]
     [SerializeField] bool followStart = false;
@@ -14,12 +14,10 @@ public class OrbFollow : MonoBehaviour
 
     private void Awake()
     {
-        if (level <= ScenesManager.instance.collectedOrbs)
+        if (currentLevel <= ScenesManager.instance.collectedOrbs)
         {
             gameObject.SetActive(false);
         }
-
-        orbFollow = GameObject.Find("OrbFollow");
     }
 
     private void FixedUpdate()

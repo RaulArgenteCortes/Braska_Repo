@@ -7,12 +7,26 @@ public class Teleport : MonoBehaviour
     [SerializeField] string sceneToLoad;
     [SerializeField] Vector3 newSpawnPoint;
     [SerializeField] float newSpawnView;
+    [SerializeField] int requiredOrbs;
     public bool isActive;
     [SerializeField] bool playerInside;
+
+    [Header("Object references")]
+    [SerializeField] GameObject teleportLight;
 
     private void Start()
     {
         playerInside = false;
+
+        if (ScenesManager.instance.collectedOrbs < requiredOrbs)
+        {
+            isActive = false;
+        }
+
+        if (!isActive)
+        {
+            teleportLight.SetActive(false);
+        }
     }
 
     private void OnTriggerEnter(Collider other)

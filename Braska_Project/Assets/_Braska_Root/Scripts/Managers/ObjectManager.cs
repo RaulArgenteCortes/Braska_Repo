@@ -14,6 +14,8 @@ public class ObjectManager : MonoBehaviour
     public bool runeOnPointA;
     public float runeMoveTime;
     public float runeCooldownTime;
+    [SerializeField] Material matPedestal;
+    [SerializeField] Material matRune;
 
     [Header("Geyser stats")]
     public float geyserOffset;
@@ -21,8 +23,9 @@ public class ObjectManager : MonoBehaviour
     public float geyserCooldownTime;
     public bool geyserIsUp;
 
-    [Header("Object stats")]
+    [Header("Object references")]
     [SerializeField] GameObject orb;
+    
 
     private void Awake()
     {

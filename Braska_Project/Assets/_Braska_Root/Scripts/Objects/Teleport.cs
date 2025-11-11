@@ -3,13 +3,16 @@ using UnityEngine.SceneManagement;
 
 public class Teleport : MonoBehaviour
 {
-    [Header("Teleport stats")]
+    [Header("Spawn stats")]
     [SerializeField] string sceneToLoad;
     [SerializeField] Vector3 newSpawnPoint;
     [SerializeField] float newSpawnView;
+
+    [Header("Status stats")]
+    [SerializeField] bool playerInside;
     [SerializeField] int requiredOrbs;
     public bool isActive;
-    [SerializeField] bool playerInside;
+    public bool isHighLighted;
 
     [Header("Object references")]
     [SerializeField] GameObject teleportLight;
@@ -17,6 +20,8 @@ public class Teleport : MonoBehaviour
     private void Start()
     {
         playerInside = false;
+
+        isHighLighted = false;
 
         if (ScenesManager.instance.collectedOrbs < requiredOrbs)
         {

@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 public class OrbFollow : MonoBehaviour
@@ -11,6 +12,8 @@ public class OrbFollow : MonoBehaviour
 
     [Header("Object references")]
     public GameObject orbFollow;
+    public GameObject teleportLobby;
+    
 
     private void Awake()
     {
@@ -39,9 +42,10 @@ public class OrbFollow : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Dig"))
+        if (other.gameObject.CompareTag("Dig") && !ObjectManager.instance.hasOrb)
         {
             ObjectManager.instance.hasOrb = true;
+
             Invoke(nameof(FollowStart), 1f);
         }
     }

@@ -5,10 +5,11 @@ public class ObjectManager : MonoBehaviour
 {
     public static ObjectManager instance;
 
-    [Header("Orb stats")]
+    [Header("Orb controls")]
     public bool hasOrb;
+    [SerializeField] GameObject orb;
 
-    [Header("Rune stats")]
+    [Header("Rune controls")]
     public bool runeCanTrigger;
     public bool runeCanMove;
     public bool runeOnPointA;
@@ -17,15 +18,11 @@ public class ObjectManager : MonoBehaviour
     [SerializeField] Material matPedestal;
     [SerializeField] Material matRune;
 
-    [Header("Geyser stats")]
+    [Header("Geyser controls")]
     public float geyserOffset;
     public float geyserMoveTime;
     public float geyserCooldownTime;
     public bool geyserIsUp;
-
-    [Header("Object references")]
-    [SerializeField] GameObject orb;
-    
 
     private void Awake()
     {
@@ -43,8 +40,6 @@ public class ObjectManager : MonoBehaviour
 
     private void Start()
     {
-        hasOrb = false;
-
         runeCanTrigger = true;
         runeCanMove = false;
         runeOnPointA = true;

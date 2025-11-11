@@ -12,25 +12,41 @@ public class Teleport : MonoBehaviour
     [SerializeField] bool playerInside;
     [SerializeField] int requiredOrbs;
     public bool isActive;
-    public bool isHighLighted;
 
     [Header("Object references")]
     [SerializeField] GameObject teleportLight;
+    [SerializeField] GameObject teleportParticles;
+
+    private void Awake()
+    {
+        teleportParticles.SetActive(false);
+    }
 
     private void Start()
     {
         playerInside = false;
-
-        isHighLighted = false;
 
         if (ScenesManager.instance.collectedOrbs < requiredOrbs)
         {
             isActive = false;
         }
 
+        if (ScenesManager.instance.collectedOrbs == requiredOrbs)
+        {
+            Highlight();
+        }
+
         if (!isActive)
         {
             teleportLight.SetActive(false);
+        }
+    }
+
+    private void Update()
+    {
+        if (ObjectManager.instance.hasOrb)
+        {
+            Invoke(nameof(Highlight), 0.5f);
         }
     }
 
@@ -61,5 +77,10 @@ public class Teleport : MonoBehaviour
     private void OrderTeleport()
     {
         ScenesManager.instance.TeleportPlayer(sceneToLoad, newSpawnPoint, newSpawnView);
+    }
+
+    public void Highlight()
+    {
+        teleportParticles.SetActive(true);
     }
 }

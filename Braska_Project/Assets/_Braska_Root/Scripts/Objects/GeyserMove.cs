@@ -6,15 +6,23 @@ public class GeyserMove : MonoBehaviour
     [Header("Geyser stats")]
     public Vector3 startingPoint;
     public float maxHeight;
-    private Vector3 currentSpeed = Vector3.zero; // Is just the current speed, it updates automarically.
+    private Vector3 currentSpeed = Vector3.zero; // Is just the current speed, it updates itself automarically.
+    public bool emitParicles;
 
     [Header("Object references")]
     public GameObject geyserPlatform;
     public GameObject water;
+    public ParticleSystem particlesBase;
+    public ParticleSystem particlesTop;
 
     private void Start()
     {
         startingPoint = geyserPlatform.transform.position;
+
+        emitParicles = false;
+
+        particlesBase.Stop();
+        particlesTop.Stop();
     }
 
     private void Update()
@@ -52,6 +60,14 @@ public class GeyserMove : MonoBehaviour
                 ref currentSpeed,
                 ObjectManager.instance.geyserMoveTime * 10 * Time.deltaTime
             );
+
+            if (!emitParicles)
+            {
+                emitParicles = !emitParicles;
+                
+                particlesBase.Play();
+                particlesTop.Play();
+            }
         }
         else
         {
@@ -61,6 +77,14 @@ public class GeyserMove : MonoBehaviour
                 ref currentSpeed,
                 ObjectManager.instance.geyserMoveTime * 10 * Time.deltaTime
             );
+
+            if (emitParicles)
+            {
+                emitParicles = !emitParicles;
+
+                particlesBase.Stop();
+                particlesTop.Stop();
+            }
         }
     }
 }

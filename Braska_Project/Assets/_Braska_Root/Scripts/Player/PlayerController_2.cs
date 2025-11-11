@@ -39,6 +39,7 @@ public class PlayerController_2 : MonoBehaviour
     [SerializeField] GameObject areaDig;
     private GameObject worldAxsis;
     [SerializeField] GameObject orb;
+    public ParticleSystem trackParticles;
 
     private void Awake()
     {
@@ -50,6 +51,8 @@ public class PlayerController_2 : MonoBehaviour
 
     private void Start()
     {
+        trackParticles.Stop();
+
         areaBark.SetActive(false);
         areaDig.SetActive(false);
 
@@ -58,6 +61,15 @@ public class PlayerController_2 : MonoBehaviour
         canMove = true;
 
         SpawnTransform();
+
+        if (SceneManager.GetActiveScene().name != "SCN_Level0")
+        {
+            ObjectManager.instance.hasOrb = false;
+        }
+        else
+        {
+            ObjectManager.instance.hasOrb = true;
+        }
     }
 
     private void SpawnTransform() // Spawns the player where it should be.
@@ -168,6 +180,11 @@ public class PlayerController_2 : MonoBehaviour
             areaDig.SetActive(true);
 
             ObjectManager.instance.LocateOrb();
+
+            if (trackParticles != null && !ObjectManager.instance.hasOrb)
+            {
+                trackParticles.Play();
+            }
 
             Invoke(nameof(FinishAction), 1f);
         }

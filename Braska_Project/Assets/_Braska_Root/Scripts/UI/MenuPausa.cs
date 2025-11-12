@@ -12,7 +12,7 @@ public class MenuPausa : MonoBehaviour
     private void Awake()
     {
         Time.timeScale = 1f;
-        AudioManager.Instance.PlayMusic(1);
+
         isPaused = false;
 
         if (PausaMenu != null)

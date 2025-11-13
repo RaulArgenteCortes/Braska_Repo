@@ -41,8 +41,8 @@ public class ScenesManager : MonoBehaviour
         if (ObjectManager.instance.hasOrb)
         {
             collectedOrbs += 1;
-        } 
-
+        }
+        Time.timeScale = 1f;
         SceneManager.LoadScene(sceneToLoad);
     }
 

@@ -13,6 +13,7 @@ public class MainMenu : MonoBehaviour
     {
         AudioManager.Instance.PlaySFX(0);
         SceneManager.LoadScene(sceneToLoad1);
+        Time.timeScale = 1f;
     }
 
     public void Quit()

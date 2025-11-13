@@ -6,11 +6,23 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/_Braska_Root/Scenes/SCN_MainMenu.unity
+    guid: c63591ecc02a7154395d776e546428a2
+  - enabled: 1
+    path: Assets/_Braska_Root/Scenes/SCN_MenuOptions.unity
+    guid: c217226899b27db40add1058466c11be
+  - enabled: 1
     path: Assets/_Braska_Root/Scenes/SCN_Level0.unity
     guid: 6c5701e8c60daec4bafc375d08a0a9ee
   - enabled: 1
     path: Assets/_Braska_Root/Scenes/SCN_Level1.unity
     guid: cffe6ed49e4c802438d7137ed233713d
+  - enabled: 1
+    path: Assets/_Braska_Root/Scenes/SCN_Lobby.unity
+    guid: 3f71c4e7275207249b5684f900ffe1e3
+  - enabled: 1
+    path: Assets/_Braska_Root/Scenes/SCN_FinalDemo.unity
+    guid: 1b0d4dc453598834597862017e1bf102
   - enabled: 1
     path: Assets/_Braska_Root/Scenes/SCN_Level2.unity
     guid: 4a7dc083cdfcd014597ee20fd6fca456
@@ -23,21 +35,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Braska_Root/Scenes/SCN_Finale.unity
     guid: 3edfba81572713c4fa80fb22e1b627b0
-  - enabled: 1
-    path: Assets/_Braska_Root/Scenes/SCN_Lobby.unity
-    guid: 3f71c4e7275207249b5684f900ffe1e3
-  - enabled: 1
-    path: Assets/_Braska_Root/Scenes/SCN_Test_Antoni.unity
-    guid: 98e05eab286efe040a30180883bafbde
-  - enabled: 1
-    path: Assets/_Braska_Root/Scenes/SCN_MainMenu.unity
-    guid: c63591ecc02a7154395d776e546428a2
-  - enabled: 1
-    path: Assets/_Braska_Root/Scenes/SCN_MenuOptions.unity
-    guid: c217226899b27db40add1058466c11be
-  - enabled: 1
-    path: Assets/_Braska_Root/Scenes/SCN_FinalDemo.unity
-    guid: 1b0d4dc453598834597862017e1bf102
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

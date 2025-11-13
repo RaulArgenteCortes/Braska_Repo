@@ -1,3 +1,4 @@
+using JetBrains.Rider.Unity.Editor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -5,6 +6,7 @@ public class MenuPausa : MonoBehaviour
 {
     [SerializeField] GameObject PausaMenu;
     [SerializeField] GameObject MusicaMenu;
+    [SerializeField] GameObject HideaMenu;
     [SerializeField]  bool isPaused = false;
     [SerializeField] string sceneToLoad;
     [SerializeField] string sceneToLoad1;
@@ -43,7 +45,7 @@ public class MenuPausa : MonoBehaviour
         MusicaMenu.SetActive(false);
         Time.timeScale = 0f;
         isPaused = true;
-
+        HideaMenu.SetActive(false);
         AudioManager.Instance.PauseSFX();
     }
     public void ResumeGame()
@@ -53,6 +55,7 @@ public class MenuPausa : MonoBehaviour
         Time.timeScale = 1f;
         isPaused = false;
         AudioManager.Instance.ResumeSFX();
+        HideaMenu.SetActive(false);
 
     }
     public void MainMenu()
@@ -60,13 +63,14 @@ public class MenuPausa : MonoBehaviour
         Time.timeScale = 1f;
         isPaused = false;
         SceneManager.LoadScene(sceneToLoad);
+        HideaMenu.SetActive(false);
 
     }
     public void RestartLevel()
     {
         Time.timeScale = 1f;
         isPaused = false;
-
+        HideaMenu.SetActive(false);
         SceneManager.LoadScene(sceneToLoad1);
     }
     public void Musica()

@@ -14,6 +14,7 @@ public class MainMenu : MonoBehaviour
         AudioManager.Instance.PlaySFX(0);
         SceneManager.LoadScene(sceneToLoad1);
         Time.timeScale = 1f;
+        ScenesManager.instance.spawnPoint = new Vector3 (-3, 1, 0);
     }
 
     public void Quit()

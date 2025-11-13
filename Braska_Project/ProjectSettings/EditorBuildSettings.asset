@@ -35,6 +35,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Braska_Root/Scenes/SCN_MenuOptions.unity
     guid: c217226899b27db40add1058466c11be
+  - enabled: 1
+    path: Assets/_Braska_Root/Scenes/SCN_FinalDemo.unity
+    guid: 1b0d4dc453598834597862017e1bf102
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

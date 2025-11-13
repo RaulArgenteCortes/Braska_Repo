@@ -15,6 +15,8 @@ public class GeyserMove : MonoBehaviour
     public ParticleSystem particlesBase;
     public ParticleSystem particlesTop;
 
+    private bool geyserSoundPlaying = false;
+
     private void Start()
     {
         startingPoint = geyserPlatform.transform.position;
@@ -23,7 +25,10 @@ public class GeyserMove : MonoBehaviour
 
         particlesBase.Stop();
         particlesTop.Stop();
+
+
     }
+
 
     private void Update()
     {
@@ -64,9 +69,14 @@ public class GeyserMove : MonoBehaviour
             if (!emitParicles)
             {
                 emitParicles = !emitParicles;
-                
+
                 particlesBase.Play();
                 particlesTop.Play();
+            }
+            if (!geyserSoundPlaying)
+            {
+                AudioManager.Instance.PlaySFX(6); // índice de tu sonido de geyser
+                geyserSoundPlaying = true;
             }
         }
         else
@@ -85,6 +95,16 @@ public class GeyserMove : MonoBehaviour
                 particlesBase.Stop();
                 particlesTop.Stop();
             }
+            if (geyserSoundPlaying)
+            {
+                geyserSoundPlaying = false;
+
+            }
+
+        }
         }
     }
-}
+
+
+    
+

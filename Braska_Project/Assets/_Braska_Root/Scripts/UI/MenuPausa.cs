@@ -39,10 +39,12 @@ public class MenuPausa : MonoBehaviour
      {
         if (PausaMenu != null)
             PausaMenu.SetActive(true);
+        
         MusicaMenu.SetActive(false);
         Time.timeScale = 0f;
         isPaused = true;
 
+        AudioManager.Instance.PauseSFX();
     }
     public void ResumeGame()
     {
@@ -50,6 +52,8 @@ public class MenuPausa : MonoBehaviour
             PausaMenu.SetActive(false);
         Time.timeScale = 1f;
         isPaused = false;
+        AudioManager.Instance.ResumeSFX();
+
     }
     public void MainMenu()
     {

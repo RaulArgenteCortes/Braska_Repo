@@ -164,6 +164,16 @@ public class PlayerController_2 : MonoBehaviour
     {
         if (canBark && canDig)
         {
+            int[] barkSFXIndices = new int[] { 7, 8, 1 };
+
+            // Elegir uno aleatoriamente
+            int randomIndex = Random.Range(0, barkSFXIndices.Length);
+            int sfxIndex = barkSFXIndices[randomIndex];
+
+            // Reproducir el SFX
+            AudioManager.Instance.PlaySFX(sfxIndex);
+
+
             canBark = false;
             canDig = false;
             canMove = false;
@@ -193,6 +203,7 @@ public class PlayerController_2 : MonoBehaviour
         if (trackParticles != null && !ObjectManager.instance.hasOrb)
         {
             trackParticles.Play();
+            AudioManager.Instance.PlaySFX(5);
         }
 
         Invoke(nameof(FinishAction), 0.9f);

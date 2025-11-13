@@ -51,19 +51,6 @@ public class ObjectManager : MonoBehaviour
     public void LocateOrb()
     {
         orb = GameObject.Find("PF_Orb");
-
-        if (orb != null)
-        {
-            Invoke(nameof(ShowOrb), 0.5f);
-        }
-    }
-
-    private void ShowOrb()
-    {
-        if (!hasOrb)
-        {
-            Debug.Log("Particles!");
-        }
     }
 
     #region Rune Functions

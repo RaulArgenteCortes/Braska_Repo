@@ -51,7 +51,10 @@ public class PlayerController_2 : MonoBehaviour
 
     private void Start()
     {
-        trackParticles.Stop();
+        if (trackParticles != null)
+        {
+            trackParticles.Stop();
+        }
 
         areaBark.SetActive(false);
         areaDig.SetActive(false);
@@ -62,13 +65,13 @@ public class PlayerController_2 : MonoBehaviour
 
         SpawnTransform();
 
-        if (SceneManager.GetActiveScene().name != "SCN_Level0")
+        if (SceneManager.GetActiveScene().name == "SCN_Level0" && ScenesManager.instance.collectedOrbs == -1)
         {
-            ObjectManager.instance.hasOrb = false;
+            ObjectManager.instance.hasOrb = true;
         }
         else
         {
-            ObjectManager.instance.hasOrb = true;
+            ObjectManager.instance.hasOrb = false;
         }
     }
 
@@ -181,13 +184,18 @@ public class PlayerController_2 : MonoBehaviour
 
             ObjectManager.instance.LocateOrb();
 
-            if (trackParticles != null && !ObjectManager.instance.hasOrb)
-            {
-                trackParticles.Play();
-            }
-
-            Invoke(nameof(FinishAction), 1f);
+            Invoke(nameof(StartTrack), 0.1f);   
         }
+    }
+
+    private void StartTrack()
+    {
+        if (trackParticles != null && !ObjectManager.instance.hasOrb)
+        {
+            trackParticles.Play();
+        }
+
+        Invoke(nameof(FinishAction), 0.9f);
     }
 
     private void FinishAction()

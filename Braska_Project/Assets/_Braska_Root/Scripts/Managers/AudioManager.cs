@@ -73,6 +73,9 @@ public class AudioManager : MonoBehaviour
             case "SCN_Level1":
                 PlayMusic(1);
                 break;
+            case "SCN_Lobby":
+                PlayMusic(1);
+                break;
         }
     }
 

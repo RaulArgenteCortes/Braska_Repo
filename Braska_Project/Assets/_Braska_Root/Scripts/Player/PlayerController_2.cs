@@ -32,6 +32,10 @@ public class PlayerController_2 : MonoBehaviour
     [SerializeField] LayerMask groundLayer;
     [SerializeField] bool groundAhead;
 
+    [Header("Animator")]
+    [SerializeField] GameObject mesh;
+    Animator playerAnim;
+
     [Header("Object references")]
     private Rigidbody playerRb;
     [SerializeField] GameObject playerMesh;
@@ -46,6 +50,7 @@ public class PlayerController_2 : MonoBehaviour
     private void Awake()
     {
         playerRb = GetComponent<Rigidbody>();
+        playerAnim = mesh.GetComponent<Animator>();
 
         worldAxsis = GameObject.Find("PF_WorldAxsis");
         orb = GameObject.Find("PF_Orb");
@@ -75,6 +80,8 @@ public class PlayerController_2 : MonoBehaviour
         {
             ObjectManager.instance.hasOrb = false;
         }
+
+        playerAnim.SetBool("isBarking", false);
     }
 
     private void SpawnTransform() // Spawns the player where it should be.
@@ -141,15 +148,21 @@ public class PlayerController_2 : MonoBehaviour
             {
                 moveSpeed = maxSpeed;
             }
+
+            playerAnim.SetBool("isWalking", true);
         }
         else if (!groundAhead) // Stops and decelerates the player when there is not terrain ahead.
         {
             moveSpeed = 0;
             moveSpeed -= accelerationSpeed * 1.1f;
+
+            playerAnim.SetBool("isWalking", false);
         }
         else if (moveSpeed > 0) // Decelerates the player when it stops moving.
         {
             moveSpeed -= accelerationSpeed * 2f;
+
+            playerAnim.SetBool("isWalking", false);
         }
         else if (moveSpeed != 0) // Completely stops the player from moving while still.
         {
@@ -157,6 +170,8 @@ public class PlayerController_2 : MonoBehaviour
 
             playerRb.linearVelocity = Vector3.zero;
             playerRb.angularVelocity = Vector3.zero;
+
+            playerAnim.SetBool("isWalking", false);
         }
 
         transform.position += moveSpeed * Time.deltaTime * transform.forward; // Moves the player forward.
@@ -189,6 +204,8 @@ public class PlayerController_2 : MonoBehaviour
                 GameObject vfx = Instantiate(barkVFX, spawnPos, transform.rotation);
                 Destroy(vfx, 2f);
             }
+
+            playerAnim.SetBool("isBarking", true);
 
             Invoke(nameof(FinishAction), 0.5f);
         }
@@ -227,6 +244,8 @@ public class PlayerController_2 : MonoBehaviour
         canMove = true;
         canBark = true;
         canDig = true;
+
+        playerAnim.SetBool("isBarking", false);
     }
 
     #region Input Methods

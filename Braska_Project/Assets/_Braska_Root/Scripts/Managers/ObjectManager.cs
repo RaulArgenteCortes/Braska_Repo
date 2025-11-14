@@ -48,10 +48,14 @@ public class ObjectManager : MonoBehaviour
         GeyserPosition();
     }
 
+    #region Orb Functions
+
     public void LocateOrb()
     {
         orb = GameObject.Find("PF_Orb");
     }
+
+    #endregion
 
     #region Rune Functions
 
@@ -66,7 +70,7 @@ public class ObjectManager : MonoBehaviour
     {
         runeCanMove = true;
 
-        Invoke(nameof(RuneStop), runeMoveTime * 8.25f + runeCooldownTime); // Stops the rune exactly when it reaches the other point + the cooldown.
+        Invoke(nameof(RuneStop), runeMoveTime * 8.25f); // Stops the rune exactly when it reaches the other point.
     }
 
     public void RuneStop()

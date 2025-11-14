@@ -64,7 +64,7 @@ public class LightningController : MonoBehaviour
                 dayLight.transform.eulerAngles.z
             ); // Changes the sun's angle.
 
-            dayLight.GetComponent<Light>().intensity = 0.1f; // Changes the sun's intensity.
+            dayLight.GetComponent<Light>().intensity = 0.2f; // Changes the sun's intensity.
         }
         else
         {
@@ -86,7 +86,7 @@ public class LightningController : MonoBehaviour
                     dayLight.transform.eulerAngles.z
                 );
 
-                dayLight.GetComponent<Light>().intensity = 0.1f;
+                dayLight.GetComponent<Light>().intensity = 0.2f;
             } 
         }
     }

@@ -6,7 +6,7 @@ public class MenuPausa : MonoBehaviour
     [SerializeField] GameObject PausaMenu;
     [SerializeField] GameObject MusicaMenu;
     [SerializeField] GameObject HideaMenu;
-    [SerializeField]  bool isPaused = false;
+    [SerializeField] bool isPaused = false;
     [SerializeField] string sceneToLoad;
     [SerializeField] string sceneToLoad1;
 

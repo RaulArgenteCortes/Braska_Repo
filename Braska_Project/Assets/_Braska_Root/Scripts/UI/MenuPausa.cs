@@ -1,4 +1,3 @@
-using JetBrains.Rider.Unity.Editor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 

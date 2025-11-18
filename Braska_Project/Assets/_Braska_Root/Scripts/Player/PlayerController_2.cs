@@ -28,6 +28,7 @@ public class PlayerController_2 : MonoBehaviour
     [Header("Border stats")]
     [SerializeField] GameObject borderCheckA;
     [SerializeField] GameObject borderCheckB;
+    [SerializeField] GameObject borderCheckC;
     [SerializeField] float borderCheckRadius;
     [SerializeField] LayerMask groundLayer;
     [SerializeField] bool groundAhead;
@@ -41,6 +42,7 @@ public class PlayerController_2 : MonoBehaviour
     [SerializeField] GameObject playerMesh;
     [SerializeField] GameObject areaBark;
     [SerializeField] GameObject areaDig;
+    public ParticleSystem barkParticles;
     private GameObject worldAxsis;
     [SerializeField] GameObject orb;
     public ParticleSystem trackParticles;
@@ -62,6 +64,7 @@ public class PlayerController_2 : MonoBehaviour
         {
             trackParticles.Stop();
         }
+        barkParticles.Stop();
 
         areaBark.SetActive(false);
         areaDig.SetActive(false);
@@ -104,7 +107,8 @@ public class PlayerController_2 : MonoBehaviour
     {
         groundAhead =
             Physics.CheckSphere(borderCheckA.transform.position, borderCheckRadius, groundLayer)
-            && Physics.CheckSphere(borderCheckB.transform.position, borderCheckRadius, groundLayer);
+            && Physics.CheckSphere(borderCheckB.transform.position, borderCheckRadius, groundLayer)
+            && Physics.CheckSphere(borderCheckC.transform.position, borderCheckRadius, groundLayer);
     }
 
     private void FixedUpdate()
@@ -137,7 +141,7 @@ public class PlayerController_2 : MonoBehaviour
 
     private void PlayerMove()
     {
-        if (moveInput != new Vector2(0, 0) && canMove && groundAhead) // Accelerates the player when it can and starts moving (and there's ground/slope).
+        if (moveInput != Vector2.zero && canMove && groundAhead) // Accelerates the player when it can and starts moving (and there's ground/slope).
         {
             // Prevents the player from going too fast.
             if (moveSpeed <= maxSpeed)
@@ -148,21 +152,15 @@ public class PlayerController_2 : MonoBehaviour
             {
                 moveSpeed = maxSpeed;
             }
-
-            playerAnim.SetBool("isWalking", true);
         }
         else if (!groundAhead) // Stops and decelerates the player when there is not terrain ahead.
         {
             moveSpeed = 0;
             moveSpeed -= accelerationSpeed * 1.1f;
-
-            playerAnim.SetBool("isWalking", false);
         }
         else if (moveSpeed > 0) // Decelerates the player when it stops moving.
         {
             moveSpeed -= accelerationSpeed * 2f;
-
-            playerAnim.SetBool("isWalking", false);
         }
         else if (moveSpeed != 0) // Completely stops the player from moving while still.
         {
@@ -170,17 +168,34 @@ public class PlayerController_2 : MonoBehaviour
 
             playerRb.linearVelocity = Vector3.zero;
             playerRb.angularVelocity = Vector3.zero;
-
-            playerAnim.SetBool("isWalking", false);
         }
 
         transform.position += moveSpeed * Time.deltaTime * transform.forward; // Moves the player forward.
+    }
+
+    private void LateUpdate()
+    {
+        Animator();
+    }
+
+    private void Animator()
+    {
+        if (moveInput != Vector2.zero && canMove && groundAhead)
+        {
+            playerAnim.SetBool("isWalking", true);
+        }
+        else
+        {
+            playerAnim.SetBool("isWalking", false);
+        }
     }
 
     private void StartBark()
     {
         if (canBark && canDig)
         {
+            barkParticles.Play();
+
             int[] barkSFXIndices = new int[] { 7, 8, 1 };
 
             // Elegir uno aleatoriamente
@@ -189,7 +204,6 @@ public class PlayerController_2 : MonoBehaviour
 
             // Reproducir el SFX
             AudioManager.Instance.PlaySFX(sfxIndex);
-
 
             canBark = false;
             canDig = false;
@@ -249,7 +263,6 @@ public class PlayerController_2 : MonoBehaviour
     }
 
     #region Input Methods
-
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
@@ -269,6 +282,5 @@ public class PlayerController_2 : MonoBehaviour
     {
         StartDig();
     }
-
     #endregion
 }

@@ -34,8 +34,8 @@ public class PlayerController_2 : MonoBehaviour
     [SerializeField] bool groundAhead;
 
     [Header("Animator")]
-    [SerializeField] GameObject mesh;
-    Animator playerAnim;
+    [SerializeField] GameObject SK_Braska;
+    [SerializeField] Animator playerAnim;
 
     [Header("Object references")]
     private Rigidbody playerRb;
@@ -52,7 +52,7 @@ public class PlayerController_2 : MonoBehaviour
     private void Awake()
     {
         playerRb = GetComponent<Rigidbody>();
-        playerAnim = mesh.GetComponent<Animator>();
+        playerAnim = SK_Braska.GetComponent<Animator>();
 
         worldAxsis = GameObject.Find("PF_WorldAxsis");
         orb = GameObject.Find("PF_Orb");

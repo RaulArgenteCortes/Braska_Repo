@@ -21,6 +21,8 @@ public class LightningController : MonoBehaviour
         SkyboxChanger();
 
         SunlightChanger();
+
+        SnowChanger();
     }
 
     private void SkyboxChanger()
@@ -59,19 +61,15 @@ public class LightningController : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "SCN_Lobby")
         {
+            // Changes the sun's angle.
             dayLight.transform.eulerAngles = new Vector3(
                 90,
                 dayLight.transform.eulerAngles.y,
                 dayLight.transform.eulerAngles.z
-            ); // Changes the sun's angle.
+            );
 
-            dayLight.GetComponent<Light>().intensity = 0.25f; // Changes the sun's intensity.
-
-            // Changes the snow intensity.
-            var emission = fallingSnow.emission;
-            emission.rateOverTime = 0;
-
-            fallingSnow.Play();
+            // Changes the sun's intensity.
+            dayLight.GetComponent<Light>().intensity = 0.25f;
         }
         else
         {
@@ -95,11 +93,24 @@ public class LightningController : MonoBehaviour
 
                 dayLight.GetComponent<Light>().intensity = 0.25f;
             }
+        }
+    }
 
-            var emission = fallingSnow.emission;
-            emission.rateOverTime = 10 + (ScenesManager.instance.collectedOrbs*5);
+    private void SnowChanger()
+    {
+        //fallingSnow = GetComponent<ParticleSystem>().emission;
+        //var snowEmission = fallingSnow;
 
-            fallingSnow.Play();
+        //fallingSnow.rateOverTime = 20f;
+        //fallingSnow.emission.rateOverTime = 20f;
+
+        if (SceneManager.GetActiveScene().name == "SCN_Lobby")
+        {
+            //snowEmission.enabled = false;
+        }
+        else
+        {
+            //snowEmission.enabled = true;
         }
     }
 }

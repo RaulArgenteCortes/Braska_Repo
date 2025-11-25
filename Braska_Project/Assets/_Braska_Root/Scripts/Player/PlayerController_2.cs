@@ -49,6 +49,7 @@ public class PlayerController_2 : MonoBehaviour
 
     [Header("VFX")]
     [SerializeField] GameObject barkVFX;
+
     private void Awake()
     {
         playerRb = GetComponent<Rigidbody>();
@@ -116,6 +117,9 @@ public class PlayerController_2 : MonoBehaviour
         PlayerRotation();
 
         PlayerMove();
+
+        // Adds artificial gravity to the player
+        playerRb.AddForce(new Vector3(0, -20, 0));
     }
 
     private void PlayerRotation()
@@ -209,15 +213,6 @@ public class PlayerController_2 : MonoBehaviour
             canDig = false;
             canMove = false;
             areaBark.SetActive(true);
-
-            if (barkVFX != null)
-            {
-                // Calcula una posición un poco frente al jugador
-                Vector3 spawnPos = transform.position + transform.forward * 0.8f + Vector3.up * 0.4f;
-
-                GameObject vfx = Instantiate(barkVFX, spawnPos, transform.rotation);
-                Destroy(vfx, 2f);
-            }
 
             playerAnim.SetBool("isBarking", true);
 

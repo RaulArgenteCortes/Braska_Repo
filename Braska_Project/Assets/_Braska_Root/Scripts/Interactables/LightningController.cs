@@ -12,7 +12,7 @@ public class LightningController : MonoBehaviour
 
     [Header("Object references")]
     [SerializeField] GameObject dayLight;
-    [SerializeField] ParticleSystem fallingSnow;
+    public GameObject fallingSnow;
 
     private void Start()
     {
@@ -98,19 +98,16 @@ public class LightningController : MonoBehaviour
 
     private void SnowChanger()
     {
-        //fallingSnow = GetComponent<ParticleSystem>().emission;
-        //var snowEmission = fallingSnow;
+        fallingSnow = GameObject.Find("FallingSnow");
+        fallingSnow.SetActive(false);
 
-        //fallingSnow.rateOverTime = 20f;
-        //fallingSnow.emission.rateOverTime = 20f;
+        var snowEmission = fallingSnow.GetComponent<ParticleSystem>().emission;
 
-        if (SceneManager.GetActiveScene().name == "SCN_Lobby")
+        snowEmission.rateOverTime = 10 + ScenesManager.instance.collectedOrbs * 5;
+
+        if (SceneManager.GetActiveScene().name != "SCN_Lobby")
         {
-            //snowEmission.enabled = false;
-        }
-        else
-        {
-            //snowEmission.enabled = true;
+            fallingSnow.SetActive(true);
         }
     }
 }

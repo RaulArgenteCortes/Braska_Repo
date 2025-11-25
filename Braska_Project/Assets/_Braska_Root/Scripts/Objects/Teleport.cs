@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -50,6 +51,11 @@ public class Teleport : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        Shine();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Bark") && playerInside)
@@ -78,6 +84,26 @@ public class Teleport : MonoBehaviour
     {
         AudioManager.Instance.PlaySFX(9);
         ScenesManager.instance.TeleportPlayer(sceneToLoad, newSpawnPoint, newSpawnView);
+    }
+
+    public void Shine()
+    {
+        if (playerInside)
+        {
+            teleportLight.GetComponent<Light>().intensity = math.lerp(
+                teleportLight.GetComponent<Light>().intensity,
+                0.75f,
+                Time.fixedDeltaTime * 10
+            );
+        }
+        else
+        {
+            teleportLight.GetComponent<Light>().intensity = math.lerp(
+                teleportLight.GetComponent<Light>().intensity,
+                0.25f,
+                Time.fixedDeltaTime * 10
+            );
+        }
     }
 
     public void Highlight()

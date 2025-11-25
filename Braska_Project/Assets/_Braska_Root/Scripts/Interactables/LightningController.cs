@@ -12,6 +12,7 @@ public class LightningController : MonoBehaviour
 
     [Header("Object references")]
     [SerializeField] GameObject dayLight;
+    [SerializeField] ParticleSystem fallingSnow;
 
     private void Start()
     {
@@ -19,7 +20,7 @@ public class LightningController : MonoBehaviour
 
         SkyboxChanger();
 
-        SunLightChanger();
+        SunlightChanger();
     }
 
     private void SkyboxChanger()
@@ -27,34 +28,34 @@ public class LightningController : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "SCN_Lobby")
         {
             RenderSettings.skybox = matDark;
-            dayLight.GetComponent<Light>().colorTemperature = 4500; // Changes the sun's warmt.
+            dayLight.GetComponent<Light>().colorTemperature = 4000; // Changes the sun's warmt.
         }
         else
         {
             if (ScenesManager.instance.collectedOrbs == 3)
             {
                 RenderSettings.skybox = matSunset;
-                dayLight.GetComponent<Light>().colorTemperature = 6000;
+                dayLight.GetComponent<Light>().colorTemperature = 5500;
             }
             else if (ScenesManager.instance.collectedOrbs == -1 || ScenesManager.instance.collectedOrbs == 2)
             {
                 RenderSettings.skybox = matDay;
-                dayLight.GetComponent<Light>().colorTemperature = 7500;
+                dayLight.GetComponent<Light>().colorTemperature = 7000;
             }
             else if (ScenesManager.instance.collectedOrbs == 0 || ScenesManager.instance.collectedOrbs == 1)
             {
                 RenderSettings.skybox = matMidDay;
-                dayLight.GetComponent<Light>().colorTemperature = 9000;
+                dayLight.GetComponent<Light>().colorTemperature = 8500;
             }
             else if (ScenesManager.instance.collectedOrbs == 4)
             {
                 RenderSettings.skybox = matNight;
-                dayLight.GetComponent<Light>().colorTemperature = 10500;
+                dayLight.GetComponent<Light>().colorTemperature = 10000;
             }
         }
     }
 
-    private void SunLightChanger()
+    private void SunlightChanger()
     {
         if (SceneManager.GetActiveScene().name == "SCN_Lobby")
         {
@@ -64,7 +65,13 @@ public class LightningController : MonoBehaviour
                 dayLight.transform.eulerAngles.z
             ); // Changes the sun's angle.
 
-            dayLight.GetComponent<Light>().intensity = 0.2f; // Changes the sun's intensity.
+            dayLight.GetComponent<Light>().intensity = 0.25f; // Changes the sun's intensity.
+
+            // Changes the snow intensity.
+            var emission = fallingSnow.emission;
+            emission.rateOverTime = 0;
+
+            fallingSnow.Play();
         }
         else
         {
@@ -76,7 +83,7 @@ public class LightningController : MonoBehaviour
                     dayLight.transform.eulerAngles.z
                 );
 
-                dayLight.GetComponent<Light>().intensity = 1f;
+                dayLight.GetComponent<Light>().intensity = 0.9f - (ScenesManager.instance.collectedOrbs * 0.1f);
             }
             else
             {
@@ -86,8 +93,13 @@ public class LightningController : MonoBehaviour
                     dayLight.transform.eulerAngles.z
                 );
 
-                dayLight.GetComponent<Light>().intensity = 0.2f;
-            } 
+                dayLight.GetComponent<Light>().intensity = 0.25f;
+            }
+
+            var emission = fallingSnow.emission;
+            emission.rateOverTime = 10 + (ScenesManager.instance.collectedOrbs*5);
+
+            fallingSnow.Play();
         }
     }
 }

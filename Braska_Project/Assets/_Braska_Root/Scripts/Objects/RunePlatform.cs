@@ -17,6 +17,7 @@ public class RunePlatform : MonoBehaviour
 
     private Material platformMaterial;
 
+
     private void Start()
     {
         transform.position = point_A.transform.position;
@@ -43,7 +44,7 @@ public class RunePlatform : MonoBehaviour
                 transform.position,
                 point_B.transform.position,
                 ObjectManager.instance.runeMoveTime * Time.deltaTime * distance);
-            
+            ActivarGlow();
         }
         else if (ObjectManager.instance.runeCanMove)
         {
@@ -52,17 +53,20 @@ public class RunePlatform : MonoBehaviour
                 point_A.transform.position,
                 ObjectManager.instance.runeMoveTime * Time.deltaTime * distance
             );
+            DesactivateGlow();
         }
+
     }
 
     public void ActivarGlow()
     {
         if (platformMaterial != null)
         {
-            platformMaterial.EnableKeyword("EMISSION");
+            platformMaterial.EnableKeyword("_EMISSION");
             platformMaterial.SetColor("_EmissionColor", glowColor * glowIntensity);
             DynamicGI.SetEmissive(platformRenderer, glowColor * glowIntensity);
             Invoke(nameof(DesactivateGlow), glowDuration);
+
         }
     }
     public void DesactivateGlow()

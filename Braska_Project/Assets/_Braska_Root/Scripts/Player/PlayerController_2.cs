@@ -48,7 +48,7 @@ public class PlayerController_2 : MonoBehaviour
     public ParticleSystem trackParticles;
 
     [Header("VFX")]
-    [SerializeField] GameObject barkVFX;
+    [SerializeField] GameObject DigVFX;
 
     private void Awake()
     {
@@ -230,6 +230,8 @@ public class PlayerController_2 : MonoBehaviour
             areaDig.SetActive(true);
 
             ObjectManager.instance.LocateOrb();
+
+            DigVFX.SetActive(true);
 
             Invoke(nameof(StartTrack), 0.1f);   
         }

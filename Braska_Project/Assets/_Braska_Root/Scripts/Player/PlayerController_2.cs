@@ -231,7 +231,6 @@ public class PlayerController_2 : MonoBehaviour
 
             ObjectManager.instance.LocateOrb();
 
-            DigVFX.SetActive(true);
 
             Invoke(nameof(StartTrack), 0.1f);   
         }

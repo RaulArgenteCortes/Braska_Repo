@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class RunePlatform : MonoBehaviour
 {
@@ -12,22 +12,28 @@ public class RunePlatform : MonoBehaviour
     [Header("Glow settings")] 
     public Renderer platformRenderer; 
     public Color glowColor = Color.cyan; 
-    public float glowIntensity = 5f;
-    public float glowDuration = 5f;
-
+    public float glowIntensity = 2f;
+    public float glowDuration = 3f;
     private Material platformMaterial;
-
+    private bool glowing = false;
+    private bool goingToB = false;
+    public Color baseEmissionColor = Color.cyan;
+    public float baseEmissionIntensity = 1f;
 
     private void Start()
     {
+
+
         transform.position = point_A.transform.position;
         distance = Vector3.Distance(point_A.transform.position, point_B.transform.position);
 
-        if (platformRenderer != null )
+        if (platformRenderer != null)
         {
-            platformMaterial = platformRenderer.material;
-            platformMaterial.DisableKeyword("_EMISSION");
-            DynamicGI.SetEmissive(platformRenderer, Color.black);
+            platformMaterial = platformRenderer.material; 
+
+            platformMaterial.EnableKeyword("_EMISSION");
+            platformMaterial.SetColor("_EmissionColor", baseEmissionColor * baseEmissionIntensity);
+            DynamicGI.SetEmissive(platformRenderer, baseEmissionColor * baseEmissionIntensity);
         }
     }
 
@@ -38,46 +44,58 @@ public class RunePlatform : MonoBehaviour
 
     public void MovePlatform()
     {
+
+
         if (ObjectManager.instance.runeOnPointA && ObjectManager.instance.runeCanMove)
         {
+            if (!goingToB)
+            {
+                goingToB = true;
+                ActivarGlow();
+            }
+            
+
             transform.position = Vector3.MoveTowards(
                 transform.position,
                 point_B.transform.position,
                 ObjectManager.instance.runeMoveTime * Time.deltaTime * distance);
-            ActivarGlow();
         }
         else if (ObjectManager.instance.runeCanMove)
         {
+            if (goingToB)
+            {
+                goingToB = false;
+                ActivarGlow();
+            }
+         
             transform.position = Vector3.MoveTowards(
                 transform.position,
                 point_A.transform.position,
-                ObjectManager.instance.runeMoveTime * Time.deltaTime * distance
-            );
-            DesactivateGlow();
+                ObjectManager.instance.runeMoveTime * Time.deltaTime * distance);
         }
 
     }
 
     public void ActivarGlow()
     {
-        if (platformMaterial != null)
+        if (!glowing && platformMaterial != null)
         {
-            platformMaterial.EnableKeyword("_EMISSION");
+            glowing = true;
+
             platformMaterial.SetColor("_EmissionColor", glowColor * glowIntensity);
             DynamicGI.SetEmissive(platformRenderer, glowColor * glowIntensity);
-            Invoke(nameof(DesactivateGlow), glowDuration);
 
+            CancelInvoke(nameof(VolverAEmisionBase));
+            Invoke(nameof(VolverAEmisionBase), glowDuration);
         }
     }
-    public void DesactivateGlow()
+    public void VolverAEmisionBase()
     {
-        if (platformMaterial != null)
-        {
-            platformMaterial.SetColor("_EmissionColor", Color.black);
-            platformMaterial.DisableKeyword("_EMISSION");
-            DynamicGI.SetEmissive(platformRenderer, Color.black);
+        glowing = false;
 
-        }
+        platformMaterial.SetColor("_EmissionColor", baseEmissionColor * baseEmissionIntensity);
+        DynamicGI.SetEmissive(platformRenderer, baseEmissionColor * baseEmissionIntensity);
     }
-
 }
+
+

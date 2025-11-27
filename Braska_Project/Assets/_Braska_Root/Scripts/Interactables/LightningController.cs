@@ -94,7 +94,7 @@ public class LightningController : MonoBehaviour
                     dayLight.transform.eulerAngles.z
                 );
 
-                dayLight.GetComponent<Light>().intensity = 0.25f;
+                dayLight.GetComponent<Light>().intensity = 0.3f;
             }
         }
     }

@@ -72,7 +72,7 @@ public class LightningController : MonoBehaviour
             );
 
             // Changes the sun's intensity.
-            dayLight.GetComponent<Light>().intensity = 0.25f;
+            dayLight.GetComponent<Light>().intensity = 0.3f;
         }
         else
         {

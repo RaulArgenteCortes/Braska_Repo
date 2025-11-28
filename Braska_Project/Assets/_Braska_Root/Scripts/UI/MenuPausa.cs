@@ -5,7 +5,7 @@ public class MenuPausa : MonoBehaviour
 {
     [SerializeField] GameObject PausaMenu;
     [SerializeField] GameObject MusicaMenu;
-    [SerializeField] GameObject HideaMenu;
+    [SerializeField] GameObject PanelIndicador;
     [SerializeField] bool isPaused = false;
     [SerializeField] string sceneToLoad;
     [SerializeField] string sceneToLoad1;
@@ -18,6 +18,7 @@ public class MenuPausa : MonoBehaviour
 
         if (PausaMenu != null)
             PausaMenu.SetActive(false);
+        PanelIndicador.SetActive(true);
     
     }
 
@@ -40,21 +41,20 @@ public class MenuPausa : MonoBehaviour
      {
         if (PausaMenu != null)
             PausaMenu.SetActive(true);
-        
+        PanelIndicador.SetActive(false);
         MusicaMenu.SetActive(false);
         Time.timeScale = 0f;
         isPaused = true;
-        HideaMenu.SetActive(false);
         AudioManager.Instance.PauseSFX();
     }
     public void ResumeGame()
     {
+        PanelIndicador.SetActive(false);
         if (PausaMenu != null)
             PausaMenu.SetActive(false);
         Time.timeScale = 1f;
         isPaused = false;
         AudioManager.Instance.ResumeSFX();
-        HideaMenu.SetActive(false);
 
     }
     public void MainMenu()
@@ -62,14 +62,12 @@ public class MenuPausa : MonoBehaviour
         Time.timeScale = 1f;
         isPaused = false;
         SceneManager.LoadScene(sceneToLoad);
-        HideaMenu.SetActive(false);
 
     }
     public void RestartLevel()
     {
         Time.timeScale = 1f;
         isPaused = false;
-        HideaMenu.SetActive(false);
         SceneManager.LoadScene(sceneToLoad1);
     }
     public void Musica()

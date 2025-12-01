@@ -106,7 +106,7 @@ public class LightningController : MonoBehaviour
 
         var snowEmission = fallingSnow.GetComponent<ParticleSystem>().emission;
 
-        snowEmission.rateOverTime = 6 + ScenesManager.instance.collectedOrbs * 3;
+        snowEmission.rateOverTime = 2 + ScenesManager.instance.collectedOrbs * 1;
 
         if (SceneManager.GetActiveScene().name != "SCN_Lobby")
         {

@@ -1,22 +1,23 @@
 using UnityEngine;
+using UnityEngine.SocialPlatforms.GameCenter;
 
 public class KeyWall : MonoBehaviour
 {
-    [Header("Wall Stats")]
-    [SerializeField] float wallOff;
+    [SerializeField] float currentWallPosition;
 
     [Header("Object References")]
-    [SerializeField] Collider wallCollider;
+    [SerializeField] CapsuleCollider wallCollider;
+    [SerializeField] GameObject wallMesh;
 
-    public void ChangeWall()
+    private void FixedUpdate()
     {
-        if (ObjectManager.instance.keyHold)
-        {
-            wallCollider.transform.position = new Vector3 (0, wallOff, 0);
-        }
-        else
-        {
-            wallCollider.transform.position = new Vector3(0, 0, 0);
-        }
+        currentWallPosition = Mathf.MoveTowards(
+            currentWallPosition,
+            ObjectManager.instance.targetWallPosition * (ObjectManager.instance.keyHold ? 1 : 0),
+            Time.deltaTime
+        );
+
+        wallCollider.center = new Vector3(0, currentWallPosition, 0);
+        wallMesh.transform.localPosition = new Vector3(0, currentWallPosition + 0.5f, 0);
     }
 }

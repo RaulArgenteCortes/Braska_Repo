@@ -3,6 +3,10 @@ using UnityEngine;
 public class RuneTrigger : MonoBehaviour
 {
 
+    Vector3 offset = new Vector3(0, 1f, 0);
+    public GameObject vfx_runaActiva;
+    public float vfxDuration = 0.5f;
+
     public Renderer runeRenderer;
     public Renderer PedestarlRedenderer;
     public Color glowColor = Color.cyan;
@@ -43,6 +47,10 @@ public class RuneTrigger : MonoBehaviour
         {
             AudioManager.Instance.PlaySFX(4);
             ObjectManager.instance.RunePrepareMove();
+            Vector3 vfxPosition = transform.position + new Vector3(0, 0.5f, 0);
+            GameObject vfx = Instantiate(vfx_runaActiva, vfxPosition, transform.rotation);
+            Destroy(vfx, vfxDuration);
+
 
             ActivarIluminacion();
 

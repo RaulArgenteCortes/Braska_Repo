@@ -5,7 +5,6 @@ public class MenuPausa : MonoBehaviour
 {
     [SerializeField] GameObject PausaMenu;
     [SerializeField] GameObject MusicaMenu;
-    [SerializeField] GameObject PanelIndicador;
     [SerializeField] bool isPaused = false;
     [SerializeField] string sceneToLoad;
     [SerializeField] string sceneToLoad1;
@@ -18,7 +17,6 @@ public class MenuPausa : MonoBehaviour
 
         if (PausaMenu != null)
             PausaMenu.SetActive(false);
-        PanelIndicador.SetActive(true);
     
     }
 
@@ -41,7 +39,6 @@ public class MenuPausa : MonoBehaviour
      {
         if (PausaMenu != null)
             PausaMenu.SetActive(true);
-        PanelIndicador.SetActive(false);
         MusicaMenu.SetActive(false);
         Time.timeScale = 0f;
         isPaused = true;
@@ -49,7 +46,6 @@ public class MenuPausa : MonoBehaviour
     }
     public void ResumeGame()
     {
-        PanelIndicador.SetActive(false);
         if (PausaMenu != null)
             PausaMenu.SetActive(false);
         Time.timeScale = 1f;

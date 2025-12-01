@@ -11,14 +11,12 @@ public class RunePlatform : MonoBehaviour
 
     [Header("Glow settings")] 
     public Renderer platformRenderer; 
-    public Color glowColor = Color.cyan; 
-    public float glowIntensity = 2f;
+    public Color glowColor = Color.cyan;
     public float glowDuration = 3f;
     private Material platformMaterial;
     private bool glowing = false;
     private bool goingToB = false;
     public Color baseEmissionColor = Color.cyan;
-    public float baseEmissionIntensity = 1f;
 
     private void Start()
     {
@@ -32,8 +30,8 @@ public class RunePlatform : MonoBehaviour
             platformMaterial = platformRenderer.material; 
 
             platformMaterial.EnableKeyword("_EMISSION");
-            platformMaterial.SetColor("_EmissionColor", baseEmissionColor * baseEmissionIntensity);
-            DynamicGI.SetEmissive(platformRenderer, baseEmissionColor * baseEmissionIntensity);
+            platformMaterial.SetColor("_EmissionColor", baseEmissionColor * ObjectManager.instance.runeLowEmission);
+            DynamicGI.SetEmissive(platformRenderer, baseEmissionColor * ObjectManager.instance.runeLowEmission);
         }
     }
 
@@ -44,8 +42,6 @@ public class RunePlatform : MonoBehaviour
 
     public void MovePlatform()
     {
-
-
         if (ObjectManager.instance.runeOnPointA && ObjectManager.instance.runeCanMove)
         {
             if (!goingToB)
@@ -53,12 +49,12 @@ public class RunePlatform : MonoBehaviour
                 goingToB = true;
                 ActivarGlow();
             }
-            
 
             transform.position = Vector3.MoveTowards(
                 transform.position,
                 point_B.transform.position,
-                ObjectManager.instance.runeMoveTime * Time.deltaTime * distance);
+                ObjectManager.instance.runeMoveTime * Time.deltaTime * distance
+            );
         }
         else if (ObjectManager.instance.runeCanMove)
         {
@@ -82,8 +78,8 @@ public class RunePlatform : MonoBehaviour
         {
             glowing = true;
 
-            platformMaterial.SetColor("_EmissionColor", glowColor * glowIntensity);
-            DynamicGI.SetEmissive(platformRenderer, glowColor * glowIntensity);
+            platformMaterial.SetColor("_EmissionColor", glowColor * ObjectManager.instance.runeHighEmission);
+            DynamicGI.SetEmissive(platformRenderer, glowColor * ObjectManager.instance.runeHighEmission);
 
             CancelInvoke(nameof(VolverAEmisionBase));
             Invoke(nameof(VolverAEmisionBase), glowDuration);
@@ -93,8 +89,8 @@ public class RunePlatform : MonoBehaviour
     {
         glowing = false;
 
-        platformMaterial.SetColor("_EmissionColor", baseEmissionColor * baseEmissionIntensity);
-        DynamicGI.SetEmissive(platformRenderer, baseEmissionColor * baseEmissionIntensity);
+        platformMaterial.SetColor("_EmissionColor", baseEmissionColor * ObjectManager.instance.runeLowEmission);
+        DynamicGI.SetEmissive(platformRenderer, baseEmissionColor * ObjectManager.instance.runeLowEmission);
     }
 }
 

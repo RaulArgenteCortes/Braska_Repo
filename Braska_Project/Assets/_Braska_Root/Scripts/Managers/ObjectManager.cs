@@ -15,8 +15,8 @@ public class ObjectManager : MonoBehaviour
     public bool runeOnPointA;
     public float runeMoveTime;
     public float runeCooldownTime;
-    [SerializeField] Material matPedestal;
-    [SerializeField] Material matRune;
+    public float runeLowEmission;
+    public float runeHighEmission;
 
     [Header("Geyser controls")]
     public float geyserOffset;

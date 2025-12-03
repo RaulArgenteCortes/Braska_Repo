@@ -24,6 +24,10 @@ public class ObjectManager : MonoBehaviour
     public float geyserCooldownTime;
     public bool geyserIsUp;
 
+    [Header("Key controls")]
+    public bool keyHold;
+    public float targetWallPosition;
+
     private void Awake()
     {
         // Makes sure that there's always 1 instance.

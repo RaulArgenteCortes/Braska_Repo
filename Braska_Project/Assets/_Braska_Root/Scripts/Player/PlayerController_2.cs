@@ -229,6 +229,9 @@ public class PlayerController_2 : MonoBehaviour
             canMove = false;
             areaDig.SetActive(true);
 
+           
+
+
             ObjectManager.instance.LocateOrb();
 
 

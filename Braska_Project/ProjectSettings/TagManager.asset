@@ -9,6 +9,7 @@ TagManager:
   - Bark
   - Slope
   - Dig
+  - Spring
   layers:
   - Default
   - TransparentFX

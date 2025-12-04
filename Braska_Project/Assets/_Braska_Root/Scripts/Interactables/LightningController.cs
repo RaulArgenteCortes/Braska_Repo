@@ -16,6 +16,7 @@ public class LightningController : MonoBehaviour
     [Header("Object references")]
     [SerializeField] GameObject dayLight;
     public GameObject fallingSnow;
+    public GameObject clouds;
 
     private void Start()
     {
@@ -26,6 +27,8 @@ public class LightningController : MonoBehaviour
         SunlightChanger();
 
         SnowChanger();
+
+        CloudsChanger();
     }
 
     private void SkyboxChanger()
@@ -111,6 +114,21 @@ public class LightningController : MonoBehaviour
         if (SceneManager.GetActiveScene().name != "SCN_Lobby")
         {
             fallingSnow.SetActive(true);
+        }
+    }
+
+    private void CloudsChanger()
+    {
+        clouds = GameObject.Find("Clouds");
+        clouds.SetActive(false);
+
+        var cloudEmission = clouds.GetComponent<ParticleSystem>().emission;
+
+        cloudEmission.rateOverTime = 0.6f + ScenesManager.instance.collectedOrbs * 0.3f;
+
+        if (SceneManager.GetActiveScene().name != "SCN_Lobby")
+        {
+            clouds.SetActive(true);
         }
     }
 }

@@ -10,6 +10,7 @@ TagManager:
   - Slope
   - Dig
   - Spring
+  - RunePlatform
   layers:
   - Default
   - TransparentFX

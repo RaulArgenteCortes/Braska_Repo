@@ -3,7 +3,7 @@ using UnityEngine;
 public class RuneTrigger : MonoBehaviour
 {
 
-  
+
     public GameObject vfx_runaActiva;
     public float vfxDuration = 2f;
 
@@ -16,7 +16,9 @@ public class RuneTrigger : MonoBehaviour
     private Material runeMaterial;
     private Material runeMaterial2;
 
-    private Color currentEmission; 
+    private Color currentEmission;
+
+
 
     private void Start()
     {
@@ -48,16 +50,16 @@ public class RuneTrigger : MonoBehaviour
             ObjectManager.instance.RunePrepareMove();
             Vector3 vfxPosition = transform.position + new Vector3(0, 0.4f, 0);
             GameObject particlesystem = Instantiate(vfx_runaActiva, vfxPosition, transform.rotation);
-        
-            
-        
 
-        ActivarIluminacion();
+            ShakeAllPlatforms();
+
+
+            ActivarIluminacion();
 
             Invoke(nameof(VolverABase), glowDuration);
         }
     }
-    
+
     private void ActivarIluminacion()
     {
         if (runeMaterial != null)
@@ -81,9 +83,27 @@ public class RuneTrigger : MonoBehaviour
 
         if (runeMaterial2 != null)
         {
+
             runeMaterial2.SetColor("_EmissionColor", currentEmission);
             DynamicGI.SetEmissive(PedestarlRedenderer, currentEmission);
         }
     }
+    #region ShakePlatforms
 
+    private void ShakeAllPlatforms()
+    {
+        GameObject[] platforms = GameObject.FindGameObjectsWithTag("RunePlatform");
+        foreach (var go in platforms)
+        {
+            RunePlatform platform = go.GetComponent<RunePlatform>();
+            if (platform != null)
+            {
+                platform.TriggerShakeOnly(0.7f); 
+            }
+        }
+    }
 }
+
+    #endregion
+
+

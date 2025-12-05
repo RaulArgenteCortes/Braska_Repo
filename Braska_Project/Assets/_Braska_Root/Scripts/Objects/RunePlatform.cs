@@ -25,8 +25,6 @@ public class RunePlatform : MonoBehaviour
     public float DelayAfterShake = 0.1f;
 
     private bool isShaking = false;
-    private bool isMoving = false;
-    private Vector3 moveTarget;
     private float shakeElapsed = 0f;
     private Vector3 originalPos;
     

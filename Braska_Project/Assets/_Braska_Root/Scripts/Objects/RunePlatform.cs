@@ -16,14 +16,26 @@ public class RunePlatform : MonoBehaviour
     private Material platformMaterial;
     private bool glowing = false;
     private bool goingToB = false;
-    public Color baseEmissionColor = Color.cyan;
+    private Color baseEmissionColor = Color.cyan;
+
+    [Header("Shake settings")]
+
+    public float shakeDuration = 0.2f;
+    public float shakeMagnitude = 0.1f;
+    public float DelayAfterShake = 0.1f;
+
+    private bool isShaking = false;
+    private bool isMoving = false;
+    private Vector3 moveTarget;
+    private float shakeElapsed = 0f;
+    private Vector3 originalPos;
+    
 
     private void Start()
     {
-
-
         transform.position = point_A.transform.position;
         distance = Vector3.Distance(point_A.transform.position, point_B.transform.position);
+
 
         if (platformRenderer != null)
         {
@@ -37,10 +49,31 @@ public class RunePlatform : MonoBehaviour
 
     private void FixedUpdate()
     {
+        
         MovePlatform();
     }
+    private void Update()
+    {
+     
+        if (isShaking)
+        {
+            float xOffset = Random.Range(-1f, 1f) * shakeMagnitude;
+            float zOffset = Random.Range(-1f, 1f) * shakeMagnitude;
+            transform.position = originalPos + new Vector3(xOffset, 0, zOffset);
 
-    public void MovePlatform()
+            shakeElapsed += Time.deltaTime;
+            if (shakeElapsed >= shakeDuration)
+            {
+                transform.position = originalPos;
+                isShaking = false;
+            }
+        }
+
+      
+    }
+
+
+   public void MovePlatform()
     {
         if (ObjectManager.instance.runeOnPointA && ObjectManager.instance.runeCanMove)
         {
@@ -63,7 +96,7 @@ public class RunePlatform : MonoBehaviour
                 goingToB = false;
                 ActivarGlow();
             }
-         
+
             transform.position = Vector3.MoveTowards(
                 transform.position,
                 point_A.transform.position,
@@ -71,6 +104,8 @@ public class RunePlatform : MonoBehaviour
         }
 
     }
+
+
 
     public void ActivarGlow()
     {
@@ -92,6 +127,22 @@ public class RunePlatform : MonoBehaviour
         platformMaterial.SetColor("_EmissionColor", baseEmissionColor * ObjectManager.instance.runeLowEmission);
         DynamicGI.SetEmissive(platformRenderer, baseEmissionColor * ObjectManager.instance.runeLowEmission);
     }
+
+
+
+    public void TriggerShakeOnly(float delay)
+    {
+        Invoke(nameof(StartShake), delay);
+    }
+
+    private void StartShake()
+    {
+        originalPos = transform.position;
+        shakeElapsed = 0f;
+        isShaking = true;
+    }
+
+
 }
 
 

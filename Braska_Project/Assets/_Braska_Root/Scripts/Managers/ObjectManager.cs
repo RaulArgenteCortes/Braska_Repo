@@ -26,7 +26,8 @@ public class ObjectManager : MonoBehaviour
 
     [Header("Key controls")]
     public bool keyHold;
-    public float targetWallPosition;
+    public float wallSpeed;
+    public float openedWallPosition;
 
     private void Awake()
     {

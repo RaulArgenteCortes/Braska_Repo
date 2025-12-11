@@ -1,3 +1,5 @@
+using System.Collections;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +14,14 @@ public class ScenesManager : MonoBehaviour
     [Header("Progress stats")]
     public int collectedOrbs;
 
+    [Header("Transitions")]
+    public Animator transitionAnimator;
+    [SerializeField] float transitionTime = 1f;
+
+    public void Start()
+    {
+        transitionAnimator = GetComponentInChildren<Animator>();
+    }
     private void Awake()
     {
         // Makes sure that there's always 1 instance.
@@ -43,6 +53,12 @@ public class ScenesManager : MonoBehaviour
             collectedOrbs += 1;
         }
         Time.timeScale = 1f;
+        StartCoroutine(SceneLoad(sceneToLoad));
+        }
+    public IEnumerator SceneLoad(string sceneToLoad)
+    {
+        transitionAnimator.SetTrigger("StartTransition");
+            yield return new WaitForSeconds(transitionTime);
         SceneManager.LoadScene(sceneToLoad);
     }
 

@@ -17,10 +17,12 @@ public class ScenesManager : MonoBehaviour
     [Header("Transitions")]
     public Animator transitionAnimator;
     [SerializeField] float transitionTime = 1f;
+    [SerializeField] GameObject Player;
 
     public void Start()
     {
         transitionAnimator = GetComponentInChildren<Animator>();
+        Player = GameObject.FindGameObjectWithTag("Player");
     }
     private void Awake()
     {
@@ -54,12 +56,30 @@ public class ScenesManager : MonoBehaviour
         }
         Time.timeScale = 1f;
         StartCoroutine(SceneLoad(sceneToLoad));
+        Invoke("DeactivatePlayer", 0.4f); ;
+
         }
     public IEnumerator SceneLoad(string sceneToLoad)
     {
         transitionAnimator.SetTrigger("StartTransition");
             yield return new WaitForSeconds(transitionTime);
         SceneManager.LoadScene(sceneToLoad);
+        Invoke("FindPlayer", 0.05f);
+        
+    }
+    void FindPlayer()
+    {
+        Player = GameObject.FindGameObjectWithTag("Player");
+
+        if (Player == null)
+            Debug.LogWarning("Player no encontrado todavía...");
+        else
+            Debug.Log("Player encontrado: " + Player);
+    }
+    private void DeactivatePlayer()
+    {
+        if (Player != null)
+            Player.SetActive(false);
     }
 
     public void ProgressCorrector()

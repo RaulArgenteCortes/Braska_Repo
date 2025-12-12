@@ -9,6 +9,8 @@ public class MenuPausa : MonoBehaviour
     [SerializeField] string sceneToLoad;
     [SerializeField] string sceneToLoad1;
 
+    
+
     private void Awake()
     {
         Time.timeScale = 1f;
@@ -17,7 +19,6 @@ public class MenuPausa : MonoBehaviour
 
         if (PausaMenu != null)
             PausaMenu.SetActive(false);
-    
     }
 
 
@@ -35,6 +36,7 @@ public class MenuPausa : MonoBehaviour
             }
         }
     }
+    
     public void PausaGame()
      {
         if (PausaMenu != null)
@@ -57,14 +59,14 @@ public class MenuPausa : MonoBehaviour
     {
         Time.timeScale = 1f;
         isPaused = false;
-        SceneManager.LoadScene(sceneToLoad);
+        ScenesFade.Instance.FadeOutAndLoad(sceneToLoad);
 
     }
     public void RestartLevel()
     {
         Time.timeScale = 1f;
         isPaused = false;
-        SceneManager.LoadScene(sceneToLoad1);
+        ScenesFade.Instance.FadeOutAndLoad(sceneToLoad1);
     }
     public void Musica()
     {

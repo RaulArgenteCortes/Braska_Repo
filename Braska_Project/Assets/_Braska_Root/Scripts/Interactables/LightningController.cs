@@ -22,7 +22,7 @@ public class LightningController : MonoBehaviour
     {
         ScenesManager.instance.ProgressCorrector();
 
-        SkyboxChanger();
+        //SkyboxChanger();
 
         SunlightChanger();
 

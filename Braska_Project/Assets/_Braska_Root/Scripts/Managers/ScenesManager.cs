@@ -70,11 +70,6 @@ public class ScenesManager : MonoBehaviour
     void FindPlayer()
     {
         Player = GameObject.FindGameObjectWithTag("Player");
-
-        if (Player == null)
-            Debug.LogWarning("Player no encontrado todavía...");
-        else
-            Debug.Log("Player encontrado: " + Player);
     }
     private void DeactivatePlayer()
     {

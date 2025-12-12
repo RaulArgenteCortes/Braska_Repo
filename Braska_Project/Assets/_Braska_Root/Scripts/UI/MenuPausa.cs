@@ -59,14 +59,14 @@ public class MenuPausa : MonoBehaviour
     {
         Time.timeScale = 1f;
         isPaused = false;
-        SceneManager.LoadScene(sceneToLoad);
+        ScenesFade.Instance.FadeOutAndLoad(sceneToLoad);
 
     }
     public void RestartLevel()
     {
         Time.timeScale = 1f;
         isPaused = false;
-        SceneManager.LoadScene(sceneToLoad1);
+        ScenesFade.Instance.FadeOutAndLoad(sceneToLoad1);
     }
     public void Musica()
     {

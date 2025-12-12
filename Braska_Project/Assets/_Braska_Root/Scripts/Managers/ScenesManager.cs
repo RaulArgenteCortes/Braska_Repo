@@ -1,5 +1,3 @@
-using System.Collections;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,16 +12,6 @@ public class ScenesManager : MonoBehaviour
     [Header("Progress stats")]
     public int collectedOrbs;
 
-    [Header("Transitions")]
-    public Animator transitionAnimator;
-    [SerializeField] float transitionTime = 1f;
-    [SerializeField] GameObject Player;
-
-    public void Start()
-    {
-        transitionAnimator = GetComponentInChildren<Animator>();
-        Player = GameObject.FindGameObjectWithTag("Player");
-    }
     private void Awake()
     {
         // Makes sure that there's always 1 instance.
@@ -55,26 +43,7 @@ public class ScenesManager : MonoBehaviour
             collectedOrbs += 1;
         }
         Time.timeScale = 1f;
-        StartCoroutine(SceneLoad(sceneToLoad));
-        Invoke("DeactivatePlayer", 0.4f); ;
-
-        }
-    public IEnumerator SceneLoad(string sceneToLoad)
-    {
-        transitionAnimator.SetTrigger("StartTransition");
-            yield return new WaitForSeconds(transitionTime);
-        SceneManager.LoadScene(sceneToLoad);
-        Invoke("FindPlayer", 0.05f);
-        
-    }
-    void FindPlayer()
-    {
-        Player = GameObject.FindGameObjectWithTag("Player");
-    }
-    private void DeactivatePlayer()
-    {
-        if (Player != null)
-            Player.SetActive(false);
+        ScenesFade.Instance.FadeOutAndLoad(sceneToLoad);
     }
 
     public void ProgressCorrector()

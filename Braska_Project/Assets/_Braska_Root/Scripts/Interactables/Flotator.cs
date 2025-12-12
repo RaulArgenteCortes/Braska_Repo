@@ -29,11 +29,11 @@ public class Flotator : MonoBehaviour
 
     private void TrackPosition()
     {
-        if (transform.position.y >= startingPoint + highFloat - 0.01f)
+        if (transform.position.y >= startingPoint + highFloat - 0.001f)
         {
             isHigh = true;
         }
-        else if (transform.position.y <= startingPoint + lowFloat + 0.01f)
+        else if (transform.position.y <= startingPoint + lowFloat + 0.001f)
         {
             isHigh = false;
         }

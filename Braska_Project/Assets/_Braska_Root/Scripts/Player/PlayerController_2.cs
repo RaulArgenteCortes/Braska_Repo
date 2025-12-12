@@ -38,7 +38,7 @@ public class PlayerController_2 : MonoBehaviour
     [SerializeField] Animator playerAnim;
 
     [Header("Object references")]
-    private Rigidbody playerRb;
+    [SerializeField] Rigidbody playerRb;
     [SerializeField] GameObject playerMesh;
     [SerializeField] GameObject areaBark;
     [SerializeField] GameObject areaDig;

@@ -9,6 +9,9 @@ public class ScenesFade : MonoBehaviour
     public static ScenesFade Instance;
     Animator anim;
     public GameObject PrefabPlayer;
+    [Header("Teleport VFX")]
+    [SerializeField] GameObject teleportVFXPrefab;
+    [SerializeField] float vfxDestroyTime = 3f;
 
     void Awake()
     {
@@ -22,6 +25,13 @@ public class ScenesFade : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+    }
+    public void PlayTeleportVFX(Vector3 position)
+    {
+        if (teleportVFXPrefab == null) return;
+
+        GameObject vfx = Instantiate(teleportVFXPrefab, position, Quaternion.identity);
+        Destroy(vfx, vfxDestroyTime);
     }
     void OnEnable()
     {
@@ -73,8 +83,9 @@ public class ScenesFade : MonoBehaviour
 
     private System.Collections.IEnumerator FadeAndSwitch(string sceneName)
     {
-      
 
+        if (Player != null)
+            PlayTeleportVFX(Player.transform.position);
         if (anim != null)
             anim.SetTrigger("FadeIn");
 
@@ -88,7 +99,13 @@ public class ScenesFade : MonoBehaviour
         anim = FindFadeAnimator();
 
         if (anim != null)
-            anim.SetTrigger("FadeOut"); 
+            anim.SetTrigger("FadeOut");
+
+        Player = GameObject.FindGameObjectWithTag("Player");
+
+        if (Player != null)
+            PlayTeleportVFX(Player.transform.position);
+
     }
 }
 

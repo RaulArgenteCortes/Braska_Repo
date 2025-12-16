@@ -50,6 +50,7 @@ public class PlayerController_2 : MonoBehaviour
     [Header("VFX")]
     [SerializeField] GameObject DigVFX;
 
+
     private void Awake()
     {
         playerRb = GetComponent<Rigidbody>();
@@ -61,6 +62,7 @@ public class PlayerController_2 : MonoBehaviour
 
     private void Start()
     {
+
         HidePlayerAtStart();
 
         Invoke(nameof(ShowPlayerAfterDelay), 1f);
@@ -124,6 +126,7 @@ public class PlayerController_2 : MonoBehaviour
     }
     private void HidePlayerAtStart()
     {
+
         canMove = false;
         canBark = false;
         canDig = false;
@@ -142,10 +145,17 @@ public class PlayerController_2 : MonoBehaviour
 
         if (areaBark != null)
             areaBark.SetActive(false);
+
     }
 
     private void ShowPlayerAfterDelay()
     {
+
+        if (ScenesFade.Instance != null)
+        {
+            ScenesFade.Instance.PlayTeleportVFX(transform.position);
+        }
+
         if (SK_Braska != null)
             SK_Braska.SetActive(true);
 
@@ -157,6 +167,8 @@ public class PlayerController_2 : MonoBehaviour
 
         if (playerAnim != null)
             playerAnim.SetBool("isBarking", false);
+
+
     }
     private void PlayerRotation()
     {
@@ -178,6 +190,7 @@ public class PlayerController_2 : MonoBehaviour
             );
         }
     }
+   
 
     private void PlayerMove()
     {

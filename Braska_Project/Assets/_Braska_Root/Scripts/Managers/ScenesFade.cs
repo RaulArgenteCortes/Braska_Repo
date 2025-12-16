@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class ScenesFade : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class ScenesFade : MonoBehaviour
 
     public static ScenesFade Instance;
     Animator anim;
+    public GameObject PrefabPlayer;
 
     void Awake()
     {
@@ -42,9 +44,11 @@ public class ScenesFade : MonoBehaviour
     {
         anim = FindFadeAnimator();
         Player = GameObject.FindGameObjectWithTag("Player");
+    
 
+        
 
-
+      
 
     }
 
@@ -76,7 +80,7 @@ public class ScenesFade : MonoBehaviour
 
         Invoke(nameof(DeactivatePlayer), 0.4f);
 
-        yield return new WaitForSeconds(0.99f);
+        yield return new WaitForSeconds(0.98f);
 
         SceneManager.LoadScene(sceneName);
 

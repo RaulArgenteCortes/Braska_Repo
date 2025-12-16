@@ -3,13 +3,14 @@ using UnityEngine;
 public class CleanCover : MonoBehaviour
 {
     [Header("Layer Stats")]
-    [SerializeField] bool overlap;
-    [SerializeField] LayerMask ground;
     [SerializeField] GameObject layerCheck;
+    [SerializeField] float layerRadius;
+    [SerializeField] LayerMask layerGround;
+    private bool overlap;
 
     private void Start()
     {
-        overlap = Physics.CheckSphere(transform.position, 0.01f, ground);
+        overlap = Physics.CheckSphere(layerCheck.transform.position, layerRadius, layerGround);
 
         if (overlap)
         {

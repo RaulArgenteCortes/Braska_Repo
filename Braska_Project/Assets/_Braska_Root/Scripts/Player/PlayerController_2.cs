@@ -61,6 +61,10 @@ public class PlayerController_2 : MonoBehaviour
 
     private void Start()
     {
+        HidePlayerAtStart();
+
+        Invoke(nameof(ShowPlayerAfterDelay), 1f);
+
         if (trackParticles != null)
         {
             trackParticles.Stop();
@@ -70,9 +74,6 @@ public class PlayerController_2 : MonoBehaviour
         areaBark.SetActive(false);
         areaDig.SetActive(false);
 
-        canBark = true;
-        canDig = true;
-        canMove = true;
 
         SpawnTransform();
 
@@ -121,7 +122,42 @@ public class PlayerController_2 : MonoBehaviour
         // Adds artificial gravity to the player
         playerRb.AddForce(new Vector3(0, -20, 0));
     }
+    private void HidePlayerAtStart()
+    {
+        canMove = false;
+        canBark = false;
+        canDig = false;
 
+        moveSpeed = 0f;
+        if (playerRb != null)
+        {
+            playerRb.angularVelocity = Vector3.zero;
+        }
+
+        if (SK_Braska != null)
+            SK_Braska.SetActive(false);
+
+        if (playerAnim != null)
+            playerAnim.SetBool("isBarking", false);
+
+        if (areaBark != null)
+            areaBark.SetActive(false);
+    }
+
+    private void ShowPlayerAfterDelay()
+    {
+        if (SK_Braska != null)
+            SK_Braska.SetActive(true);
+
+        canMove = true;
+        canBark = true;
+        canDig = true;
+
+
+
+        if (playerAnim != null)
+            playerAnim.SetBool("isBarking", false);
+    }
     private void PlayerRotation()
     {
         // Defines where should the player rotate.

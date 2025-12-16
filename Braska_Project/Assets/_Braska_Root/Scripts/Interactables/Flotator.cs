@@ -3,12 +3,12 @@ using UnityEngine;
 public class Flotator : MonoBehaviour
 {
     [Header("Flotatoe stats")]
-    [SerializeField] float startingPoint;
-    [SerializeField] float currentPosition;
     [SerializeField] float highFloat;
     [SerializeField] float lowFloat;
     [SerializeField] float floatSpeed;
-    [SerializeField] bool isHigh;
+    private float startingPoint;
+    private float currentPosition;
+    private bool isHigh;
     private float velocity;
 
     private void Start()

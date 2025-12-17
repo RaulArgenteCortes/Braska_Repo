@@ -11,6 +11,7 @@ TagManager:
   - Dig
   - Spring
   - RunePlatform
+  - fade
   layers:
   - Default
   - TransparentFX

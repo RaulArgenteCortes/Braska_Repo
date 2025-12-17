@@ -61,9 +61,13 @@ public class Teleport : MonoBehaviour
         if (other.CompareTag("Bark") && playerInside)
         {
             OrderTeleport();
+            if (ScenesFade.Instance != null)
+            {
+                ScenesFade.Instance.PlayTeleportVFX(transform.position);
+            }
         }
     }
-
+   
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player") && isActive)
@@ -84,6 +88,7 @@ public class Teleport : MonoBehaviour
     {
         AudioManager.Instance.PlaySFX(9);
         ScenesManager.instance.TeleportPlayer(sceneToLoad, newSpawnPoint, newSpawnView);
+       
     }
 
     public void Shine()

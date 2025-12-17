@@ -1400,7 +1400,7 @@
     "m_Color": {
         "color": {
             "r": 0.09803921729326248,
-            "g": 0.29411765933036806,
+            "g": 0.3333333432674408,
             "b": 1.0,
             "a": 1.0
         },
@@ -1478,7 +1478,7 @@
     "m_Hidden": false,
     "m_PerRendererData": false,
     "m_customAttributes": [],
-    "m_Value": 10.0,
+    "m_Value": 20.0,
     "m_FloatType": 0,
     "m_RangeValues": {
         "x": 0.0,

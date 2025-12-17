@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SocialPlatforms.GameCenter;
 
 public class KeyWall : MonoBehaviour
 {

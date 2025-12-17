@@ -14,7 +14,7 @@ public class MenuPausa : MonoBehaviour
     private void Awake()
     {
         Time.timeScale = 1f;
-        isPaused = false;
+       
 
         isPaused = false;
 

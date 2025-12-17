@@ -58,6 +58,12 @@ public class PlayerController_2 : MonoBehaviour
 
         worldAxsis = GameObject.Find("PF_WorldAxsis");
         orb = GameObject.Find("PF_Orb");
+
+        if (trackParticles != null)
+        {
+            trackParticles.Stop();
+        }
+        barkParticles.Stop();
     }
 
     private void Start()

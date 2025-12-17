@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: bcc0ee86886b74d43a1d64f5e3cd975a
+guid: 676d845a856e3364d86d7ff441a04372
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -31,11 +31,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Idle_Braska01
-      takeName: Idle_Braska01
-      internalID: -470151060393683346
+      name: Braska_idle
+      takeName: Braska_idle
+      internalID: 283663539170620086
       firstFrame: 0
-      lastFrame: 39
+      lastFrame: 40
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -60,11 +60,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Walking_Braska_01
-      takeName: Walking_Braska_01
-      internalID: -1415829522376772108
+      name: Braska_walking
+      takeName: Braska_walking
+      internalID: 9184732646222654189
       firstFrame: 0
-      lastFrame: 24
+      lastFrame: 29
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -89,18 +89,18 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Bark_Braska01
-      takeName: Bark_Braska01
-      internalID: -6176552057085178288
+      name: Braska_bark
+      takeName: Braska_bark
+      internalID: -334379118538177014
       firstFrame: 0
-      lastFrame: 24
+      lastFrame: 34
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0

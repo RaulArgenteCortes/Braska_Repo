@@ -43,7 +43,7 @@ public class ScenesManager : MonoBehaviour
             collectedOrbs += 1;
         }
         Time.timeScale = 1f;
-        SceneManager.LoadScene(sceneToLoad);
+        ScenesFade.Instance.FadeOutAndLoad(sceneToLoad);
     }
 
     public void ProgressCorrector()

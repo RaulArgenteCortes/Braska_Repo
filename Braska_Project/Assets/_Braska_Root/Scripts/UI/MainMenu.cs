@@ -12,7 +12,7 @@ public class MainMenu : MonoBehaviour
     public void Play()
     {
         AudioManager.Instance.PlaySFX(0);
-        SceneManager.LoadScene(sceneToLoad1);
+        ScenesFade.Instance.FadeOutAndLoad(sceneToLoad1);
         Time.timeScale = 1f;
         ScenesManager.instance.spawnPoint = new Vector3 (-3, 1, 0);
     }
@@ -25,12 +25,12 @@ public class MainMenu : MonoBehaviour
     public void Options()
     {
         AudioManager.Instance.PlaySFX(0);
-        SceneManager.LoadScene(sceneToLoad2);
+        ScenesFade.Instance.FadeOutAndLoad(sceneToLoad2);
     }
     public void Menu()
     {
         AudioManager.Instance.PlaySFX(0);
-        SceneManager.LoadScene(sceneToLoad);
+        ScenesFade.Instance.FadeOutAndLoad(sceneToLoad);
     }
     public void Start()
     {
@@ -39,7 +39,7 @@ public class MainMenu : MonoBehaviour
 
     public void Replay()
     {
-        SceneManager.LoadScene(sceneToLoad);
+        ScenesFade.Instance.FadeOutAndLoad(sceneToLoad);
     }
     #endregion
 }

@@ -3,7 +3,9 @@ using UnityEngine;
 public class SpringMove : MonoBehaviour
 {
     [Header("Spring Platform")]
-    public GameObject springPlatform;     
+    public GameObject springPlatform;
+    public GameObject MeshSpring;
+   
 
     [Header("Movement Settings")]
     public float downAmount = 1f;
@@ -16,6 +18,14 @@ public class SpringMove : MonoBehaviour
 
     private bool shouldBeDown = false;
 
+    public Animator animator;
+    
+
+    public void Awake()
+    {
+        animator = MeshSpring.GetComponentInChildren<Animator>();
+
+    }
     private void Start()
     {
         startingPoint = springPlatform.transform.position;
@@ -35,7 +45,7 @@ public class SpringMove : MonoBehaviour
     private void MoveSpring()
     {
         Vector3 target = shouldBeDown ? loweredPoint : startingPoint;
-        float smoothTime = shouldBeDown ? smoothTimeDown : smoothTimeUp; // cambia según dirección
+        float smoothTime = shouldBeDown ? smoothTimeDown : smoothTimeUp;
 
         springPlatform.transform.position = Vector3.SmoothDamp(
             springPlatform.transform.position,
@@ -44,16 +54,25 @@ public class SpringMove : MonoBehaviour
             smoothTime);
     }
 
-  
+
     public void SetDown()
     {
         shouldBeDown = true;
+        animator.SetBool("EstaAbajo?", false);
     }
 
-   
+
     public void SetUp()
     {
         shouldBeDown = false;
+        animator.SetBool("EstaAbajo?", true);
     }
-}
+
+   }
+
+
+
+
+
+
 

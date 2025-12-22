@@ -28,10 +28,13 @@ public class PlayerController_2 : MonoBehaviour
     [Header("Border stats")]
     [SerializeField] GameObject borderCheckA;
     [SerializeField] GameObject borderCheckB;
-    [SerializeField] GameObject borderCheckC;
+    [SerializeField] GameObject borderCheckLeft;
+    [SerializeField] GameObject borderCheckRight;
     [SerializeField] float borderCheckRadius;
     [SerializeField] LayerMask groundLayer;
     [SerializeField] bool groundAhead;
+    [SerializeField] bool groundAtLeft;
+    [SerializeField] bool groundAtRight;
 
     [Header("Animator")]
     [SerializeField] GameObject SK_Braska;
@@ -82,7 +85,6 @@ public class PlayerController_2 : MonoBehaviour
         areaBark.SetActive(false);
         areaDig.SetActive(false);
 
-
         SpawnTransform();
 
         if (SceneManager.GetActiveScene().name == "SCN_Level0" && ScenesManager.instance.collectedOrbs == -1)
@@ -117,8 +119,10 @@ public class PlayerController_2 : MonoBehaviour
     {
         groundAhead =
             Physics.CheckSphere(borderCheckA.transform.position, borderCheckRadius, groundLayer)
-            && Physics.CheckSphere(borderCheckB.transform.position, borderCheckRadius, groundLayer)
-            && Physics.CheckSphere(borderCheckC.transform.position, borderCheckRadius, groundLayer);
+            && Physics.CheckSphere(borderCheckB.transform.position, borderCheckRadius, groundLayer);
+
+        groundAtLeft = Physics.CheckSphere(borderCheckLeft.transform.position, borderCheckRadius, groundLayer);
+        groundAtRight = Physics.CheckSphere(borderCheckRight.transform.position, borderCheckRadius, groundLayer);
     }
 
     private void FixedUpdate()
@@ -130,6 +134,7 @@ public class PlayerController_2 : MonoBehaviour
         // Adds artificial gravity to the player
         playerRb.AddForce(new Vector3(0, -20, 0));
     }
+
     private void HidePlayerAtStart()
     {
 
@@ -176,6 +181,7 @@ public class PlayerController_2 : MonoBehaviour
 
 
     }
+
     private void PlayerRotation()
     {
         // Defines where should the player rotate.
@@ -196,8 +202,7 @@ public class PlayerController_2 : MonoBehaviour
             );
         }
     }
-   
-
+    
     private void PlayerMove()
     {
         if (moveInput != Vector2.zero && canMove && groundAhead) // Accelerates the player when it can and starts moving (and there's ground/slope).
@@ -215,7 +220,7 @@ public class PlayerController_2 : MonoBehaviour
         else if (!groundAhead) // Stops and decelerates the player when there is not terrain ahead.
         {
             moveSpeed = 0;
-            moveSpeed -= accelerationSpeed * 1.1f;
+            //moveSpeed -= accelerationSpeed * 1.01f;
         }
         else if (moveSpeed > 0) // Decelerates the player when it stops moving.
         {
@@ -227,6 +232,18 @@ public class PlayerController_2 : MonoBehaviour
 
             playerRb.linearVelocity = Vector3.zero;
             playerRb.angularVelocity = Vector3.zero;
+        }
+
+        // If there is a cliff at one of the sides, reduces the player speed and moves it to the other side.
+        if (!groundAtLeft)
+        {
+            moveSpeed *= 0.85f;
+            transform.position += +moveSpeed * Time.deltaTime * transform.right;
+        }
+        if (!groundAtRight)
+        {
+            moveSpeed *= 0.85f;
+            transform.position += -moveSpeed * Time.deltaTime * transform.right;
         }
 
         transform.position += moveSpeed * Time.deltaTime * transform.forward; // Moves the player forward.
@@ -284,11 +301,7 @@ public class PlayerController_2 : MonoBehaviour
             canMove = false;
             areaDig.SetActive(true);
 
-           
-
-
             ObjectManager.instance.LocateOrb();
-
 
             Invoke(nameof(StartTrack), 0.1f);   
         }

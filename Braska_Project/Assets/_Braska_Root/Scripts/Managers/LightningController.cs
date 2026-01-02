@@ -35,29 +35,29 @@ public class LightningController : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "SCN_Lobby")
         {
-            //RenderSettings.skybox = matDark;
+            RenderSettings.skybox = matDark;
             dayLight.GetComponent<Light>().colorTemperature = 4000; // Changes the sun's warmt.
         }
         else
         {
             if (ScenesManager.instance.collectedOrbs == 3)
             {
-                //RenderSettings.skybox = matSunset;
+                RenderSettings.skybox = matSunset;
                 dayLight.GetComponent<Light>().colorTemperature = 5500;
             }
             else if (ScenesManager.instance.collectedOrbs == -1 || ScenesManager.instance.collectedOrbs == 2)
             {
-                //RenderSettings.skybox = matDay;
+                RenderSettings.skybox = matDay;
                 dayLight.GetComponent<Light>().colorTemperature = 7000;
             }
             else if (ScenesManager.instance.collectedOrbs == 0 || ScenesManager.instance.collectedOrbs == 1)
             {
-                //RenderSettings.skybox = matMidDay;
+                RenderSettings.skybox = matMidDay;
                 dayLight.GetComponent<Light>().colorTemperature = 8500;
             }
             else if (ScenesManager.instance.collectedOrbs == 4)
             {
-                //RenderSettings.skybox = matNight;
+                RenderSettings.skybox = matNight;
                 dayLight.GetComponent<Light>().colorTemperature = 10000;
             }
         }

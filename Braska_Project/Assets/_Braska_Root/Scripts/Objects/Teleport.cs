@@ -61,6 +61,7 @@ public class Teleport : MonoBehaviour
         if (other.CompareTag("Bark") && playerInside)
         {
             OrderTeleport();
+
             if (ScenesFade.Instance != null)
             {
                 ScenesFade.Instance.PlayTeleportVFX(transform.position);

@@ -53,6 +53,10 @@ public class PlayerController_2 : MonoBehaviour
     [Header("VFX")]
     [SerializeField] GameObject DigVFX;
 
+    [SerializeField] string obj;
+    [SerializeField] GameObject teleport;
+    [SerializeField] Vector3 spawn;
+
 
     private void Awake()
     {
@@ -101,13 +105,25 @@ public class PlayerController_2 : MonoBehaviour
 
     private void SpawnTransform() // Spawns the player where it should be.
     {
-        transform.position = ScenesManager.instance.spawnPoint;
+        if (/*ScenesManager.instance.collectedOrbs > -1 &&*/ ScenesManager.instance.spawnPoint != null)
+        {
+            transform.SetPositionAndRotation(new Vector3(
+                GameObject.Find(ScenesManager.instance.spawnPoint).transform.position.x,
+                GameObject.Find(ScenesManager.instance.spawnPoint).transform.position.y + 0.5f,
+                GameObject.Find(ScenesManager.instance.spawnPoint).transform.position.z
+            ), GameObject.Find(ScenesManager.instance.spawnPoint).transform.rotation);
 
-        transform.eulerAngles = new Vector3(
-            transform.eulerAngles.x,
-            ScenesManager.instance.spawnView,
-            transform.eulerAngles.z
-        );       
+            // Debug:
+            obj = ScenesManager.instance.spawnPoint;
+
+            teleport = GameObject.Find(ScenesManager.instance.spawnPoint);
+
+            spawn = new Vector3(
+                GameObject.Find(ScenesManager.instance.spawnPoint).transform.position.x,
+                GameObject.Find(ScenesManager.instance.spawnPoint).transform.position.y + 0.5f,
+                GameObject.Find(ScenesManager.instance.spawnPoint).transform.position.z
+            );
+        } 
     }
 
     private void Update()

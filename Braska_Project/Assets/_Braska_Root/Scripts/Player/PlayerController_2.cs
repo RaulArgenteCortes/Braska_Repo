@@ -53,11 +53,6 @@ public class PlayerController_2 : MonoBehaviour
     [Header("VFX")]
     [SerializeField] GameObject DigVFX;
 
-    [SerializeField] string obj;
-    [SerializeField] GameObject teleport;
-    [SerializeField] Vector3 spawn;
-
-
     private void Awake()
     {
         playerRb = GetComponent<Rigidbody>();
@@ -103,26 +98,16 @@ public class PlayerController_2 : MonoBehaviour
         playerAnim.SetBool("isBarking", false);
     }
 
-    private void SpawnTransform() // Spawns the player where it should be.
+    private void SpawnTransform()
     {
-        if (/*ScenesManager.instance.collectedOrbs > -1 &&*/ ScenesManager.instance.spawnPoint != null)
+        // Spawns the player where the teleport is.
+        if (ScenesManager.instance.spawnPoint != "")
         {
             transform.SetPositionAndRotation(new Vector3(
                 GameObject.Find(ScenesManager.instance.spawnPoint).transform.position.x,
                 GameObject.Find(ScenesManager.instance.spawnPoint).transform.position.y + 0.5f,
                 GameObject.Find(ScenesManager.instance.spawnPoint).transform.position.z
             ), GameObject.Find(ScenesManager.instance.spawnPoint).transform.rotation);
-
-            // Debug:
-            obj = ScenesManager.instance.spawnPoint;
-
-            teleport = GameObject.Find(ScenesManager.instance.spawnPoint);
-
-            spawn = new Vector3(
-                GameObject.Find(ScenesManager.instance.spawnPoint).transform.position.x,
-                GameObject.Find(ScenesManager.instance.spawnPoint).transform.position.y + 0.5f,
-                GameObject.Find(ScenesManager.instance.spawnPoint).transform.position.z
-            );
         } 
     }
 

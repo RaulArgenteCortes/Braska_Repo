@@ -13,8 +13,8 @@ public class BlockResize : MonoBehaviour
         parentObject = transform.parent.gameObject;
 
         textureRenderer.material.mainTextureScale = new Vector2(
-            (onXAxsis ? parentObject.transform.localScale.z : parentObject.transform.localScale.x),
-            parentObject.transform.localScale.y
+            (onXAxsis ? parentObject.transform.localScale.z : parentObject.transform.localScale.x)/2,
+            parentObject.transform.localScale.y/2
         );
     }
 }

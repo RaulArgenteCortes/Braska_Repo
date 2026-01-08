@@ -1,7 +1,11 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class KeyPick : MonoBehaviour
 {
+    [Header("a")]
+    [SerializeField] bool isHolded;
+
     [Header("Object References")]
     [SerializeField] GameObject originSlot;
     [SerializeField] GameObject keyHold;
@@ -14,32 +18,38 @@ public class KeyPick : MonoBehaviour
         transform.localPosition = Vector3.zero;
     }
 
+    private void FixedUpdate()
+    {
+        if (isHolded)
+        {
+            transform.position = keyHold.transform.position;
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Bark"))
         {
-            if (!ObjectManager.instance.holdingKey/* && transform.parent.gameObject == originSlot*/)
+            if (!ObjectManager.instance.holdingKey)
             {
-                ObjectManager.instance.holdingKey = !ObjectManager.instance.holdingKey;
+                ObjectManager.instance.holdingKey = true;
 
-                transform.SetParent(keyHold.transform/*, true*/);
+                isHolded = true;
 
                 transform.localPosition = Vector3.zero;
                 transform.rotation = transform.parent.rotation;
-
-                Debug.Log("PickUp");
             }
-            else if (ObjectManager.instance.holdingKey/* && transform.parent.gameObject == originSlot*/)
+            else if (ObjectManager.instance.holdingKey)
             {
-                ObjectManager.instance.holdingKey = !ObjectManager.instance.holdingKey;
+                ObjectManager.instance.holdingKey = false;
 
-                transform.SetParent(originSlot.transform/*, true*/);
+                isHolded = false;
 
                 transform.localPosition = Vector3.zero;
                 transform.rotation = transform.parent.rotation;
-
-                Debug.Log("PickDown");
             }
+
+            Debug.Log("KEYGEN");
         }
     }
 }

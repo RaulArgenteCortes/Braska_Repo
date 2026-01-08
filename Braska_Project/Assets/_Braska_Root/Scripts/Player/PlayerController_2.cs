@@ -53,6 +53,8 @@ public class PlayerController_2 : MonoBehaviour
     [Header("VFX")]
     [SerializeField] GameObject DigVFX;
 
+    public Vector3 pain;
+
 
     private void Awake()
     {
@@ -102,11 +104,16 @@ public class PlayerController_2 : MonoBehaviour
     private void SpawnTransform()
     {
         // Spawns the player where the teleport is.
-        transform.SetPositionAndRotation(new Vector3(
-            GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.position.x,
-            GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.position.y + 0.5f,
-            GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.position.x
-        ), GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.rotation);
+        if (ScenesManager.instance.SpawnTeleport != "")
+        {
+            transform.SetPositionAndRotation(new Vector3(
+                GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.position.x,
+                GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.position.y + 0.5f,
+                GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.position.z
+            ), GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.rotation);
+
+            pain = GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.position;
+        } 
     }
 
     private void Update()

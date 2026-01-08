@@ -99,15 +99,14 @@ public class PlayerController_2 : MonoBehaviour
         playerAnim.SetBool("isBarking", false);
     }
 
-    private void SpawnTransform() // Spawns the player where it should be.
+    private void SpawnTransform()
     {
-        transform.position = ScenesManager.instance.spawnPoint;
-
-        transform.eulerAngles = new Vector3(
-            transform.eulerAngles.x,
-            ScenesManager.instance.spawnView,
-            transform.eulerAngles.z
-        );       
+        // Spawns the player where the teleport is.
+        transform.SetPositionAndRotation(new Vector3(
+            GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.position.x,
+            GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.position.y + 0.5f,
+            GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.position.x
+        ), GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.rotation);
     }
 
     private void Update()

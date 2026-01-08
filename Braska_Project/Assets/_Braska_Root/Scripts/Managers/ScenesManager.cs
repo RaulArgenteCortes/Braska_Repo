@@ -6,8 +6,7 @@ public class ScenesManager : MonoBehaviour
     public static ScenesManager instance;
 
     [Header("Spawn stats")]
-    public Vector3 spawnPoint;
-    public float spawnView;
+    public string SpawnTeleport;
 
     [Header("Progress stats")]
     public int collectedOrbs;
@@ -30,10 +29,9 @@ public class ScenesManager : MonoBehaviour
         ProgressCorrector();
     }
 
-    public void TeleportPlayer(string sceneToLoad, Vector3 newSpawnPoint, float newSpawnView)
+    public void TeleportPlayer(string sceneToLoad, string newTeleportToSpawn)
     {
-        spawnPoint = newSpawnPoint;
-        spawnView = newSpawnView;
+        SpawnTeleport = newTeleportToSpawn;
 
         ObjectManager.instance.runeOnPointA = true; // Makes sure that the runes are on place.
         ObjectManager.instance.geyserIsUp = false; // Makes sure that the geysers are on place.

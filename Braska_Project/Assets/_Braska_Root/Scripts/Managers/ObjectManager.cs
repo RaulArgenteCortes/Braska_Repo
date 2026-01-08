@@ -25,7 +25,7 @@ public class ObjectManager : MonoBehaviour
     public bool geyserIsUp;
 
     [Header("Key controls")]
-    public bool keyHold;
+    public bool holdingKey;
     public float wallSpeed;
     public float openedWallPosition;
 

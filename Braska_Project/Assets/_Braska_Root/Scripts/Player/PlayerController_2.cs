@@ -53,6 +53,7 @@ public class PlayerController_2 : MonoBehaviour
     [Header("VFX")]
     [SerializeField] GameObject DigVFX;
 
+
     private void Awake()
     {
         playerRb = GetComponent<Rigidbody>();
@@ -98,17 +99,15 @@ public class PlayerController_2 : MonoBehaviour
         playerAnim.SetBool("isBarking", false);
     }
 
-    private void SpawnTransform()
+    private void SpawnTransform() // Spawns the player where it should be.
     {
-        // Spawns the player where the teleport is.
-        if (ScenesManager.instance.spawnPoint != "")
-        {
-            transform.SetPositionAndRotation(new Vector3(
-                GameObject.Find(ScenesManager.instance.spawnPoint).transform.position.x,
-                GameObject.Find(ScenesManager.instance.spawnPoint).transform.position.y + 0.5f,
-                GameObject.Find(ScenesManager.instance.spawnPoint).transform.position.z
-            ), GameObject.Find(ScenesManager.instance.spawnPoint).transform.rotation);
-        } 
+        transform.position = ScenesManager.instance.spawnPoint;
+
+        transform.eulerAngles = new Vector3(
+            transform.eulerAngles.x,
+            ScenesManager.instance.spawnView,
+            transform.eulerAngles.z
+        );       
     }
 
     private void Update()

@@ -6,7 +6,8 @@ public class Teleport : MonoBehaviour
 {
     [Header("Spawn stats")]
     [SerializeField] string sceneToLoad;
-    [SerializeField] string teleportToSpawnOn;
+    [SerializeField] Vector3 newSpawnPoint;
+    [SerializeField] float newSpawnView;
 
     [Header("Status stats")]
     [SerializeField] bool playerInside;
@@ -87,7 +88,8 @@ public class Teleport : MonoBehaviour
     private void OrderTeleport()
     {
         AudioManager.Instance.PlaySFX(9);
-        ScenesManager.instance.TeleportPlayer(sceneToLoad, teleportToSpawnOn);
+        ScenesManager.instance.TeleportPlayer(sceneToLoad, newSpawnPoint, newSpawnView);
+       
     }
 
     public void Shine()

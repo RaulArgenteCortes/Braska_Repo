@@ -35,7 +35,7 @@ public class KeyWall : MonoBehaviour
     {
         currentWallPosition = Mathf.SmoothDamp(
             currentWallPosition,
-            ObjectManager.instance.openedWallPosition * (ObjectManager.instance.keyHold || playerOnTop ? 1 : 0),
+            ObjectManager.instance.openedWallPosition * (ObjectManager.instance.holdingKey || playerOnTop ? 1 : 0),
             ref velocity,
             10 / ObjectManager.instance.wallSpeed * Time.deltaTime
         );

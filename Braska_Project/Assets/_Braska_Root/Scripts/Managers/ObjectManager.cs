@@ -28,6 +28,8 @@ public class ObjectManager : MonoBehaviour
     public bool holdingKey;
     public float wallSpeed;
     public float openedWallPosition;
+    public GameObject holdedKey;
+    public GameObject keySlot;
 
     private void Awake()
     {
@@ -96,5 +98,18 @@ public class ObjectManager : MonoBehaviour
         Invoke(nameof(GeyserPosition), geyserCooldownTime);
     }
 
+    #endregion
+
+    #region Key Functions
+    public void returnKeyToParent()
+    {
+        if (holdingKey)
+        {
+            keySlot.transform.parent = holdedKey.transform;
+
+            holdedKey = null;
+            keySlot = null;
+        }
+    }
     #endregion
 }

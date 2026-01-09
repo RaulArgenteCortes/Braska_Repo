@@ -3,26 +3,27 @@ using UnityEngine;
 
 public class KeyPick : MonoBehaviour
 {
-    [Header("a")]
+    [Header("Key Stats")]
     [SerializeField] bool isHolded;
+    public Vector3 homePosition;
 
     [Header("Object References")]
-    [SerializeField] GameObject originSlot;
+    //[SerializeField] GameObject originSlot;
     [SerializeField] GameObject keyHold;
 
     private void Start()
     {
-        originSlot = transform.parent.gameObject;
+        //originSlot = transform.parent.gameObject;
         keyHold = GameObject.Find("KeyHold");
 
-        transform.localPosition = Vector3.zero;
+        homePosition = transform.position;
     }
 
     private void FixedUpdate()
     {
         if (isHolded)
         {
-            transform.position = keyHold.transform.position;
+            transform.SetPositionAndRotation(keyHold.transform.position, keyHold.transform.rotation);
         }
     }
 
@@ -30,23 +31,23 @@ public class KeyPick : MonoBehaviour
     {
         if (other.CompareTag("Bark"))
         {
-            if (!ObjectManager.instance.holdingKey)
+            if (!ObjectManager.instance.holdingKey) // NOT holding key.
             {
-                ObjectManager.instance.holdingKey = true;
+                ObjectManager.instance.holdedKey = this.gameObject;
+
+                ObjectManager.instance.holdingKey = true;    
+
+                transform.position = homePosition;
 
                 isHolded = true;
-
-                transform.localPosition = Vector3.zero;
-                transform.rotation = transform.parent.rotation;
             }
-            else if (ObjectManager.instance.holdingKey)
+            else if (ObjectManager.instance.holdingKey) // Holding key
             {
                 ObjectManager.instance.holdingKey = false;
 
                 isHolded = false;
 
-                transform.localPosition = Vector3.zero;
-                transform.rotation = transform.parent.rotation;
+                ObjectManager.instance.returnKeyToParent();
             }
 
             Debug.Log("KEYGEN");

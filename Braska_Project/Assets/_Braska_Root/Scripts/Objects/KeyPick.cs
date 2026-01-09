@@ -25,6 +25,18 @@ public class KeyPick : MonoBehaviour
         {
             transform.SetPositionAndRotation(keyHold.transform.position, keyHold.transform.rotation);
         }
+        else
+        {
+            if (ObjectManager.instance.keySlot != null)
+            {
+                homePosition = ObjectManager.instance.keySlot.transform.position;
+            }
+
+            transform.SetPositionAndRotation(
+                homePosition,
+                ObjectManager.instance.keySlot.transform.rotation
+            );
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -33,24 +45,18 @@ public class KeyPick : MonoBehaviour
         {
             if (!ObjectManager.instance.holdingKey) // NOT holding key.
             {
-                ObjectManager.instance.holdedKey = this.gameObject;
-
-                ObjectManager.instance.holdingKey = true;    
-
-                transform.position = homePosition;
-
+                ObjectManager.instance.holdingKey = true;
                 isHolded = true;
             }
-            else if (ObjectManager.instance.holdingKey) // Holding key
+            else if (ObjectManager.instance.holdingKey) // Holding key.
             {
                 ObjectManager.instance.holdingKey = false;
-
                 isHolded = false;
 
-                ObjectManager.instance.returnKeyToParent();
-            }
+                //homePosition = ObjectManager.instance.keySlot.transform.position;
 
-            Debug.Log("KEYGEN");
+                //transform.position = homePosition;
+            }   
         }
     }
 }

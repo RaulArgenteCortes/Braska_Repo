@@ -28,6 +28,16 @@ public class ObjectManager : MonoBehaviour
     public bool holdingKey;
     public float wallSpeed;
     public float openedWallPosition;
+    public GameObject keySlot;
+
+    [Header("MegaRune controls")]
+    public bool megaRuneCanTrigger;
+    public bool megaRuneCanMove;
+    public bool megaRuneOnPointA;
+    public float megaRuneMoveTime;
+    public float megaRuneCooldownTime;
+    public float megaRuneLowEmission;
+    public float megaRuneHighEmission;
 
     private void Awake()
     {
@@ -95,6 +105,10 @@ public class ObjectManager : MonoBehaviour
 
         Invoke(nameof(GeyserPosition), geyserCooldownTime);
     }
+
+    #endregion
+
+    #region MegaRune Functions
 
     #endregion
 }

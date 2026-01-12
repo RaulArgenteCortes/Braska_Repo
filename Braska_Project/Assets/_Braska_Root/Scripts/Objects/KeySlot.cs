@@ -12,12 +12,7 @@ public class KeySlot : MonoBehaviour
     {
         if (other.CompareTag("Bark"))
         {
-            if (1 == 1)
-            {
-                ObjectManager.instance.keySlot = this.gameObject;
-
-                Debug.Log("New Home");
-            }
+            ObjectManager.instance.keySlot = this.gameObject;
         }
     }
 }

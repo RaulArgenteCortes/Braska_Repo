@@ -5,6 +5,7 @@ public class KeyPick : MonoBehaviour
 {
     [Header("Key Stats")]
     [SerializeField] bool isHolded;
+    [SerializeField] bool onMouth;
     public Vector3 homePosition;
 
     [Header("Object References")]
@@ -21,21 +22,57 @@ public class KeyPick : MonoBehaviour
 
     private void FixedUpdate()
     {
+        KeyTransform();
+
+        OnMouthChek();
+    }
+
+    private void KeyTransform()
+    {
         if (isHolded)
         {
-            transform.SetPositionAndRotation(keyHold.transform.position, keyHold.transform.rotation);
+            if (!onMouth)
+            {
+                transform.position = Vector3.MoveTowards(
+                    transform.position,
+                    keyHold.transform.position,
+                    Time.fixedDeltaTime * 5
+                );
+
+                transform.rotation = Quaternion.RotateTowards(
+                    transform.rotation,
+                    keyHold.transform.rotation,
+                    Time.fixedDeltaTime * 360 * 5
+                );
+            }
+            else
+            {
+                transform.SetPositionAndRotation(keyHold.transform.position, keyHold.transform.rotation);
+            }
         }
         else
         {
             if (ObjectManager.instance.keySlot != null)
             {
                 homePosition = ObjectManager.instance.keySlot.transform.position;
-            }
 
-            transform.SetPositionAndRotation(
-                homePosition,
-                ObjectManager.instance.keySlot.transform.rotation
-            );
+                transform.SetPositionAndRotation(
+                    homePosition,
+                    ObjectManager.instance.keySlot.transform.rotation
+                );
+            }
+        }
+    }
+
+    private void OnMouthChek()
+    {
+        if (transform.position == keyHold.transform.position)
+        {
+            onMouth = true;
+        }
+        else
+        {
+            onMouth = false;
         }
     }
 
@@ -53,10 +90,15 @@ public class KeyPick : MonoBehaviour
                 ObjectManager.instance.holdingKey = false;
                 isHolded = false;
 
-                //homePosition = ObjectManager.instance.keySlot.transform.position;
-
-                //transform.position = homePosition;
+                PlayVFX();
             }   
         }
+    }
+
+    private void PlayVFX()
+    {
+        //keyHold.transform.position
+
+        //ObjectManager.instance.keySlot.transform.position
     }
 }

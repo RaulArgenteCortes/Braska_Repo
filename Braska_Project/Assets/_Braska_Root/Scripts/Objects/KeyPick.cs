@@ -47,15 +47,16 @@ public class KeyPick : MonoBehaviour
             }
             else
             {
-                transform.SetPositionAndRotation(keyHold.transform.position, keyHold.transform.rotation);
+                transform.SetPositionAndRotation(
+                    keyHold.transform.position,
+                    keyHold.transform.rotation
+                );
             }
         }
         else
         {
             if (ObjectManager.instance.keySlot != null)
             {
-                homePosition = ObjectManager.instance.keySlot.transform.position;
-
                 transform.SetPositionAndRotation(
                     homePosition,
                     ObjectManager.instance.keySlot.transform.rotation
@@ -80,6 +81,11 @@ public class KeyPick : MonoBehaviour
     {
         if (other.CompareTag("Bark"))
         {
+            if (ObjectManager.instance.keySlot != null)
+            {
+                homePosition = ObjectManager.instance.keySlot.transform.position;
+            }
+
             if (!ObjectManager.instance.holdingKey) // NOT holding key.
             {
                 ObjectManager.instance.holdingKey = true;

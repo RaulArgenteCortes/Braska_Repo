@@ -10,92 +10,85 @@ public class TopoMove : MonoBehaviour
 
     [HideInInspector] public bool playerNearby = false;
 
-    private Quaternion lookStartRotation;
 
+    public Collider childCollider;
 
-    private Vector3 startPos;
-    private Vector3 downPos;
-    private Collider col;
+    public Animator animator;
 
-    private bool goingDown = false;
-    private bool goingUp = false;
+    public bool goingDown = false;
+    public bool goingUp = false;
 
     private void Start()
     {
-        startPos = transform.position;
-        downPos = startPos + new Vector3(0, -1f, 0);
-        col = GetComponent<Collider>();
-        lookStartRotation = lookTarget.localRotation;
+        if (animator != null)
+            animator.SetBool("Idle", true); 
+
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void ChildTriggered(Collider other)
     {
         if (other.CompareTag("Bark"))
         {
-            if (goingUp) return;   
+            if (goingUp) return;
             Burrow();
+            Debug.Log("Me ladró");
         }
+    
     }
     private void Update()
     {
         FindPlayer();
 
+        LookPlayer();
+
         if (player == null || lookTarget == null) return;
 
-        if (goingDown || goingUp)
-        {
-            lookTarget.localRotation = lookStartRotation;
-            return;
-        }
+  
 
-        LookPlayer();
     }
     private void LookPlayer()
     {
         Vector3 direction = player.position - transform.position;
         direction.y = 0f;
 
-        if (direction.sqrMagnitude < 0.001f) return;
 
         Quaternion targetRot = Quaternion.LookRotation(direction);
-        lookTarget.localRotation = Quaternion.Euler(
-            0f,
-            targetRot.eulerAngles.y,
-            0f
+
+        lookTarget.rotation = Quaternion.Euler(
+            0f,                    
+            targetRot.eulerAngles.y, 
+            0f                       
         );
     }
 
     private void Burrow()
     {
+        Debug.Log("Me Escondo");
         if (goingDown) return;
 
         goingDown = true;
-        col.enabled = false;
 
-        InvokeRepeating(nameof(MoveDown), 0f, 0.01f);
-        CancelInvoke(nameof(TryUnburrow));    
-        Invoke(nameof(TryUnburrow), timeUnderground);
-    }
+        if (childCollider != null) childCollider.enabled = false;
 
-    private void MoveDown()
-    {
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            downPos,
-            moveSpeed * Time.deltaTime
-        );
-
-        if (Vector3.Distance(transform.position, downPos) < 0.05f)
+        if (animator != null)
         {
-            CancelInvoke(nameof(MoveDown));
-            goingDown = false;
+            animator.SetBool("Burrow", true);
+            animator.SetBool("Unburrow", false);
+            animator.SetBool("Idle", false);
         }
+        CancelInvoke(nameof(TryUnburrow));
+        Invoke(nameof(TryUnburrow), timeUnderground);
+
     }
+
+
 
     private void TryUnburrow()
     {
         if (playerNearby)
         {
+            Debug.Log("Intento Subir");
+
             Invoke(nameof(TryUnburrow), 0.5f);
             return;
         }
@@ -108,9 +101,19 @@ public class TopoMove : MonoBehaviour
         if (goingUp) return;
 
         goingUp = true;
-        col.enabled = true;
 
-        InvokeRepeating(nameof(MoveUp), 0f, 0.01f);
+        if (childCollider != null) childCollider.enabled = true;
+
+        if (animator != null)
+        {
+            animator.SetBool("Burrow", false);
+            animator.SetBool("Unburrow", true);
+            animator.SetBool("Idle", false);
+        }
+
+        float unburrowDuration = animator.GetCurrentAnimatorStateInfo(0).length;
+        Invoke(nameof(FinishUnburrow), unburrowDuration);
+
     }
     private void FindPlayer()
     {
@@ -122,18 +125,18 @@ public class TopoMove : MonoBehaviour
             player = p.transform;
         }
     }
-    private void MoveUp()
-    {
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            startPos,
-            moveSpeed * Time.deltaTime
-        );
+  
 
-        if (Vector3.Distance(transform.position, startPos) < 0.05f)
+    public void FinishUnburrow()
+    {
+        goingUp = false;
+        goingDown = false;
+
+        if (animator != null)
         {
-            CancelInvoke(nameof(MoveUp));
-            goingUp = false;
+            animator.SetBool("Unburrow", false);
+            animator.SetBool("Idle", true);
         }
     }
+
 }

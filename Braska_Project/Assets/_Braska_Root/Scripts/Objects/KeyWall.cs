@@ -39,8 +39,14 @@ public class KeyWall : MonoBehaviour
             ref velocity,
             10 / ObjectManager.instance.wallSpeed * Time.deltaTime
         );
-        
+
         wallCollider.center = new Vector3(0, currentWallPosition, 0);
         wallMesh.transform.localPosition = new Vector3(0, currentWallPosition + 0.5f, 0);
+
+        wallMesh.transform.eulerAngles = new Vector3(
+            wallMesh.transform.eulerAngles.x,
+            currentWallPosition * -270,
+            wallMesh.transform.eulerAngles.z
+        );
     }
 }

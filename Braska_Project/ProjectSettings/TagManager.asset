@@ -12,6 +12,7 @@ TagManager:
   - Spring
   - RunePlatform
   - fade
+  - MegaRunePlatform
   layers:
   - Default
   - TransparentFX

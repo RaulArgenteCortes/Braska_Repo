@@ -59,6 +59,10 @@ public class ObjectManager : MonoBehaviour
         runeCanMove = false;
         runeOnPointA = true;
 
+        megaRuneCanTrigger = true;
+        megaRuneCanMove = false;
+        megaRuneOnPointA = true;
+
         geyserIsUp = false;
         GeyserPosition();
     }
@@ -109,6 +113,25 @@ public class ObjectManager : MonoBehaviour
     #endregion
 
     #region MegaRune Functions
+    public void megaRunePrepareMove()
+    {
+        megaRuneCanTrigger = false;
 
+        Invoke(nameof(megaRuneMove), runeCooldownTime);
+    }
+
+    private void megaRuneMove()
+    {
+        megaRuneCanMove = true;
+
+        Invoke(nameof(megaRuneStop), megaRuneMoveTime * 8.25f); // Stops the rune exactly when it reaches the other point.
+    }
+
+    public void megaRuneStop()
+    {
+        megaRuneCanMove = false;
+        megaRuneOnPointA = !runeOnPointA;
+        megaRuneCanTrigger = true;
+    }
     #endregion
 }

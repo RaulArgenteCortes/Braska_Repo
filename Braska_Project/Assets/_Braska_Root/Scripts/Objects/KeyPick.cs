@@ -24,7 +24,7 @@ public class KeyPick : MonoBehaviour
     {
         KeyTransform();
 
-        OnMouthChek();
+        OnMouthCheck();
     }
 
     private void KeyTransform()
@@ -63,9 +63,18 @@ public class KeyPick : MonoBehaviour
                 );
             }
         }
+
+        /*if (transform.position == keyHold.transform.position)
+        {
+            transform.parent = keyHold.transform;
+        }
+        else
+        {
+            transform.parent = null;
+        }*/
     }
 
-    private void OnMouthChek()
+    private void OnMouthCheck()
     {
         if (transform.position == keyHold.transform.position)
         {

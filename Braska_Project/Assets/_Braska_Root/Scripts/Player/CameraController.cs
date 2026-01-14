@@ -11,6 +11,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] float rotationTargetSpeed;
     [SerializeField] float rotationSpeed;
     [SerializeField] float rotationInput;
+    bool allowInput = true;
 
     private void Start()
     {
@@ -36,8 +37,22 @@ public class CameraController : MonoBehaviour
         {
             rotationTargetSpeed = 0;
         }
+        if (!allowInput)
+        {
+            rotationTargetSpeed = 0;
+            return;
+        }
+    }
+    public void LockRotation(float yRotation)
+    {
+        allowInput = false;
+        SetRotation(yRotation);
     }
 
+    public void UnlockRotation()
+    {
+        allowInput = true;
+    }
     private void FixedUpdate()
     {
         RotateCamera();
@@ -49,9 +64,16 @@ public class CameraController : MonoBehaviour
             transform.eulerAngles.z
         );
     }
+    public void SetRotation(float yRotation)
+    {
+        cameraRotation = yRotation;
+        rotationSpeed = 0;
+        rotationTargetSpeed = 0;
+    }
 
     private void RotateCamera()
     {
+        if (!allowInput) return;
         // Gradually increases rotationSpeed
         rotationSpeed = Mathf.Lerp(rotationSpeed, rotationTargetSpeed, Time.deltaTime * rotationMaxSpeed * 2);
 

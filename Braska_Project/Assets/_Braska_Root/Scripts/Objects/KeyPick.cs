@@ -9,7 +9,7 @@ public class KeyPick : MonoBehaviour
     public Vector3 homePosition;
 
     [Header("Object References")]
-    //[SerializeField] GameObject originSlot;
+    [SerializeField] GameObject currentKeySlot;
     [SerializeField] GameObject keyHold;
 
     private void Start()
@@ -55,11 +55,11 @@ public class KeyPick : MonoBehaviour
         }
         else
         {
-            if (ObjectManager.instance.keySlot != null)
+            if (currentKeySlot != null)
             {
                 transform.SetPositionAndRotation(
-                    homePosition,
-                    ObjectManager.instance.keySlot.transform.rotation
+                    currentKeySlot.transform.position,
+                    currentKeySlot.transform.rotation
                 );
             }
         }
@@ -102,6 +102,9 @@ public class KeyPick : MonoBehaviour
             }
             else if (ObjectManager.instance.holdingKey) // Holding key.
             {
+                currentKeySlot = ObjectManager.instance.keySlot;
+                //transform.SetParent(currentKeySlot.transform);
+
                 ObjectManager.instance.holdingKey = false;
                 isHolded = false;
 

@@ -7,16 +7,28 @@ public class CameraTrigger : MonoBehaviour
     [SerializeField] Vector3 worldOffset;
 
     [Header("Camera")]
-    [SerializeField] float cameraSize = 2f;
+    [SerializeField] float cameraSize = 2.5f;
     [SerializeField] float targetYRotation;
+    [SerializeField] float zoomDuration = 1f;
+
 
 
     Camera mainCamera;
-    Vector3 originalPosition;
-    float originalCameraSize;
     CameraController cam;
-    float originalYRotation;
 
+    bool isZooming = false;
+    float zoomProgress = 0f;
+
+
+    Vector3 startPos;
+    Vector3 targetPos;
+    float startSize;
+    float targetSize;
+    float startRot;
+    float endRot;
+
+    Vector3 originalPosition;
+    float originalSize;
 
     void Start()
     {
@@ -24,18 +36,39 @@ public class CameraTrigger : MonoBehaviour
         cam = targetTransform.GetComponent<CameraController>();
 
         originalPosition = targetTransform.position;
-        originalCameraSize = mainCamera.orthographicSize;
-        originalYRotation = cam.cameraRotation;
+        originalSize = mainCamera.orthographicSize;
 
+    }
+    void Update()
+    {
+        if (isZooming)
+        {
+            zoomProgress += Time.deltaTime / zoomDuration;
+            zoomProgress = Mathf.Clamp01(zoomProgress);
+
+            float t = zoomProgress * zoomProgress * (3f - 2f * zoomProgress);
+
+            targetTransform.position = Vector3.Lerp(startPos, targetPos, t);
+            mainCamera.orthographicSize = Mathf.Lerp(startSize, targetSize, t);
+            cam.cameraRotation = Mathf.LerpAngle(startRot, endRot, t);
+
+            if (zoomProgress >= 1f)
+            {
+                targetTransform.position = targetPos;
+                mainCamera.orthographicSize = targetSize;
+                cam.cameraRotation = endRot;
+                isZooming = false;
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            targetTransform.position += worldOffset;
-            cam.SetRotation(targetYRotation);
-            mainCamera.orthographicSize = cameraSize;
+
+            StartZoom(targetTransform.position + worldOffset, cameraSize, targetYRotation);
+
         }
     }
 
@@ -46,11 +79,24 @@ public class CameraTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            targetTransform.position = originalPosition;
-
-            cam.SetRotation(originalYRotation);
-
-            mainCamera.orthographicSize = originalCameraSize;
+            StartZoom(originalPosition, originalSize, cam.cameraRotation);
         }
+
+
+    }
+    private void StartZoom(Vector3 newPos, float newSize, float newRot)
+    {
+        startPos = targetTransform.position;
+        targetPos = newPos;
+
+        startSize = mainCamera.orthographicSize;
+        targetSize = newSize;
+
+        startRot = cam.cameraRotation;
+        endRot = newRot;
+
+        zoomProgress = 0f;
+        isZooming = true;
     }
 }
+

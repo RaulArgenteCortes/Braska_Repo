@@ -11,6 +11,11 @@ public class CameraController : MonoBehaviour
     [SerializeField] float rotationTargetSpeed;
     [SerializeField] float rotationSpeed;
     [SerializeField] float rotationInput;
+
+    [Header("Rotación Suave")]
+    bool isLerping = false;
+    float lerpTargetY;
+    public float lerpSpeed = 100f;
     bool allowInput = true;
 
     private void Start()
@@ -53,8 +58,30 @@ public class CameraController : MonoBehaviour
     {
         allowInput = true;
     }
+    public void LerpToRotation(float yRotation)
+    {
+        lerpTargetY = yRotation;
+        isLerping = true;
+        allowInput = false; // bloquea input mientras se mueve
+    }
     private void FixedUpdate()
     {
+        if (isLerping)
+        {
+            Quaternion currentRot = Quaternion.Euler(0f, cameraRotation, 0f);
+            Quaternion targetRot = Quaternion.Euler(0f, lerpTargetY, 0f);
+
+            currentRot = Quaternion.RotateTowards(currentRot, targetRot, lerpSpeed * Time.fixedDeltaTime);
+
+            cameraRotation = currentRot.eulerAngles.y;
+
+            if (Quaternion.Angle(currentRot, targetRot) < 0.1f)
+            {
+                cameraRotation = lerpTargetY;
+                isLerping = false;
+                allowInput = true;
+            }
+        }
         RotateCamera();
 
         // Updates Y with cameraRotation
@@ -84,6 +111,15 @@ public class CameraController : MonoBehaviour
 
         // Modifies cameraRotation
         cameraRotation += rotationSpeed;
+
+        if (cameraRotation > 360)
+        {
+            cameraRotation -= 360;
+        }
+        if (cameraRotation < 0)
+        {
+            cameraRotation += 360;
+        }
     }
 
     #region Input Methods
@@ -94,4 +130,5 @@ public class CameraController : MonoBehaviour
     }
 
     #endregion
+  
 }

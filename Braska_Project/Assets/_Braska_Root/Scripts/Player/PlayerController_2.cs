@@ -53,6 +53,15 @@ public class PlayerController_2 : MonoBehaviour
     [Header("VFX")]
     [SerializeField] GameObject DigVFX;
 
+    public Vector3 pain;
+
+
+    [Header("Footprints")]
+    [SerializeField] GameObject footprintPrefab;
+    [SerializeField] float stepDistance = 0.6f;
+
+    private Vector3 lastFootprintPos;
+
     private void Awake()
     {
         playerRb = GetComponent<Rigidbody>();
@@ -70,6 +79,7 @@ public class PlayerController_2 : MonoBehaviour
 
     private void Start()
     {
+        lastFootprintPos = transform.position;
 
         HidePlayerAtStart();
 
@@ -108,7 +118,9 @@ public class PlayerController_2 : MonoBehaviour
                 GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.position.y + 0.5f,
                 GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.position.z
             ), GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.rotation);
-        } 
+
+            pain = GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.position;
+        }
     }
 
     private void Update()
@@ -203,7 +215,7 @@ public class PlayerController_2 : MonoBehaviour
             );
         }
     }
-    
+
     private void PlayerMove()
     {
         if (moveInput != Vector2.zero && canMove && groundAhead) // Accelerates the player when it can and starts moving (and there's ground/slope).
@@ -248,8 +260,30 @@ public class PlayerController_2 : MonoBehaviour
         }
 
         transform.position += moveSpeed * Time.deltaTime * transform.forward; // Moves the player forward.
-    }
+        TrySpawnFootprint();
 
+    }
+    void TrySpawnFootprint()
+    {
+        if (!canMove || moveInput == Vector2.zero || !groundAhead)
+            return;
+
+        if (Vector3.Distance(transform.position, lastFootprintPos) < stepDistance)
+            return;
+
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position + Vector3.up, Vector3.down, out hit, 2f, groundLayer))
+        {
+            GameObject fp = Instantiate(
+                footprintPrefab,
+                hit.point + Vector3.up * 0.01f,
+                Quaternion.LookRotation(transform.forward)
+            );
+
+            Destroy(fp, 8f); // opcional
+            lastFootprintPos = transform.position;
+        }
+    }
     private void LateUpdate()
     {
         Animator();
@@ -304,7 +338,7 @@ public class PlayerController_2 : MonoBehaviour
 
             ObjectManager.instance.LocateOrb();
 
-            Invoke(nameof(StartTrack), 0.1f);   
+            Invoke(nameof(StartTrack), 0.1f);
         }
     }
 

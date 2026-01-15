@@ -53,9 +53,6 @@ public class PlayerController_2 : MonoBehaviour
     [Header("VFX")]
     [SerializeField] GameObject DigVFX;
 
-    public Vector3 pain;
-
-
     private void Awake()
     {
         playerRb = GetComponent<Rigidbody>();
@@ -111,8 +108,6 @@ public class PlayerController_2 : MonoBehaviour
                 GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.position.y + 0.5f,
                 GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.position.z
             ), GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.rotation);
-
-            pain = GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.position;
         } 
     }
 

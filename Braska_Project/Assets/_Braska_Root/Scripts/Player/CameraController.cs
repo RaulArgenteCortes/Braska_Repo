@@ -12,6 +12,12 @@ public class CameraController : MonoBehaviour
     [SerializeField] float rotationSpeed;
     [SerializeField] float rotationInput;
 
+    [Header("Rotación Suave")]
+    bool isLerping = false;
+    float lerpTargetY;
+    public float lerpSpeed = 100f;
+    bool allowInput = true;
+
     private void Start()
     {
         cameraRotation = startingRotation;
@@ -36,10 +42,46 @@ public class CameraController : MonoBehaviour
         {
             rotationTargetSpeed = 0;
         }
+        if (!allowInput)
+        {
+            rotationTargetSpeed = 0;
+            return;
+        }
+    }
+    public void LockRotation(float yRotation)
+    {
+        allowInput = false;
+        SetRotation(yRotation);
     }
 
+    public void UnlockRotation()
+    {
+        allowInput = true;
+    }
+    public void LerpToRotation(float yRotation)
+    {
+        lerpTargetY = yRotation;
+        isLerping = true;
+        allowInput = false; // bloquea input mientras se mueve
+    }
     private void FixedUpdate()
     {
+        if (isLerping)
+        {
+            Quaternion currentRot = Quaternion.Euler(0f, cameraRotation, 0f);
+            Quaternion targetRot = Quaternion.Euler(0f, lerpTargetY, 0f);
+
+            currentRot = Quaternion.RotateTowards(currentRot, targetRot, lerpSpeed * Time.fixedDeltaTime);
+
+            cameraRotation = currentRot.eulerAngles.y;
+
+            if (Quaternion.Angle(currentRot, targetRot) < 0.1f)
+            {
+                cameraRotation = lerpTargetY;
+                isLerping = false;
+                allowInput = true;
+            }
+        }
         RotateCamera();
 
         // Updates Y with cameraRotation
@@ -49,9 +91,16 @@ public class CameraController : MonoBehaviour
             transform.eulerAngles.z
         );
     }
+    public void SetRotation(float yRotation)
+    {
+        cameraRotation = yRotation;
+        rotationSpeed = 0;
+        rotationTargetSpeed = 0;
+    }
 
     private void RotateCamera()
     {
+        if (!allowInput) return;
         // Gradually increases rotationSpeed
         rotationSpeed = Mathf.Lerp(rotationSpeed, rotationTargetSpeed, Time.deltaTime * rotationMaxSpeed * 2);
 
@@ -62,6 +111,15 @@ public class CameraController : MonoBehaviour
 
         // Modifies cameraRotation
         cameraRotation += rotationSpeed;
+
+        if (cameraRotation > 360)
+        {
+            cameraRotation -= 360;
+        }
+        if (cameraRotation < 0)
+        {
+            cameraRotation += 360;
+        }
     }
 
     #region Input Methods
@@ -72,4 +130,5 @@ public class CameraController : MonoBehaviour
     }
 
     #endregion
+  
 }

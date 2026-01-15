@@ -56,6 +56,12 @@ public class PlayerController_2 : MonoBehaviour
     public Vector3 pain;
 
 
+    [Header("Footprints")]
+    [SerializeField] GameObject footprintPrefab;
+    [SerializeField] float stepDistance = 0.6f;
+
+    private Vector3 lastFootprintPos;
+
     private void Awake()
     {
         playerRb = GetComponent<Rigidbody>();
@@ -73,6 +79,7 @@ public class PlayerController_2 : MonoBehaviour
 
     private void Start()
     {
+        lastFootprintPos = transform.position;
 
         HidePlayerAtStart();
 
@@ -253,8 +260,30 @@ public class PlayerController_2 : MonoBehaviour
         }
 
         transform.position += moveSpeed * Time.deltaTime * transform.forward; // Moves the player forward.
-    }
+        TrySpawnFootprint();
 
+    }
+    void TrySpawnFootprint()
+    {
+        if (!canMove || moveInput == Vector2.zero || !groundAhead)
+            return;
+
+        if (Vector3.Distance(transform.position, lastFootprintPos) < stepDistance)
+            return;
+
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position + Vector3.up, Vector3.down, out hit, 2f, groundLayer))
+        {
+            GameObject fp = Instantiate(
+                footprintPrefab,
+                hit.point + Vector3.up * 0.01f,
+                Quaternion.LookRotation(transform.forward)
+            );
+
+            Destroy(fp, 8f); // opcional
+            lastFootprintPos = transform.position;
+        }
+    }
     private void LateUpdate()
     {
         Animator();

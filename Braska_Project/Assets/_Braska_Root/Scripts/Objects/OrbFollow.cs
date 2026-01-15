@@ -15,19 +15,72 @@ public class OrbFollow : MonoBehaviour
     public GameObject teleportLobby;
     public GameObject DigVFX;
     public float timevfx = 1f;
-    
+
+    [Header("Material")]
+    [SerializeField] private Renderer orbRenderer;
+    [SerializeField] private Renderer orbRenderer2;
+    private Material orbMaterial;
+    private Material orbMaterial2;
+
+    public Color orbColorLVl1;
+    public Color orbColorLVl2;
+    public Color orbColorLVl3;
+    public Color orbColorLVl4;
+
+    [Header("Emission Settings")]
+    [SerializeField] private float emissionIntensity = 2f;
 
     private void Awake()
     {
         orbFollow = GameObject.Find("OrbFollow");
+       
+
     }
 
     private void Start()
     {
+        if (orbRenderer == null)
+            orbRenderer = GetComponent<Renderer>();
+        orbMaterial = orbRenderer.material;
+        orbMaterial2 = orbRenderer2.material;
+
+        SetEmissionByLevel();
+
         if (currentLevel <= ScenesManager.instance.collectedOrbs)
         {
             gameObject.SetActive(false);
         }
+
+
+    }
+    private void SetEmissionByLevel()
+    {
+        Color emissionColor = Color.black;
+
+        switch (currentLevel)
+        {
+            case 1:
+                emissionColor = orbColorLVl1;
+                break;
+
+            case 2:
+                emissionColor = orbColorLVl2;
+                break;
+
+            case 3:
+                emissionColor = orbColorLVl3;
+                break;
+
+            case 4:
+                emissionColor = orbColorLVl4;
+                break;
+        }
+
+        // Activar emisión
+        orbMaterial.EnableKeyword("_EMISSION");
+        orbMaterial2.EnableKeyword("_EMISSION");
+        orbMaterial.SetColor("_EmissionColor", emissionColor * emissionIntensity);
+        orbMaterial2.SetColor("_EmissionColor", emissionColor * emissionIntensity);
     }
 
     private void FixedUpdate()

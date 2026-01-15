@@ -35,13 +35,13 @@ public class KeyWall : MonoBehaviour
     {
         currentWallPosition = Mathf.SmoothDamp(
             currentWallPosition,
-            ObjectManager.instance.openedWallPosition * (ObjectManager.instance.holdingKey || playerOnTop ? 1 : 0),
+            ObjectManager.instance.openedWallPosition * (ObjectManager.instance.holdingKey || playerOnTop ? 0.75f : -0.25f),
             ref velocity,
             10 / ObjectManager.instance.wallSpeed * Time.deltaTime
         );
 
         wallCollider.center = new Vector3(0, currentWallPosition, 0);
-        wallMesh.transform.localPosition = new Vector3(0, currentWallPosition + 0.5f, 0);
+        wallMesh.transform.localPosition = new Vector3(0, currentWallPosition + 0.25f, 0);
 
         wallMesh.transform.eulerAngles = new Vector3(
             wallMesh.transform.eulerAngles.x,

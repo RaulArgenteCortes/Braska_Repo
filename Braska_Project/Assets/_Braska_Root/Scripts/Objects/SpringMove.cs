@@ -46,12 +46,30 @@ public class SpringMove : MonoBehaviour
     {
         Vector3 target = shouldBeDown ? loweredPoint : startingPoint;
         float smoothTime = shouldBeDown ? smoothTimeDown : smoothTimeUp;
+        Vector3 yyy;
 
-        springPlatform.transform.position = Vector3.SmoothDamp(
+        /*springPlatform.transform.position = Vector3.SmoothDamp(
             springPlatform.transform.position,
             target,
             ref currentVelocity,
-            smoothTime);
+            smoothTime
+        );*/
+
+        yyy = Vector3.SmoothDamp(
+            springPlatform.transform.position,
+            target,
+            ref currentVelocity,
+            smoothTime
+        );
+
+        /*yyy = Mathf.SmoothDamp(
+            yyy,
+            target.y,
+            ref currentVelocity.y,
+            smoothTime
+        );*/
+
+        springPlatform.transform.position = new Vector3(springPlatform.transform.position.x, yyy.y, springPlatform.transform.position.z);
     }
 
 

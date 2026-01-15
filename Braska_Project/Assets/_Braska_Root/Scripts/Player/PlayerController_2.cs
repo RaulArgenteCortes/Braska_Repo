@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -32,6 +32,7 @@ public class PlayerController_2 : MonoBehaviour
     [SerializeField] GameObject borderCheckRight;
     [SerializeField] float borderCheckRadius;
     [SerializeField] LayerMask groundLayer;
+    [SerializeField] LayerMask coverLayer;
     [SerializeField] bool groundAhead;
     [SerializeField] bool groundAtLeft;
     [SerializeField] bool groundAtRight;
@@ -272,15 +273,25 @@ public class PlayerController_2 : MonoBehaviour
             return;
 
         RaycastHit hit;
-        if (Physics.Raycast(transform.position + Vector3.up, Vector3.down, out hit, 2f, groundLayer))
+        if (Physics.Raycast(transform.position + Vector3.up, Vector3.down, out hit, 2f, coverLayer))
         {
             GameObject fp = Instantiate(
-                footprintPrefab,
-                hit.point + Vector3.up * 0.01f,
-                Quaternion.LookRotation(transform.forward)
+            footprintPrefab,
+             hit.point + Vector3.up * 0.01f,
+          Quaternion.LookRotation(transform.forward),
+              hit.transform
             );
+            fp.transform.SetParent(hit.transform, false);
+       
 
-            Destroy(fp, 8f); // opcional
+           
+            Vector3 parentScale = hit.transform.lossyScale;
+            fp.transform.localScale = new Vector3(
+                1f / parentScale.x,
+                1f / parentScale.y,
+                1f / parentScale.z
+            );
+            Destroy(fp, 5f); // opcional
             lastFootprintPos = transform.position;
         }
     }

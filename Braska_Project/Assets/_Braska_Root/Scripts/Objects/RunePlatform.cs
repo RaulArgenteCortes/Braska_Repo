@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.XR;
 
 public class RunePlatform : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class RunePlatform : MonoBehaviour
     private Color baseEmissionColor = Color.cyan;
 
     [Header("Shake settings")]
-
+    public GameObject mesh;
     public float shakeDuration = 0.2f;
     public float shakeMagnitude = 0.1f;
     public float DelayAfterShake = 0.1f;
@@ -57,12 +58,12 @@ public class RunePlatform : MonoBehaviour
         {
             float xOffset = Random.Range(-1f, 1f) * shakeMagnitude;
             float zOffset = Random.Range(-1f, 1f) * shakeMagnitude;
-            transform.position = originalPos + new Vector3(xOffset, 0, zOffset);
+            mesh.transform.position = originalPos + new Vector3(xOffset, 0, zOffset);
 
             shakeElapsed += Time.deltaTime;
             if (shakeElapsed >= shakeDuration)
             {
-                transform.position = originalPos;
+                mesh.transform.position = originalPos;
                 isShaking = false;
             }
         }
@@ -135,7 +136,7 @@ public class RunePlatform : MonoBehaviour
 
     private void StartShake()
     {
-        originalPos = transform.position;
+        originalPos = mesh.transform.position;
         shakeElapsed = 0f;
         isShaking = true;
     }

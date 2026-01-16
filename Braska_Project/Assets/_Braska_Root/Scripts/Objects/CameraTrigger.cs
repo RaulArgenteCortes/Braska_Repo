@@ -1,5 +1,7 @@
 using UnityEngine;
- 
+using System.Collections;
+
+
 
 public class CameraTrigger : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class CameraTrigger : MonoBehaviour
     [SerializeField] float targetYRotation;
     [SerializeField] float zoomDuration = 1f;
 
+    public PanelTextLvl panelLvl;
 
 
     Camera mainCamera;
@@ -30,6 +33,9 @@ public class CameraTrigger : MonoBehaviour
 
     Vector3 originalPosition;
     float originalSize;
+
+
+ 
 
     void Start()
     {
@@ -67,9 +73,16 @@ public class CameraTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-          
+            CancelInvoke(nameof(DisablePanel));
+
             StartZoom(targetTransform.position + worldOffset, cameraSize, targetYRotation);
             cam.LockRotation();
+            if (panelLvl != null)
+            {
+                panelLvl.gameObject.SetActive(true); 
+                panelLvl.FadeIn();                    
+            }
+
 
         }
     }
@@ -84,9 +97,23 @@ public class CameraTrigger : MonoBehaviour
             cam.UnlockRotation();
 
             StartZoom(originalPosition, originalSize, cam.cameraRotation);
+            if (panelLvl != null)
+            {
+                panelLvl.FadeOut(); 
+                                   
+                Invoke(nameof(DisablePanel), panelLvl.fadeDuration + panelLvl.delayBeforeFade);
+            }
+
         }
 
 
+
+    }
+
+    void DisablePanel()
+    {
+        if (panelLvl != null)
+            panelLvl.gameObject.SetActive(false);
     }
     private void StartZoom(Vector3 newPos, float newSize, float newRot)
     {

@@ -48,21 +48,23 @@ public class CameraController : MonoBehaviour
             return;
         }
     }
-    public void LockRotation(float yRotation)
+    public void LockRotation()
     {
         allowInput = false;
-        SetRotation(yRotation);
+       
     }
 
     public void UnlockRotation()
+
     {
         allowInput = true;
+
     }
     public void LerpToRotation(float yRotation)
     {
         lerpTargetY = yRotation;
         isLerping = true;
-        allowInput = false; // bloquea input mientras se mueve
+        allowInput = false; 
     }
     private void FixedUpdate()
     {
@@ -79,7 +81,7 @@ public class CameraController : MonoBehaviour
             {
                 cameraRotation = lerpTargetY;
                 isLerping = false;
-                allowInput = true;
+                allowInput = false;
             }
         }
         RotateCamera();

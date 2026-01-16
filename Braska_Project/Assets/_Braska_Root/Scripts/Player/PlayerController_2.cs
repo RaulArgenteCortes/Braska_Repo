@@ -291,7 +291,7 @@ public class PlayerController_2 : MonoBehaviour
                 1f / parentScale.y,
                 1f / parentScale.z
             );
-            Destroy(fp, 5f); // opcional
+           
             lastFootprintPos = transform.position;
         }
     }

@@ -13,6 +13,9 @@
     float fadeSpeedIn;
     float fadeSpeedOut;
 
+    // Flag para saber si el fade in ya comenzó
+    bool fadeInStarted = false;
+
     void Awake()
     {
         if (textUI != null)
@@ -30,15 +33,18 @@
     {
         if (textUI == null) return;
 
-        // Cancelar cualquier fade out que esté corriendo
+        // Cancelar cualquier fade out o fade in existente
         CancelInvoke(nameof(UpdateFadeOut));
         CancelInvoke(nameof(UpdateFadeIn));
 
+        fadeInStarted = false; // Resetear flag
         Invoke(nameof(StartFadeIn), delayBeforeFade);
     }
 
     void StartFadeIn()
     {
+        // Marcar que el fade in ya empezó
+        fadeInStarted = true;
         InvokeRepeating(nameof(UpdateFadeIn), 0f, 0.01f);
     }
 
@@ -59,7 +65,13 @@
     {
         if (textUI == null) return;
 
-        // Cancelar cualquier fade in que esté corriendo
+        // Cancelar fade in si aún no empezó
+        if (!fadeInStarted)
+        {
+            CancelInvoke(nameof(StartFadeIn));
+        }
+
+        // Cancelar cualquier fade in o fade out activo
         CancelInvoke(nameof(UpdateFadeIn));
         CancelInvoke(nameof(UpdateFadeOut));
 

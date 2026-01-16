@@ -73,7 +73,8 @@ public class CameraTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-          
+            CancelInvoke(nameof(DisablePanel));
+
             StartZoom(targetTransform.position + worldOffset, cameraSize, targetYRotation);
             cam.LockRotation();
             if (panelLvl != null)

@@ -1,4 +1,5 @@
 using UnityEngine;
+ 
 
 public class CameraTrigger : MonoBehaviour
 {
@@ -66,8 +67,9 @@ public class CameraTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-
+          
             StartZoom(targetTransform.position + worldOffset, cameraSize, targetYRotation);
+            cam.LockRotation();
 
         }
     }
@@ -79,6 +81,8 @@ public class CameraTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            cam.UnlockRotation();
+
             StartZoom(originalPosition, originalSize, cam.cameraRotation);
         }
 

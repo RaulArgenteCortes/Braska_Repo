@@ -130,7 +130,7 @@ public class ObjectManager : MonoBehaviour
     public void megaRuneStop()
     {
         megaRuneCanMove = false;
-        megaRuneOnPointA = !runeOnPointA;
+        megaRuneOnPointA = !megaRuneOnPointA;
         megaRuneCanTrigger = true;
     }
     #endregion

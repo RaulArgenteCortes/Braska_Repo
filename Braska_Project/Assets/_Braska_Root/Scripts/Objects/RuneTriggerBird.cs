@@ -20,7 +20,12 @@ public class RuneTriggerBird : MonoBehaviour
     [Header("Object references")]
     [SerializeField] GameObject birdPoint;
     [SerializeField] GameObject bird;
+    Animator animator;
 
+
+    public void Awake()
+    {
+    }
     private void Start()
     {
         /*currentEmission = glowColor * ObjectManager.instance.runeLowEmission;
@@ -48,6 +53,8 @@ public class RuneTriggerBird : MonoBehaviour
         if (other.CompareTag("Bark") && ObjectManager.instance.runeCanTrigger && bird.transform.position == birdPoint.transform.position)
         {
             bird.GetComponent<RuneBird>().onPointA = !bird.GetComponent<RuneBird>().onPointA;
+
+            
 
             ObjectManager.instance.RunePrepareMove();
 

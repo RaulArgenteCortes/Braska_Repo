@@ -13,6 +13,7 @@ TagManager:
   - RunePlatform
   - fade
   - MegaRunePlatform
+  - Bird
   layers:
   - Default
   - TransparentFX

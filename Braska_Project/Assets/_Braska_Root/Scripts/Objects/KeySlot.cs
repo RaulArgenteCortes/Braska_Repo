@@ -5,8 +5,8 @@ public class KeySlot : MonoBehaviour
     [Header("KeySlot Stats")]
     public bool hasKey;
 
-    //[Header("Object References")]
-    //[SerializeField] Transform keySon;
+    [Header("KeySlot Stats")]
+    public Renderer slotRenderer;
 
     private void OnTriggerEnter(Collider other)
     {

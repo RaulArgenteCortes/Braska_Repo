@@ -13,8 +13,8 @@ public class Flotator : MonoBehaviour
 
     private void Start()
     {
-        startingPoint = transform.position.y;
-        currentPosition = transform.position.y;
+        startingPoint = transform.localPosition.y;
+        currentPosition = transform.localPosition.y;
     }
 
     private void Update()
@@ -29,11 +29,11 @@ public class Flotator : MonoBehaviour
 
     private void TrackPosition()
     {
-        if (transform.position.y >= startingPoint + highFloat - 0.001f)
+        if (transform.localPosition.y >= startingPoint + highFloat - 0.001f)
         {
             isHigh = true;
         }
-        else if (transform.position.y <= startingPoint + lowFloat + 0.001f)
+        else if (transform.localPosition.y <= startingPoint + lowFloat + 0.001f)
         {
             isHigh = false;
         }
@@ -48,6 +48,6 @@ public class Flotator : MonoBehaviour
             100 / floatSpeed * Time.deltaTime
         );
 
-        transform.position = new Vector3(transform.position.x, currentPosition, transform.position.z);
+        transform.localPosition = new Vector3(transform.localPosition.x, currentPosition, transform.localPosition.z);
     }
 }

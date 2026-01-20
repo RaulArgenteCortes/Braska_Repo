@@ -4,10 +4,11 @@ public class BlockResize : MonoBehaviour
 {
     [Header("Resize Stats")]
     [SerializeField] bool onXAxsis;
+    [SerializeField] Vector3 originPoint;
     private Renderer textureRenderer;
     private GameObject parentObject;
 
-    void Start()
+    private void Start()
     {
         textureRenderer = GetComponent<Renderer>();
         parentObject = transform.parent.gameObject;

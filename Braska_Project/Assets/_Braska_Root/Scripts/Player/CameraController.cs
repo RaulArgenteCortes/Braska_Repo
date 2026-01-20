@@ -18,16 +18,45 @@ public class CameraController : MonoBehaviour
     public float lerpSpeed = 100f;
     bool allowInput = true;
 
+    [Header("Zoom (Orthographic)")]
+    [SerializeField] float zoomSpeed = 8f;
+    [SerializeField] float minZoom = 4f;
+    [SerializeField] float maxZoom = 14f;
+
+    float zoomInput;
+    [SerializeField] Camera cam;
+
     private void Start()
     {
         cameraRotation = startingRotation;
+        if (cam == null)
+        {
+            Debug.LogError("CameraController: Camera no asignada");
+            enabled = false;
+            return;
+        }
+
+        cam.orthographic = true;
+
     }
 
     private void Update()
     {
         TargetRotation();
+        HandleZoom();
+    }
+    void HandleZoom()
+    {
+        if (Mathf.Abs(zoomInput) < 0.01f) return;
+
+        cam.orthographicSize -= zoomInput * zoomSpeed * Time.deltaTime;
+        cam.orthographicSize = Mathf.Clamp(cam.orthographicSize, minZoom, maxZoom);
     }
 
+    public void OnCameraZoom(InputAction.CallbackContext context)
+    {
+        zoomInput = context.ReadValue<float>();
+    }
     private void TargetRotation()
     {
         if (rotationInput > 0)

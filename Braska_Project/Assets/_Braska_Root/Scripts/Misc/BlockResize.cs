@@ -3,8 +3,8 @@ using UnityEngine;
 public class BlockResize : MonoBehaviour
 {
     [Header("Resize Stats")]
-    [SerializeField] float blockSize;
     [SerializeField] bool onXAxsis;
+    [SerializeField] Vector3 originPoint;
     private Renderer textureRenderer;
     private GameObject parentObject;
 
@@ -14,21 +14,8 @@ public class BlockResize : MonoBehaviour
         parentObject = transform.parent.gameObject;
 
         textureRenderer.material.mainTextureScale = new Vector2(
-            (onXAxsis ? parentObject.transform.localScale.z : parentObject.transform.localScale.x) / blockSize,
-            parentObject.transform.localScale.y / blockSize
+            (onXAxsis ? parentObject.transform.localScale.z : parentObject.transform.localScale.x),
+            parentObject.transform.localScale.y
         );
-
-        ChangeOffSet();
-    }
-
-    private void ChangeOffSet()
-    {
-        if (onXAxsis)
-        {
-            textureRenderer.material.mainTextureOffset = new Vector2(
-                transform.position.x % 2 == 0 ? 0 : 0.5f,
-                transform.position.z % 2 == 0 ? 0 : 0.5f
-            );
-        }
     }
 }

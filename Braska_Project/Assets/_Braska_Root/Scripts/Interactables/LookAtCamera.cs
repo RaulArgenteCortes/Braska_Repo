@@ -21,16 +21,10 @@ public class LookAtCamera : MonoBehaviour
 
     private void RotateObject()
     {
-        targetRotatiom = new Vector3(
+        transform.rotation = Quaternion.Euler(
             transform.eulerAngles.x,
             axsis.transform.eulerAngles.y - 105,
             transform.eulerAngles.z
-        );
-
-        transform.rotation = Quaternion.RotateTowards(
-            transform.rotation,
-            Quaternion.Euler(targetRotatiom),
-            rotationSpeed * Time.deltaTime
         );
     }
 }

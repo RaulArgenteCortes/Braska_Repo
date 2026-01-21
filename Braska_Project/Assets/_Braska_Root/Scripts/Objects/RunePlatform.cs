@@ -12,12 +12,12 @@ public class RunePlatform : MonoBehaviour
 
     [Header("Glow settings")] 
     public Renderer platformRenderer; 
-    public Color glowColor = Color.cyan;
+    public Color glowColor;
     public float glowDuration = 3f;
     private Material platformMaterial;
     private bool glowing = false;
     private bool goingToB = false;
-    private Color baseEmissionColor = Color.cyan;
+    public Color baseEmissionColor;
 
     [Header("Shake settings")]
     public GameObject mesh;

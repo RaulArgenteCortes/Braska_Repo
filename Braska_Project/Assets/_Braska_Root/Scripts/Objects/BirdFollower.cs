@@ -3,10 +3,9 @@ using UnityEngine;
 public class BirdFollower : MonoBehaviour
 {
     [Header("References")]
-    public RuneBird targetBird; // el pájaro principal a seguir
-    public float followDelay = 0.5f; // cuánto se retrasa (en segundos)
-    public float speed = 3f; // velocidad de seguimiento
-
+    public RuneBird targetBird; 
+    public float followDelay = 0.5f; 
+    public float speed = 3f;
     private Vector3 lastTargetPosition;
 
     void Start()

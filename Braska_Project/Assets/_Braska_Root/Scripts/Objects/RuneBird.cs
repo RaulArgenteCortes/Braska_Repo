@@ -16,6 +16,7 @@ public class RuneBird : MonoBehaviour
     bool moving = false;
     public RuneTriggerBird currentRune;
     public bool waitingForBark = true;
+    public Animator animator;
 
 
     void Start()
@@ -41,7 +42,7 @@ public class RuneBird : MonoBehaviour
             ArrivedAtPoint();
         }
     }
-  
+
 
 
     void ArrivedAtPoint()
@@ -51,6 +52,14 @@ public class RuneBird : MonoBehaviour
         {
             moving = false;
             waitingForBark = true;
+
+            if (animator != null)
+            {
+                animator.SetBool("IsFliing", false);
+                animator.SetBool("IsLanding", true);
+                animator.SetBool("Idle", false);
+            }
+
             // Actualiza currentRune si hay runa en el punto
             Collider[] hits = Physics.OverlapSphere(transform.position, 0.1f);
             foreach (var hit in hits)
@@ -86,6 +95,13 @@ public class RuneBird : MonoBehaviour
         // Si está en A o C, moverse al siguiente punto
         if (currentIndex == 0) currentIndex = 1;
         else if (currentIndex == 2) currentIndex = 1;
+
+        if (animator != null)
+        {
+            animator.SetBool("IsFliing", true);
+            animator.SetBool("IsLanding", false);
+            animator.SetBool("Idle", false);
+        }
     }
 }
 

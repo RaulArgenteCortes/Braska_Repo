@@ -9,8 +9,12 @@ public class MenuPausa : MonoBehaviour
     [SerializeField] string sceneToLoad;
     [SerializeField] string sceneToLoad1;
     public bool isLoading = false;
-    
 
+    private void Start()
+    {
+        Cursor.visible = false;
+
+    }
     private void Awake()
     {
         Time.timeScale = 1f;
@@ -35,12 +39,15 @@ public class MenuPausa : MonoBehaviour
             {
                 PausaGame();
                 
+
             }
         }
     }
     
     public void PausaGame()
      {
+        Cursor.visible = true;
+
         if (PausaMenu != null)
             PausaMenu.SetActive(true);
         MusicaMenu.SetActive(false);
@@ -50,7 +57,8 @@ public class MenuPausa : MonoBehaviour
     }
     public void ResumeGame()
     {
-       
+        Cursor.visible = false;
+
 
         if (PausaMenu != null)
             PausaMenu.SetActive(false);
@@ -71,7 +79,9 @@ public class MenuPausa : MonoBehaviour
     }
     public void RestartLevel()
     {
-             if (isLoading) return;
+        Cursor.visible = false;
+
+        if (isLoading) return;
         isLoading = true;
 
 

@@ -1,10 +1,10 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BlockResize : MonoBehaviour
 {
     [Header("Resize Stats")]
     [SerializeField] bool onXAxsis;
-    [SerializeField] Vector3 originPoint;
     private Renderer textureRenderer;
     private GameObject parentObject;
 

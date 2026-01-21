@@ -18,8 +18,8 @@ public class RuneTriggerBird : MonoBehaviour
     private Color currentEmission;
 
     [Header("Object references")]
-    [SerializeField] GameObject birdPoint;
-    [SerializeField] GameObject bird;
+    [SerializeField] RuneBird bird;
+
     Animator animator;
 
 
@@ -50,25 +50,27 @@ public class RuneTriggerBird : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Bark") && ObjectManager.instance.runeCanTrigger && bird.transform.position == birdPoint.transform.position)
-        {
-            bird.GetComponent<RuneBird>().onPointA = !bird.GetComponent<RuneBird>().onPointA;
+      
+        if (!other.CompareTag("Bark")) return;
+        if (!ObjectManager.instance.runeCanTrigger) return;
 
-            
+        if (bird.currentRune != this || !bird.waitingForBark) return;
 
-            ObjectManager.instance.RunePrepareMove();
+        bird.StartMove();
+        ObjectManager.instance.RunePrepareMove();
 
-            //Vector3 vfxPosition = transform.position + new Vector3(0, 0.4f, 0);
-            //GameObject particlesystem = Instantiate(vfx_runaActiva, vfxPosition, transform.rotation);
-            //AudioManager.Instance.PlaySFX(4);
+        //Vector3 vfxPosition = transform.position + new Vector3(0, 0.4f, 0);
+        //GameObject particlesystem = Instantiate(vfx_runaActiva, vfxPosition, transform.rotation);
+        //AudioManager.Instance.PlaySFX(4);
 
-            ShakeAllPlatforms();
+        ShakeAllPlatforms();
 
-            //ActivarIluminacion();
+        //ActivarIluminacion();
 
-            //Invoke(nameof(VolverABase), glowDuration);
-        }
+        //Invoke(nameof(VolverABase), glowDuration);
     }
+    
+    
 
     private void ActivarIluminacion()
     {

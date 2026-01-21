@@ -157,17 +157,6 @@
                     "action": "CameraRotation",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "8ed916a5-3ede-4af5-8ae4-ad63a009a17d",
-                    "path": "<Mouse>/scroll/y",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Zoom",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         }

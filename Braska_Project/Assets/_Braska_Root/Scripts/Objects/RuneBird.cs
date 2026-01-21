@@ -55,7 +55,7 @@ public class RuneBird : MonoBehaviour
 
             if (animator != null)
             {
-                animator.SetBool("IsFliing", false);
+                animator.SetBool("IsFlying", false);
                 animator.SetBool("IsLanding", true);
                 animator.SetBool("Idle", false);
             }
@@ -98,7 +98,7 @@ public class RuneBird : MonoBehaviour
 
         if (animator != null)
         {
-            animator.SetBool("IsFliing", true);
+            animator.SetBool("IsFlying", true);
             animator.SetBool("IsLanding", false);
             animator.SetBool("Idle", false);
         }

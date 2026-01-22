@@ -46,14 +46,4 @@ public class BlockResize : MonoBehaviour
             );
         }
     }
-
-    private void Update()
-    {
-        textureRenderer.material.mainTextureScale = new Vector2(
-            (onXAxsis ? parentObject.transform.localScale.z : parentObject.transform.localScale.x) / (doubleSize ? 2 : 1),
-            parentObject.transform.localScale.y / (doubleSize ? 2 : 1)
-        );
-
-        SizeAdjust();
-    }
 }

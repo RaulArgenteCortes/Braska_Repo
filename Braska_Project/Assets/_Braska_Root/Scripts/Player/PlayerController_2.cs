@@ -63,6 +63,16 @@ public class PlayerController_2 : MonoBehaviour
 
     private Vector3 lastFootprintPos;
 
+    [Header("Player Glow")]
+    [SerializeField] private Renderer playerRenderer; // Mesh del jugador
+    [SerializeField] public Color normalGlow = Color.black; // Color cuando no está ladrando
+    [SerializeField] public Color barkGlow = Color.cyan; // Color del glow al ladrar
+    [SerializeField] private float glowIntensity = 5f;
+    [Header("Player Glow Fade")]
+    private bool isGlowing = false;
+    private float glowTimer = 0f;
+    private float glowDuration = 1f; 
+    private Color currentGlowColor;
     private void Awake()
     {
         playerRb = GetComponent<Rigidbody>();
@@ -107,6 +117,12 @@ public class PlayerController_2 : MonoBehaviour
         }
 
         playerAnim.SetBool("isBarking", false);
+
+        if (playerRenderer != null)
+        {
+            playerRenderer.material.EnableKeyword("_EMISSION");
+            playerRenderer.material.SetColor("_EmissionColor", normalGlow);
+        }
     }
 
     private void SpawnTransform()
@@ -127,6 +143,7 @@ public class PlayerController_2 : MonoBehaviour
     private void Update()
     {
         CheckUpdate();
+        UpdateGlowFade();
     }
 
     private void CheckUpdate() // Updates all terrain checks.
@@ -339,9 +356,46 @@ public class PlayerController_2 : MonoBehaviour
                 playerAnim.SetBool("isBarking", true);
 
             Invoke(nameof(FinishAction), 0.5f);
+
+            isGlowing = true;
+            glowTimer = 0f;
+            currentGlowColor = normalGlow;
+
         }
     }
+    private void UpdateGlowFade()
+    {
+        if (!isGlowing || playerRenderer == null) return;
 
+        glowTimer += Time.deltaTime;
+        float halfDuration = glowDuration / 2f;
+
+        if (glowTimer <= halfDuration)
+        {
+            float t = glowTimer / halfDuration;
+            foreach (Material mat in playerRenderer.materials)
+            {
+                mat.SetColor("_EmissionColor", Color.Lerp(normalGlow, barkGlow * glowIntensity, t));
+            }
+        }
+        else if (glowTimer <= glowDuration)
+        {
+            float t = (glowTimer - halfDuration) / halfDuration;
+            foreach (Material mat in playerRenderer.materials)
+            {
+                mat.SetColor("_EmissionColor", Color.Lerp(barkGlow * glowIntensity, normalGlow, t));
+            }
+        }
+        else
+        {
+            // Termina el glow
+            foreach (Material mat in playerRenderer.materials)
+            {
+                mat.SetColor("_EmissionColor", normalGlow);
+            }
+            isGlowing = false;
+        }
+    }
     private void StartDig()
     {
         if (canDig && canBark)

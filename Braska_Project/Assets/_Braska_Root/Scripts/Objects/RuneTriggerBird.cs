@@ -21,32 +21,52 @@ public class RuneTriggerBird : MonoBehaviour
     [SerializeField] RuneBird bird;
 
     Animator animator;
-
+    private float baseEmissionIntensity = 4f;  // intensidad base del glow
+    private float targetEmissionIntensity;     // intensidad objetivo al ladrido
+    private float currentIntensity;            // intensidad actual usada para lerp
+    private bool isGlowingHigh = false;
 
     public void Awake()
     {
     }
     private void Start()
     {
-        /*currentEmission = glowColor * ObjectManager.instance.runeLowEmission;
-
-        if (runeRenderer != null)
-        {
-            runeMaterial = runeRenderer.material;
-            runeMaterial.EnableKeyword("_EMISSION");
-            runeMaterial.SetColor("_EmissionColor", currentEmission);
-            DynamicGI.SetEmissive(runeRenderer, currentEmission);
-        }
-
         if (PedestarlRedenderer != null)
         {
             runeMaterial2 = PedestarlRedenderer.material;
             runeMaterial2.EnableKeyword("_EMISSION");
-            runeMaterial2.SetColor("_EmissionColor", currentEmission);
-            DynamicGI.SetEmissive(PedestarlRedenderer, currentEmission);
-        }*/
+
+            
+            currentIntensity = baseEmissionIntensity;
+            Color baseGlow = glowColor * currentIntensity;
+            runeMaterial2.SetColor("_EmissionColor", baseGlow);
+            DynamicGI.SetEmissive(PedestarlRedenderer, baseGlow);
+        }
+
+
 
     }
+    private void Update()
+    {
+        if (runeMaterial2 == null) return;
+
+        float lerpSpeed = 3f; 
+        float target = isGlowingHigh ? targetEmissionIntensity : baseEmissionIntensity;
+
+        currentIntensity = Mathf.Lerp(currentIntensity, target, lerpSpeed * Time.deltaTime);
+
+       
+        if (isGlowingHigh && Mathf.Abs(currentIntensity - targetEmissionIntensity) < 0.01f)
+        {
+            isGlowingHigh = false; 
+        }
+
+        // Aplicamos al material
+        Color emission = glowColor * currentIntensity;
+        runeMaterial2.SetColor("_EmissionColor", emission);
+        DynamicGI.SetEmissive(PedestarlRedenderer, emission);
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -65,37 +85,25 @@ public class RuneTriggerBird : MonoBehaviour
 
         ShakeAllPlatforms();
 
-        //ActivarIluminacion();
+        ActivarIluminacion();
 
-        //Invoke(nameof(VolverABase), glowDuration);
+        Invoke(nameof(VolverABase), glowDuration);
     }
     
     
 
     private void ActivarIluminacion()
     {
-        if (runeMaterial != null)
-        {
-            runeMaterial.EnableKeyword("_EMISSION");
-            runeMaterial.SetColor("_EmissionColor", glowColor * ObjectManager.instance.runeHighEmission);  // Intensidad del brillo
-        }
-        if (runeMaterial2 != null)
-        {
-            runeMaterial2.EnableKeyword("_EMISSION");
-            runeMaterial2.SetColor("_EmissionColor", glowColor * ObjectManager.instance.runeHighEmission);  // Intensidad del brillo
-        }
+        if (runeMaterial2 == null) return;
+
+        // Intensidad más alta temporal
+        targetEmissionIntensity = baseEmissionIntensity * ObjectManager.instance.runeHighEmission;
+        isGlowingHigh = true;
     }
     private void VolverABase()
     {
-        if (runeMaterial != null)
-        {
-            runeMaterial.SetColor("_EmissionColor", currentEmission);
-            DynamicGI.SetEmissive(runeRenderer, currentEmission);
-        }
-
         if (runeMaterial2 != null)
         {
-
             runeMaterial2.SetColor("_EmissionColor", currentEmission);
             DynamicGI.SetEmissive(PedestarlRedenderer, currentEmission);
         }

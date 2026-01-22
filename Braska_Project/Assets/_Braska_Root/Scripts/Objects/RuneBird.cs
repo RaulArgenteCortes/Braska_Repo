@@ -25,10 +25,10 @@ public class RuneBird : MonoBehaviour
     [SerializeField] Transform lookIdleAtC;
 
     [Header("Glow on Flight")]
-    [SerializeField] Renderer birdRenderer;   // El renderer del pájaro
-    [SerializeField] Color emissiveColor = Color.yellow;  // Color al brillar
-    [SerializeField] float glowIntensity = 2f;  // Intensidad del glow
-    [SerializeField] float glowFadeSpeed = 2f;  // Qué rápido vuelve a apagarse
+    [SerializeField] Renderer birdRenderer; 
+    [SerializeField] Color emissiveColor = Color.yellow;  
+    [SerializeField] float glowIntensity = 10f;  
+    [SerializeField] float glowFadeSpeed = 2f;  
     private Material birdMaterial;
     private Color originalEmissionColor;
     private bool isGlowing = false;
@@ -50,7 +50,7 @@ public class RuneBird : MonoBehaviour
         {
             birdMaterial = birdRenderer.material;
             originalEmissionColor = birdMaterial.GetColor("_EmissionColor");
-            birdMaterial.EnableKeyword("_EMISSION"); // Asegura que el emission esté activo
+            birdMaterial.EnableKeyword("_EMISSION"); 
         }
     }
 
@@ -74,7 +74,6 @@ public class RuneBird : MonoBehaviour
             Color target = originalEmissionColor;
             birdMaterial.SetColor("_EmissionColor", Color.Lerp(current, target, glowFadeSpeed * Time.deltaTime));
 
-            // Si ya casi volvió al color original, desactiva el flag
             if (Vector4.Distance(current, target) < 0.01f)
             {
                 isGlowing = false;
@@ -86,7 +85,6 @@ public class RuneBird : MonoBehaviour
 
     void ArrivedAtPoint()
     {
-        // Si llegó a A o C, se detiene y espera ladrido
         if (currentIndex == 0 || currentIndex == 2)
         {
             moving = false;
@@ -99,7 +97,6 @@ public class RuneBird : MonoBehaviour
             }
             
 
-            // Actualiza currentRune si hay runa en el punto
             Collider[] hits = Physics.OverlapSphere(transform.position, 0.1f);
             foreach (var hit in hits)
             {
@@ -114,7 +111,6 @@ public class RuneBird : MonoBehaviour
             return;
         }
 
-        // Si está en B, sigue hacia siguiente punto
         if (currentIndex == 1)
         {
             currentIndex += direction;
@@ -164,8 +160,3 @@ public class RuneBird : MonoBehaviour
         isGlowing = true;
     }
 }
-
-
-
-
-

@@ -13,11 +13,18 @@ public class RuneBird : MonoBehaviour
     Vector3[] path;
     int currentIndex = 0;
     int direction = 1;
-    bool moving = false;
+   public bool moving = false;
     public RuneTriggerBird currentRune;
     public bool waitingForBark = true;
     public Animator animator;
+    public float delay = 3f;
 
+    [Header("Look Targets")]
+    [SerializeField] Transform lookWhileFlying;
+    [SerializeField] Transform lookIdleAtA;
+    [SerializeField] Transform lookIdleAtC;
+
+  
 
     void Start()
     {
@@ -25,6 +32,13 @@ public class RuneBird : MonoBehaviour
         path = new Vector3[] { pointA.position, pointB.position, pointC.position };
         transform.position = path[0]; // empieza en A
         currentIndex = 0;
+
+        if (animator != null)
+        {
+            animator.SetBool("IsFlying", false);
+            animator.SetBool("IsLanding", false);
+            animator.SetBool("Idle", true);
+        }
     }
 
     void Update()
@@ -52,13 +66,13 @@ public class RuneBird : MonoBehaviour
         {
             moving = false;
             waitingForBark = true;
-
             if (animator != null)
             {
                 animator.SetBool("IsFlying", false);
                 animator.SetBool("IsLanding", true);
                 animator.SetBool("Idle", false);
             }
+            
 
             // Actualiza currentRune si hay runa en el punto
             Collider[] hits = Physics.OverlapSphere(transform.position, 0.1f);
@@ -71,6 +85,7 @@ public class RuneBird : MonoBehaviour
                     break;
                 }
             }
+
             return;
         }
 
@@ -79,20 +94,33 @@ public class RuneBird : MonoBehaviour
         {
             currentIndex += direction;
         }
+     
+
     }
+
+    public Transform GetLookTarget()
+    {
+        if (moving)
+            return lookWhileFlying;
+
+        if (!moving && currentIndex == 0)
+            return lookIdleAtA;
+        if (!moving && currentIndex == 2)
+            return lookIdleAtC;
+
+        return null;
+    }
+
     public void StartMove()
     {
-        // Solo puede moverse si está esperando un ladrido
         if (!waitingForBark) return;
 
         waitingForBark = false;
         moving = true;
 
-        // Determinar dirección
-        if (currentIndex == 0) direction = 1; // de A a B
-        else if (currentIndex == 2) direction = -1; // de C a B
+        if (currentIndex == 0) direction = 1;
+        else if (currentIndex == 2) direction = -1;
 
-        // Si está en A o C, moverse al siguiente punto
         if (currentIndex == 0) currentIndex = 1;
         else if (currentIndex == 2) currentIndex = 1;
 

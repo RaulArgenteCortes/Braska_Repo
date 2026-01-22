@@ -5,7 +5,7 @@ public class KeyPick : MonoBehaviour
 {
     [Header("Key Stats")]
     [SerializeField] bool isHolded;
-    [SerializeField] bool onMouth;
+    //[SerializeField] bool onMouth;
     public Vector3 homePosition;
 
     [Header("Render Stats")]
@@ -29,8 +29,6 @@ public class KeyPick : MonoBehaviour
     {
         KeyTransform();
 
-        OnMouthCheck();
-
         EmissionUpdate();
     }
 
@@ -38,7 +36,7 @@ public class KeyPick : MonoBehaviour
     {
         if (isHolded)
         {
-            if (!onMouth)
+            if (ObjectManager.instance.keySlotOnSight)
             {
                 transform.position = Vector3.MoveTowards(
                     transform.position,
@@ -49,7 +47,7 @@ public class KeyPick : MonoBehaviour
                 transform.rotation = Quaternion.RotateTowards(
                     transform.rotation,
                     keyHold.transform.rotation,
-                    Time.fixedDeltaTime * 360 * 5
+                    Time.fixedDeltaTime * 360 * 2.5f
                 );
             }
             else
@@ -64,32 +62,28 @@ public class KeyPick : MonoBehaviour
         {
             if (currentKeySlot != null)
             {
-                transform.SetPositionAndRotation(
-                    currentKeySlot.transform.position,
-                    currentKeySlot.transform.rotation
-                );
+                if (ObjectManager.instance.keySlotOnSight)
+                {
+                    transform.position = Vector3.MoveTowards(
+                        transform.position,
+                        currentKeySlot.transform.position,
+                        Time.fixedDeltaTime * 5
+                    );
+
+                    transform.rotation = Quaternion.RotateTowards(
+                        transform.rotation,
+                        currentKeySlot.transform.rotation,
+                        Time.fixedDeltaTime * 360 * 2.5f
+                    );
+                }
+                else
+                {
+                    transform.SetPositionAndRotation(
+                        currentKeySlot.transform.position,
+                        currentKeySlot.transform.rotation
+                    );
+                }
             }
-        }
-
-        /*if (transform.position == keyHold.transform.position)
-        {
-            transform.parent = keyHold.transform;
-        }
-        else
-        {
-            transform.parent = null;
-        }*/
-    }
-
-    private void OnMouthCheck()
-    {
-        if (transform.position == keyHold.transform.position)
-        {
-            onMouth = true;
-        }
-        else
-        {
-            onMouth = false;
         }
     }
 

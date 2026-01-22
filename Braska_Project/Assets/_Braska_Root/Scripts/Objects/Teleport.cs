@@ -57,7 +57,7 @@ public class Teleport : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Bark") && playerInside)
+        if (other.CompareTag("Bark") && playerInside && ObjectManager.instance.barkAvailable)
         {
             OrderTeleport();
 

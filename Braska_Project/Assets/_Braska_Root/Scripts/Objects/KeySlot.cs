@@ -15,7 +15,7 @@ public class KeySlot : MonoBehaviour
         currentEmissionIntensity = Mathf.MoveTowards(
             currentEmissionIntensity,
             emissionIntensity,
-            Time.fixedDeltaTime * 5
+            Time.fixedDeltaTime * ObjectManager.instance.prebarkEmissionSpeed
         );
 
         slotRenderer.material.SetColor("_EmissionColor", Color.white * currentEmissionIntensity);
@@ -30,6 +30,8 @@ public class KeySlot : MonoBehaviour
 
         if (other.CompareTag("Prebark"))
         {
+            ObjectManager.instance.keySlotOnSight = true;
+
             emissionIntensity = 3;
         }
     }
@@ -38,6 +40,8 @@ public class KeySlot : MonoBehaviour
     {
         if (other.CompareTag("Prebark"))
         {
+            ObjectManager.instance.keySlotOnSight = false;
+
             emissionIntensity = 1;
         }
     }

@@ -98,7 +98,7 @@ public class KeyPick : MonoBehaviour
         currentEmissionIntensity = Mathf.MoveTowards(
             currentEmissionIntensity,
             emissionIntensity,
-            Time.fixedDeltaTime * 5
+            Time.fixedDeltaTime * ObjectManager.instance.prebarkEmissionSpeed
         );
 
         keyRenderer.material.SetColor("_EmissionColor", Color.white * currentEmissionIntensity);
@@ -132,6 +132,8 @@ public class KeyPick : MonoBehaviour
 
         if (other.CompareTag("Prebark"))
         {
+            ObjectManager.instance.barkAvailable = false;
+
             emissionIntensity = 3;
         }
     }
@@ -140,6 +142,8 @@ public class KeyPick : MonoBehaviour
     {
         if (other.CompareTag("Prebark"))
         {
+            ObjectManager.instance.barkAvailable = true;
+
             emissionIntensity = 1;
         }
     }

@@ -24,7 +24,14 @@ public class RuneBird : MonoBehaviour
     [SerializeField] Transform lookIdleAtA;
     [SerializeField] Transform lookIdleAtC;
 
-  
+    [Header("Glow on Flight")]
+    [SerializeField] Renderer birdRenderer;   // El renderer del pájaro
+    [SerializeField] Color emissiveColor = Color.yellow;  // Color al brillar
+    [SerializeField] float glowIntensity = 2f;  // Intensidad del glow
+    [SerializeField] float glowFadeSpeed = 2f;  // Qué rápido vuelve a apagarse
+    private Material birdMaterial;
+    private Color originalEmissionColor;
+    private bool isGlowing = false;
 
     void Start()
     {
@@ -38,6 +45,12 @@ public class RuneBird : MonoBehaviour
             animator.SetBool("IsFlying", false);
             animator.SetBool("IsLanding", false);
             animator.SetBool("Idle", true);
+        }
+        if (birdRenderer != null)
+        {
+            birdMaterial = birdRenderer.material;
+            originalEmissionColor = birdMaterial.GetColor("_EmissionColor");
+            birdMaterial.EnableKeyword("_EMISSION"); // Asegura que el emission esté activo
         }
     }
 
@@ -54,6 +67,18 @@ public class RuneBird : MonoBehaviour
         if (Vector3.Distance(transform.position, path[currentIndex]) < 0.01f)
         {
             ArrivedAtPoint();
+        }
+        if (isGlowing && birdMaterial != null)
+        {
+            Color current = birdMaterial.GetColor("_EmissionColor");
+            Color target = originalEmissionColor;
+            birdMaterial.SetColor("_EmissionColor", Color.Lerp(current, target, glowFadeSpeed * Time.deltaTime));
+
+            // Si ya casi volvió al color original, desactiva el flag
+            if (Vector4.Distance(current, target) < 0.01f)
+            {
+                isGlowing = false;
+            }
         }
     }
 
@@ -130,6 +155,13 @@ public class RuneBird : MonoBehaviour
             animator.SetBool("IsLanding", false);
             animator.SetBool("Idle", false);
         }
+        ActivateGlow();
+    }
+    void ActivateGlow()
+    {
+        if (birdMaterial == null) return;
+        birdMaterial.SetColor("_EmissionColor", emissiveColor * glowIntensity);
+        isGlowing = true;
     }
 }
 

@@ -27,7 +27,7 @@ public class TopoMove : MonoBehaviour
 
     public void ChildTriggered(Collider other)
     {
-        if (other.CompareTag("Bark"))
+        if (other.CompareTag("Bark") && ObjectManager.instance.barkAvailable)
         {
             if (goingUp) return;
             Burrow();

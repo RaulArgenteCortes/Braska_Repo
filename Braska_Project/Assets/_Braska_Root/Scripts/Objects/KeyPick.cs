@@ -8,6 +8,11 @@ public class KeyPick : MonoBehaviour
     [SerializeField] bool onMouth;
     public Vector3 homePosition;
 
+    [Header("Render Stats")]
+    private float emissionIntensity = 1;
+    private float currentEmissionIntensity = 1;
+    [SerializeField] Renderer keyRenderer;
+
     [Header("Object References")]
     [SerializeField] GameObject currentKeySlot;
     [SerializeField] GameObject keyHold;
@@ -25,6 +30,8 @@ public class KeyPick : MonoBehaviour
         KeyTransform();
 
         OnMouthCheck();
+
+        EmissionUpdate();
     }
 
     private void KeyTransform()
@@ -86,6 +93,17 @@ public class KeyPick : MonoBehaviour
         }
     }
 
+    private void EmissionUpdate()
+    {
+        currentEmissionIntensity = Mathf.MoveTowards(
+            currentEmissionIntensity,
+            emissionIntensity,
+            Time.fixedDeltaTime * ObjectManager.instance.prebarkEmissionSpeed
+        );
+
+        keyRenderer.material.SetColor("_EmissionColor", Color.white * currentEmissionIntensity);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Bark"))
@@ -110,6 +128,23 @@ public class KeyPick : MonoBehaviour
 
                 PlayVFX();
             }   
+        }
+
+        if (other.CompareTag("Prebark"))
+        {
+            ObjectManager.instance.barkAvailable = false;
+
+            emissionIntensity = 3;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Prebark"))
+        {
+            ObjectManager.instance.barkAvailable = true;
+
+            emissionIntensity = 1;
         }
     }
 

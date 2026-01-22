@@ -5,6 +5,10 @@ public class ObjectManager : MonoBehaviour
 {
     public static ObjectManager instance;
 
+    [Header("Global controls")]
+    public bool barkAvailable;
+    public float prebarkEmissionSpeed;
+
     [Header("Orb controls")]
     public bool hasOrb;
     [SerializeField] GameObject orb;
@@ -26,6 +30,7 @@ public class ObjectManager : MonoBehaviour
 
     [Header("Key controls")]
     public bool holdingKey;
+    public bool keySlotOnSight;
     public float wallSpeed;
     public float openedWallPosition;
     public GameObject keySlot;
@@ -55,9 +60,13 @@ public class ObjectManager : MonoBehaviour
 
     private void Start()
     {
+        barkAvailable = true;
+
         runeCanTrigger = true;
         runeCanMove = false;
         runeOnPointA = true;
+
+        keySlotOnSight = false;
 
         megaRuneCanTrigger = true;
         megaRuneCanMove = false;

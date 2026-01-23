@@ -12,7 +12,7 @@ public class PlayerController_2 : MonoBehaviour
     [SerializeField] bool canMove;
     [SerializeField] float moveSpeed;
     [SerializeField] float accelerationSpeed;
-    [SerializeField] float maxSpeed;
+    private float maxSpeed;
     [SerializeField] Vector2 moveInput; // Input from controller.
 
     [Header("Rotation stats")]
@@ -236,6 +236,16 @@ public class PlayerController_2 : MonoBehaviour
 
     private void PlayerMove()
     {
+        // Reduces the max speed if the player is going down a slope.
+        if (playerMesh.transform.eulerAngles.x + (playerMesh.transform.eulerAngles.x > 300 ? -360 : 0) > 20)
+        {
+            maxSpeed = 1.5f;
+        }
+        else
+        {
+            maxSpeed = 2.25f;
+        }
+
         if (moveInput != Vector2.zero && canMove && groundAhead) // Accelerates the player when it can and starts moving (and there's ground/slope).
         {
             // Prevents the player from going too fast.
@@ -251,7 +261,6 @@ public class PlayerController_2 : MonoBehaviour
         else if (!groundAhead) // Stops and decelerates the player when there is not terrain ahead.
         {
             moveSpeed = 0;
-            //moveSpeed -= accelerationSpeed * 1.01f;
         }
         else if (moveSpeed > 0) // Decelerates the player when it stops moving.
         {
@@ -327,6 +336,11 @@ public class PlayerController_2 : MonoBehaviour
         {
             playerAnim.SetBool("isWalking", false);
         }
+
+        playerAnim.SetFloat(
+            "tiltLevel",
+            playerMesh.transform.eulerAngles.x + (playerMesh.transform.eulerAngles.x > 300 ? -360 : 0)
+        );
     }
 
     private void StartBark()

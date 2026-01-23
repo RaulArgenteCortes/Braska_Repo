@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static ScenesManager;
 
 public class MenuPausa : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class MenuPausa : MonoBehaviour
     [SerializeField] string sceneToLoad;
     [SerializeField] string sceneToLoad1;
     public bool isLoading = false;
+    [SerializeField] GameObject[] pausePanels;
 
     private void Start()
     {
@@ -46,6 +48,7 @@ public class MenuPausa : MonoBehaviour
     
     public void PausaGame()
      {
+        GameState.IsPaused = true;
         Cursor.visible = true;
 
         if (PausaMenu != null)
@@ -54,9 +57,12 @@ public class MenuPausa : MonoBehaviour
         Time.timeScale = 0f;
         isPaused = true;
         AudioManager.Instance.PauseSFX();
+        SetPausePanels(false);
+
     }
     public void ResumeGame()
     {
+        GameState.IsPaused = false;
         Cursor.visible = false;
 
 
@@ -65,7 +71,7 @@ public class MenuPausa : MonoBehaviour
         Time.timeScale = 1f;
         isPaused = false;
         AudioManager.Instance.ResumeSFX();
-
+        SetPausePanels(true);
     }
     public void MainMenu()
     {
@@ -93,5 +99,13 @@ public class MenuPausa : MonoBehaviour
     {
         PausaMenu.SetActive(false);
         MusicaMenu.SetActive(true);
+    }
+    void SetPausePanels(bool active)
+    {
+        foreach (GameObject panel in pausePanels)
+        {
+            if (panel == null) continue;
+            panel.SetActive(active);
+        }
     }
 }

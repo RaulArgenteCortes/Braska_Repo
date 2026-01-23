@@ -13,6 +13,11 @@ public class Teleport : MonoBehaviour
     [SerializeField] int requiredOrbs;
     public bool isActive;
 
+    [Header("Render Stats")]
+    private float targetEmissionIntensity = 0;
+    private float currentEmissionIntensity = 0;
+    [SerializeField] Renderer teleportRenderer;
+
     [Header("Object references")]
     [SerializeField] GameObject teleportLight;
     [SerializeField] GameObject teleportParticles;
@@ -92,22 +97,26 @@ public class Teleport : MonoBehaviour
 
     public void Shine()
     {
-        if (playerInside)
+        if (playerInside && isActive)
         {
-            teleportLight.GetComponent<Light>().intensity = math.lerp(
-                teleportLight.GetComponent<Light>().intensity,
-                0.75f,
-                Time.fixedDeltaTime * 10
-            );
+            targetEmissionIntensity = 4;
+        }
+        else if (isActive)
+        {
+            targetEmissionIntensity = 1;
         }
         else
         {
-            teleportLight.GetComponent<Light>().intensity = math.lerp(
-                teleportLight.GetComponent<Light>().intensity,
-                0.25f,
-                Time.fixedDeltaTime * 10
-            );
+            targetEmissionIntensity = 0;
         }
+
+        currentEmissionIntensity = Mathf.MoveTowards(
+            currentEmissionIntensity,
+            targetEmissionIntensity,
+            Time.fixedDeltaTime * ObjectManager.instance.prebarkEmissionSpeed
+        );
+
+        teleportRenderer.material.SetColor("_EmissionColor", Color.white * currentEmissionIntensity);
     }
 
     public void Highlight()

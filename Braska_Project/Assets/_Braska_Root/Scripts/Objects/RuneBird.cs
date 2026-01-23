@@ -18,6 +18,8 @@ public class RuneBird : MonoBehaviour
     public bool waitingForBark = true;
     public Animator animator;
     public float delay = 3f;
+    public float delayTiempo = 1f;
+    public float delayTiempoladrar = 1f;
 
     [Header("Look Targets")]
     [SerializeField] Transform lookWhileFlying;
@@ -88,25 +90,10 @@ public class RuneBird : MonoBehaviour
         if (currentIndex == 0 || currentIndex == 2)
         {
             moving = false;
-            waitingForBark = true;
-            if (animator != null)
-            {
-                animator.SetBool("IsFlying", false);
-                animator.SetBool("IsLanding", true);
-                animator.SetBool("Idle", false);
-            }
-            
 
-            Collider[] hits = Physics.OverlapSphere(transform.position, 0.1f);
-            foreach (var hit in hits)
-            {
-                RuneTriggerBird rune = hit.GetComponent<RuneTriggerBird>();
-                if (rune != null)
-                {
-                    currentRune = rune;
-                    break;
-                }
-            }
+            Invoke(nameof(HandleArrival), delayTiempo);
+
+           
 
             return;
         }
@@ -115,10 +102,34 @@ public class RuneBird : MonoBehaviour
         {
             currentIndex += direction;
         }
-     
+     }
+    void HandleArrival()
+    {
+        Invoke(nameof(HandleArrival2), delayTiempoladrar);
+        if (animator != null)
+        {
+            animator.SetBool("IsFlying", false);
+            animator.SetBool("IsLanding", true);
+            animator.SetBool("Idle", false);
+        }
 
+        // Detecta runes cerca
+        Collider[] hits = Physics.OverlapSphere(transform.position, 0.1f);
+        foreach (var hit in hits)
+        {
+            RuneTriggerBird rune = hit.GetComponent<RuneTriggerBird>();
+            if (rune != null)
+            {
+                currentRune = rune;
+                break;
+            }
+        }
     }
-
+    void HandleArrival2()
+    {
+        waitingForBark = true;
+       
+    }
     public Transform GetLookTarget()
     {
         if (moving)

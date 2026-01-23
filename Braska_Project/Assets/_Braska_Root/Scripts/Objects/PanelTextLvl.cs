@@ -5,8 +5,8 @@
     public class PanelTextLvl : MonoBehaviour
 {
     [Header("UI Settings")]
-    public TMP_Text textUI;
     public TMP_Text[] texts;
+    public Image image;
     public float fadeDuration = 1f;
     public float fadeOutDuration = 0.3f;
     public float delayBeforeFade = 0.5f;
@@ -19,76 +19,81 @@
 
     void Awake()
     {
-        if (textUI != null)
-        {
-            Color c = textUI.color;
-            c.a = 0f;
-            textUI.color = c;
-        }
-
         fadeSpeedIn = 1f / fadeDuration;
         fadeSpeedOut = 1f / fadeOutDuration;
+
+        SetAlpha(0f);
     }
 
     public void FadeIn()
     {
-        if (textUI == null) return;
-
-        // Cancelar cualquier fade out o fade in existente
-        CancelInvoke(nameof(UpdateFadeOut));
-        CancelInvoke(nameof(UpdateFadeIn));
-
-        fadeInStarted = false; // Resetear flag
+        CancelInvoke();
+        fadeInStarted = false;
         Invoke(nameof(StartFadeIn), delayBeforeFade);
     }
 
     void StartFadeIn()
     {
-        // Marcar que el fade in ya empezó
         fadeInStarted = true;
         InvokeRepeating(nameof(UpdateFadeIn), 0f, 0.01f);
     }
+    void SetAlpha(float alpha)
+    {
+        foreach (TMP_Text t in texts)
+        {
+            if (t == null) continue;
+            Color c = t.color;
+            c.a = alpha;
+            t.color = c;
+        }
+        if (image != null)
+        {
+            Color c = image.color;
+            c.a = alpha;
+            image.color = c;
+        }
 
+    }
     void UpdateFadeIn()
     {
-        if (textUI == null) return;
+        float currentAlpha = GetCurrentAlpha();
+        float newAlpha = Mathf.Clamp01(currentAlpha + fadeSpeedIn * 0.01f);
 
-        Color c = textUI.color;
-        c.a += fadeSpeedIn * 0.01f;
-        if (c.a > 1f) c.a = 1f;
-        textUI.color = c;
+        SetAlpha(newAlpha);
 
-        if (c.a >= 1f)
+        if (newAlpha >= 1f)
             CancelInvoke(nameof(UpdateFadeIn));
     }
 
     public void FadeOut()
     {
-        if (textUI == null) return;
-
-        // Cancelar fade in si aún no empezó
         if (!fadeInStarted)
-        {
             CancelInvoke(nameof(StartFadeIn));
-        }
 
-        // Cancelar cualquier fade in o fade out activo
         CancelInvoke(nameof(UpdateFadeIn));
-        CancelInvoke(nameof(UpdateFadeOut));
-
         InvokeRepeating(nameof(UpdateFadeOut), 0f, 0.01f);
     }
 
     void UpdateFadeOut()
     {
-        if (textUI == null) return;
+        float currentAlpha = GetCurrentAlpha();
+        float newAlpha = Mathf.Clamp01(currentAlpha - fadeSpeedOut * 0.01f);
 
-        Color c = textUI.color;
-        c.a -= fadeSpeedOut * 0.01f;
-        if (c.a < 0f) c.a = 0f;
-        textUI.color = c;
+        SetAlpha(newAlpha);
 
-        if (c.a <= 0f)
+        if (newAlpha <= 0f)
             CancelInvoke(nameof(UpdateFadeOut));
+    }
+    float GetCurrentAlpha()
+    {
+        foreach (TMP_Text t in texts)
+        {
+            if (t != null)
+                return t.color.a;
+        }
+        if (image != null)
+            return image.color.a;
+
+        return 0f;
     }
 }

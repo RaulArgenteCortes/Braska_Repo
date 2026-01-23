@@ -43,7 +43,10 @@ public class ScenesManager : MonoBehaviour
         Time.timeScale = 1f;
         ScenesFade.Instance.FadeOutAndLoad(sceneToLoad);
     }
-
+    public static class GameState
+    {
+        public static bool IsPaused = false;
+    }
     public void ProgressCorrector()
     {
         if ((SceneManager.GetActiveScene().name == "SCN_Level1" || SceneManager.GetActiveScene().name == "SCN_Lobby") && collectedOrbs < 0)

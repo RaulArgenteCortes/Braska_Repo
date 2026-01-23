@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using static ScenesManager;
 using static UnityEngine.GridBrushBase;
 
 public class PlayerController_2 : MonoBehaviour
@@ -142,6 +143,7 @@ public class PlayerController_2 : MonoBehaviour
 
     private void Update()
     {
+        if (GameState.IsPaused) return;
         CheckUpdate();
         UpdateGlowFade();
     }
@@ -331,6 +333,8 @@ public class PlayerController_2 : MonoBehaviour
 
     private void StartBark()
     {
+
+        if (GameState.IsPaused) return;
         if (canBark && canDig)
         {
             if (ObjectManager.instance.barkAvailable)
@@ -398,6 +402,7 @@ public class PlayerController_2 : MonoBehaviour
     }
     private void StartDig()
     {
+        if (GameState.IsPaused) return;
         if (canDig && canBark)
         {
             canBark = false;

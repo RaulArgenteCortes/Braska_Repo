@@ -84,6 +84,15 @@
         if (newAlpha <= 0f)
             CancelInvoke(nameof(UpdateFadeOut));
     }
+    void OnEnable()
+    {
+        ScenesManager.GameState.OnSceneFadeStart += FadeOut;
+    }
+
+    void OnDisable()
+    {
+        ScenesManager.GameState.OnSceneFadeStart -= FadeOut;
+    }
     float GetCurrentAlpha()
     {
         foreach (TMP_Text t in texts)

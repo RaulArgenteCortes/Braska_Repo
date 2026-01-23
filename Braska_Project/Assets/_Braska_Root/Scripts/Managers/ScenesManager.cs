@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 
 public class ScenesManager : MonoBehaviour
 {
@@ -46,6 +47,7 @@ public class ScenesManager : MonoBehaviour
     public static class GameState
     {
         public static bool IsPaused = false;
+        public static Action OnSceneFadeStart;
     }
     public void ProgressCorrector()
     {

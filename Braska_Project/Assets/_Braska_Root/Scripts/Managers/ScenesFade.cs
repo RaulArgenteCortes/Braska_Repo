@@ -86,6 +86,9 @@ public class ScenesFade : MonoBehaviour
 
         if (Player != null)
             PlayTeleportVFX(Player.transform.position);
+
+        ScenesManager.GameState.OnSceneFadeStart?.Invoke();
+
         if (anim != null)
             anim.SetTrigger("FadeIn");
 

@@ -6,6 +6,7 @@
 {
     [Header("UI Settings")]
     public TMP_Text textUI;
+    public TMP_Text[] texts;
     public float fadeDuration = 1f;
     public float fadeOutDuration = 0.3f;
     public float delayBeforeFade = 0.5f;

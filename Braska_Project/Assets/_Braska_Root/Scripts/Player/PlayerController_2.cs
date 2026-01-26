@@ -54,13 +54,9 @@ public class PlayerController_2 : MonoBehaviour
     [Header("VFX")]
     [SerializeField] GameObject DigVFX;
 
-    public Vector3 pain;
-
-
     [Header("Footprints")]
     [SerializeField] GameObject footprintPrefab;
     [SerializeField] float stepDistance = 0.6f;
-
     private Vector3 lastFootprintPos;
 
     [Header("Player Glow")]
@@ -73,6 +69,7 @@ public class PlayerController_2 : MonoBehaviour
     private float glowTimer = 0f;
     private float glowDuration = 1f; 
     private Color currentGlowColor;
+
     private void Awake()
     {
         playerRb = GetComponent<Rigidbody>();
@@ -135,8 +132,6 @@ public class PlayerController_2 : MonoBehaviour
                 GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.position.y + 0.5f,
                 GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.position.z
             ), GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.rotation);
-
-            pain = GameObject.Find(ScenesManager.instance.SpawnTeleport).transform.position;
         }
     }
 
@@ -410,6 +405,7 @@ public class PlayerController_2 : MonoBehaviour
             isGlowing = false;
         }
     }
+
     private void StartDig()
     {
         if (canDig && canBark)
@@ -433,7 +429,16 @@ public class PlayerController_2 : MonoBehaviour
             AudioManager.Instance.PlaySFX(5);
         }
 
-        Invoke(nameof(FinishAction), 0.9f);
+        if (ObjectManager.instance.hasOrb)
+        {
+            playerAnim.SetBool("isDigging", true);
+        }
+        else
+        {
+            playerAnim.SetBool("isTracking", true);
+        }
+
+        Invoke(nameof(FinishAction), 1.5f);
     }
 
     private void FinishAction()
@@ -445,6 +450,8 @@ public class PlayerController_2 : MonoBehaviour
         canDig = true;
 
         playerAnim.SetBool("isBarking", false);
+        playerAnim.SetBool("isTracking", false);
+        playerAnim.SetBool("isDigging", false);
     }
 
     #region Input Methods
@@ -465,7 +472,10 @@ public class PlayerController_2 : MonoBehaviour
 
     public void OnDig(InputAction.CallbackContext context)
     {
-        StartDig();
+        if (!ObjectManager.instance.hasOrb)
+        {
+            StartDig();
+        } 
     }
     #endregion
 }

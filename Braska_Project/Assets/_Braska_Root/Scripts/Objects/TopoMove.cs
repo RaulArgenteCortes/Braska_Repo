@@ -31,7 +31,6 @@ public class TopoMove : MonoBehaviour
         {
             if (goingUp) return;
             Burrow();
-            Debug.Log("Me ladró");
         }
     
     }
@@ -63,7 +62,6 @@ public class TopoMove : MonoBehaviour
 
     private void Burrow()
     {
-        Debug.Log("Me Escondo");
         if (goingDown) return;
 
         goingDown = true;

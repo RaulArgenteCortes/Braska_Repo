@@ -12,7 +12,6 @@ public class RuneTriggerBird : MonoBehaviour
 
     public float glowDuration = 4.5f;
 
-    private Material runeMaterial;
     private Material runeMaterial2;
 
     private Color currentEmission;

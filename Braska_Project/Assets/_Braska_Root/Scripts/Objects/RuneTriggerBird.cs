@@ -72,6 +72,7 @@ public class RuneTriggerBird : MonoBehaviour
     {
       
         if (!other.CompareTag("Bark")) return;
+        if (!ObjectManager.instance.barkAvailable) return;
         if (!ObjectManager.instance.runeCanTrigger) return;
 
         if (bird.currentRune != this || !bird.waitingForBark) return;

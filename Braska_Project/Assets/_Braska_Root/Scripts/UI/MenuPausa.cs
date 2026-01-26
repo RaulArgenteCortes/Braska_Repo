@@ -90,7 +90,7 @@ public class MenuPausa : MonoBehaviour
         if (isLoading) return;
         isLoading = true;
 
-
+        GameState.IsPaused = false;
         Time.timeScale = 1f;
         isPaused = false;
         ScenesFade.Instance.FadeOutAndLoad(sceneToLoad1);

@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TriggerPanel : MonoBehaviour
 {
@@ -8,20 +9,34 @@ public class TriggerPanel : MonoBehaviour
     public GameObject menuoptions;
 
 
+    public float velocidadFade = 4f; // segundos para fade
+    public float velocidadLetra = 0.05f;
+
     public TextMeshProUGUI textoDialogo;
     [TextArea(2, 5)]
     public string[] dialogosIniciales;
-    [TextArea(2, 5)]
-    public string[] dialogosRepetidos;
 
     private bool playerInside = false;
     private int indiceDialogo = 0;
     private bool dialogoTerminado = false;
-    private bool usandoDialogoRepetido = false;
     private bool dialogoEnCurso = false;
-    private bool repetidosMostrados = false;
 
+    private string textoActual = "";
+    private int letraActual = 0;
 
+    public Graphic[] hijosPanel;
+
+    private void Start()
+    {
+        
+        foreach (var g in hijosPanel)
+        {
+            Color c = g.color;
+            c.a = 0f;
+            g.color = c;
+        }
+        panelAactivar.SetActive(true);
+    }
     private void Update()
     {
         if (!playerInside) return;
@@ -31,6 +46,7 @@ public class TriggerPanel : MonoBehaviour
             panelAactivar.SetActive(false);
             return;
         }
+
         if (dialogoEnCurso && !panelAactivar.activeSelf)
         {
             panelAactivar.SetActive(true);
@@ -43,60 +59,104 @@ public class TriggerPanel : MonoBehaviour
     }
     void AvanzarDialogo()
     {
-        string[] dialogosActuales = usandoDialogoRepetido ? dialogosRepetidos : dialogosIniciales;
-
-        if (indiceDialogo + 1 <= dialogosActuales.Length)
         {
-            indiceDialogo++;
-        }
+            if (dialogoTerminado) return;
 
-        if (indiceDialogo < dialogosActuales.Length)
-        {
-            textoDialogo.text = dialogosActuales[indiceDialogo];
-            dialogoEnCurso = true;
-        }
-        else
-        {
-            panelAactivar.SetActive(false);
-            dialogoTerminado = true;
-            dialogoEnCurso = false;
+            CancelInvoke(nameof(MostrarLetra));
 
-            if (usandoDialogoRepetido)
+            if (indiceDialogo < dialogosIniciales.Length)
             {
-                repetidosMostrados = true;
+                textoActual = dialogosIniciales[indiceDialogo];
+                letraActual = 0;
+                textoDialogo.text = "";
+                indiceDialogo++;
+                dialogoEnCurso = true;
+
+                // Mostrar texto letra por letra
+                InvokeRepeating(nameof(MostrarLetra), 0f, velocidadLetra);
+            }
+            else
+            {
+                dialogoTerminado = true;
+                dialogoEnCurso = false;
+                InvokeRepeating(nameof(FadeOutHijos), 0f, 0.02f);
             }
         }
     }
+    void MostrarLetra()
+    {
+        if (letraActual < textoActual.Length)
+        {
+            textoDialogo.text += textoActual[letraActual];
+            letraActual++;
+        }
+        else
+        {
+            CancelInvoke(nameof(MostrarLetra));
+        }
+    }
+
+    void FadeInHijos()
+    {
+        bool terminado = true;
+        foreach (var g in hijosPanel)
+        {
+            Color c = g.color;
+            c.a += 0.02f / velocidadFade;
+            if (c.a > 1f) c.a = 1f;
+            g.color = c;
+
+            if (c.a < 1f) terminado = false;
+        }
+
+        if (terminado)
+            CancelInvoke(nameof(FadeInHijos));
+    }
+
+
+    void FadeOutHijos()
+    {
+        bool terminado = true;
+        foreach (var g in hijosPanel)
+        {
+            Color c = g.color;
+            c.a -= 0.02f / velocidadFade;
+            if (c.a < 0f) c.a = 0f;
+            g.color = c;
+
+            if (c.a > 0f) terminado = false;
+        }
+
+        if (terminado)
+            CancelInvoke(nameof(FadeOutHijos));
+    }
+
 
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Player")) return;
-        if (playerInside) return;
+        if (!other.CompareTag("Player") || playerInside) return;
 
         playerInside = true;
-        panelAactivar.SetActive(true);
 
-        usandoDialogoRepetido = dialogoTerminado && !repetidosMostrados;
+        if (dialogoTerminado) return;
+
+        // Fade-in de todos los hijos al entrar
+        CancelInvoke(nameof(FadeOutHijos));
+        InvokeRepeating(nameof(FadeInHijos), 0f, 0.02f);
+
         dialogoEnCurso = true;
-
-        string[] dialogosActuales = usandoDialogoRepetido ? dialogosRepetidos : dialogosIniciales;
-        textoDialogo.text = dialogosActuales[indiceDialogo];
     }
-
 
     private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("Player")) return;
 
         playerInside = false;
-        panelAactivar.SetActive(false);
-        if (dialogoTerminado)
-        {
-            indiceDialogo = 0;
-        }
         dialogoEnCurso = false;
+        CancelInvoke(nameof(MostrarLetra));
+        CancelInvoke(nameof(FadeInHijos));
+        InvokeRepeating(nameof(FadeOutHijos), 0f, 0.02f);
     }
-
 
 }

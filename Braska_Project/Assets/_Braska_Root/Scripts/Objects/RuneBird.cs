@@ -20,6 +20,8 @@ public class RuneBird : MonoBehaviour
     public float delay = 3f;
     public float delayTiempo = 1f;
     public float delayTiempoladrar = 1f;
+    public float LandingTime = 0.75f;
+    public float delayTiempoladrar2 = 0.15f;
 
     [Header("Look Targets")]
     [SerializeField] Transform lookWhileFlying;
@@ -47,6 +49,7 @@ public class RuneBird : MonoBehaviour
             animator.SetBool("IsFlying", false);
             animator.SetBool("IsLanding", false);
             animator.SetBool("Idle", true);
+            animator.SetBool("TakeOff", false);
         }
         if (birdRenderer != null)
         {
@@ -105,13 +108,8 @@ public class RuneBird : MonoBehaviour
      }
     void HandleArrival()
     {
-        Invoke(nameof(HandleArrival2), delayTiempoladrar);
-        if (animator != null)
-        {
-            animator.SetBool("IsFlying", false);
-            animator.SetBool("IsLanding", true);
-            animator.SetBool("Idle", false);
-        }
+        Invoke(nameof(HandleArrival2), LandingTime);
+        
 
         // Detecta runes cerca
         Collider[] hits = Physics.OverlapSphere(transform.position, 0.1f);
@@ -127,8 +125,19 @@ public class RuneBird : MonoBehaviour
     }
     void HandleArrival2()
     {
+        Invoke(nameof(barking), delayTiempoladrar);
+
+        if (animator != null)
+        {
+            animator.SetBool("IsFlying", false);
+            animator.SetBool("IsLanding", true);
+            animator.SetBool("Idle", false);
+            animator.SetBool("TakeOff", false);
+        }
+    }
+    void barking ()
+    {
         waitingForBark = true;
-       
     }
     public Transform GetLookTarget()
     {
@@ -155,14 +164,24 @@ public class RuneBird : MonoBehaviour
 
         if (currentIndex == 0) currentIndex = 1;
         else if (currentIndex == 2) currentIndex = 1;
+        Invoke(nameof(VolarAnimación), delayTiempoladrar);
 
         if (animator != null)
         {
-            animator.SetBool("IsFlying", true);
+            animator.SetBool("IsFlying", false);
+            animator.SetBool("TakeOff", true);
             animator.SetBool("IsLanding", false);
             animator.SetBool("Idle", false);
         }
+        Invoke(nameof(VolarAnimación), delayTiempoladrar2);
         ActivateGlow();
+    }
+    void VolarAnimación()
+    {
+        animator.SetBool("IsFlying", true);
+        animator.SetBool("IsLanding", false);
+        animator.SetBool("Idle", false);
+        animator.SetBool("TakeOff", false);
     }
     void ActivateGlow()
     {

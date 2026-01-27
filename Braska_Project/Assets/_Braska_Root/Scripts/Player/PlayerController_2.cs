@@ -365,7 +365,7 @@ public class PlayerController_2 : MonoBehaviour
             canMove = false;
             areaBark.SetActive(true);
 
-            if (ObjectManager.instance.barkAvailable)
+            //if (ObjectManager.instance.barkAvailable)
                 playerAnim.SetBool("isBarking", true);
 
             Invoke(nameof(FinishAction), 0.5f);

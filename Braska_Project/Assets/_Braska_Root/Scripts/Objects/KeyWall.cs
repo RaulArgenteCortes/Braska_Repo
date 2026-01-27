@@ -20,7 +20,8 @@ public class KeyWall : MonoBehaviour
     {
         CheckUpdate();
     }
-
+   
+   
     private void FixedUpdate()
     {
         MoveWall();

@@ -22,6 +22,8 @@ public class KeyPick : MonoBehaviour
         //originSlot = transform.parent.gameObject;
         keyHold = GameObject.Find("KeyHold");
 
+        ObjectManager.instance.holdingKey = false;
+
         homePosition = transform.position;
     }
 

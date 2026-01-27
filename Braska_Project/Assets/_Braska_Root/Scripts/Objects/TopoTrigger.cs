@@ -8,7 +8,12 @@ public class TopoTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            topo.playerNearby = true;
+            topo.playerOnTop = true;
+        }
+
+        if (other.CompareTag("Prebark"))
+        {
+            topo.playerOnRange = true;
         }
     }
 
@@ -16,7 +21,12 @@ public class TopoTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            topo.playerNearby = false;
+            topo.playerOnTop = false;
+        }
+
+        if (other.CompareTag("Prebark"))
+        {
+            topo.playerOnRange = false;
         }
     }
 }

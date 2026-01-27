@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.Mathematics;
+using UnityEngine;
 
 public class TopoMove : MonoBehaviour
 {
@@ -7,8 +8,10 @@ public class TopoMove : MonoBehaviour
     public float timeUnderground = 3f;
     public Transform player;
     public Transform lookTarget;
+    public Quaternion defaultRotation;
 
-    [HideInInspector] public bool playerNearby = false;
+    [HideInInspector] public bool playerOnTop = false;
+    [HideInInspector] public bool playerOnRange = false;
 
 
     public Collider childCollider;
@@ -20,6 +23,13 @@ public class TopoMove : MonoBehaviour
 
     private void Start()
     {
+        defaultRotation = new quaternion(
+            0,
+            transform.rotation.eulerAngles.y,
+            0,
+            1
+        );
+
         if (animator != null)
             animator.SetBool("Idle", true); 
 
@@ -49,14 +59,13 @@ public class TopoMove : MonoBehaviour
     {
         Vector3 direction = player.position - transform.position;
         direction.y = 0f;
-
-
+        
         Quaternion targetRot = Quaternion.LookRotation(direction);
 
-        lookTarget.rotation = Quaternion.Euler(
-            0f,                    
-            targetRot.eulerAngles.y, 
-            0f                       
+        lookTarget.rotation = Quaternion.Slerp(
+            lookTarget.rotation,
+            playerOnRange ? targetRot : defaultRotation,
+            Time.deltaTime * 2
         );
     }
 
@@ -83,10 +92,8 @@ public class TopoMove : MonoBehaviour
 
     private void TryUnburrow()
     {
-        if (playerNearby)
+        if (playerOnTop)
         {
-            Debug.Log("Intento Subir");
-
             Invoke(nameof(TryUnburrow), 0.5f);
             return;
         }

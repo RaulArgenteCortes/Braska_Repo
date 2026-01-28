@@ -13,12 +13,12 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
-                    "name": "Zoom",
+                    "name": "RotationMouse",
                     "type": "Value",
-                    "id": "334f7b88-69be-41aa-9823-0c1a13406f7d",
+                    "id": "be9351c0-79a3-43dc-89bd-7e40ddb56e6b",
                     "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",

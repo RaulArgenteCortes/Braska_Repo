@@ -53,21 +53,18 @@ public class CameraController : MonoBehaviour
         cam.orthographicSize = Mathf.Clamp(cam.orthographicSize, minZoom, maxZoom);
     }
 
-    public void OnCameraZoom(InputAction.CallbackContext context)
-    {
-        zoomInput = context.ReadValue<float>();
-    }
+    
     private void TargetRotation()
     {
         if (rotationInput > 0)
         {
             rotationTargetSpeed = rotationMaxSpeed;
         }
-        else if (rotationInput < 0)
+        if (rotationInput < 0)
         {
             rotationTargetSpeed = -rotationMaxSpeed;
         }
-        else
+        if (rotationInput == 0)
         {
             rotationTargetSpeed = 0;
         }
@@ -159,7 +156,11 @@ public class CameraController : MonoBehaviour
     {
         rotationInput = context.ReadValue<float>();
     }
+    public void OnCameraZoom(InputAction.CallbackContext context)
+    {
+        zoomInput = context.ReadValue<float>();
+    }
 
     #endregion
-  
+
 }

@@ -35,6 +35,7 @@ public class PlayerController_2 : MonoBehaviour
     [SerializeField] LayerMask groundLayer;
     [SerializeField] LayerMask coverLayer;
     [SerializeField] bool groundAhead;
+    [SerializeField] bool groundNotFound;
     [SerializeField] bool groundAtLeft;
     [SerializeField] bool groundAtRight;
 
@@ -145,9 +146,10 @@ public class PlayerController_2 : MonoBehaviour
 
     private void CheckUpdate() // Updates all terrain checks.
     {
-        groundAhead =
-            Physics.CheckSphere(borderCheckA.transform.position, borderCheckRadius, groundLayer)
-            && Physics.CheckSphere(borderCheckB.transform.position, borderCheckRadius, groundLayer);
+        groundAhead = Physics.CheckSphere(borderCheckA.transform.position, borderCheckRadius, groundLayer);
+
+        groundNotFound = !Physics.CheckSphere(borderCheckB.transform.position, borderCheckRadius, groundLayer)
+            && !Physics.CheckSphere(borderCheckA.transform.position, borderCheckRadius, groundLayer);
 
         groundAtLeft = Physics.CheckSphere(borderCheckLeft.transform.position, borderCheckRadius, groundLayer);
         groundAtRight = Physics.CheckSphere(borderCheckRight.transform.position, borderCheckRadius, groundLayer);
@@ -283,6 +285,12 @@ public class PlayerController_2 : MonoBehaviour
             transform.position += -moveSpeed * Time.deltaTime * transform.right;
         }
 
+        // If the player is not on ground, it gets pushed back.
+        if (groundNotFound)
+        {
+            transform.position += -maxSpeed * 2 * Time.deltaTime * transform.forward;
+        }
+
         transform.position += moveSpeed * Time.deltaTime * transform.forward; // Moves the player forward.
         TrySpawnFootprint();
 
@@ -365,15 +373,17 @@ public class PlayerController_2 : MonoBehaviour
             canMove = false;
             areaBark.SetActive(true);
 
-            if (ObjectManager.instance.barkAvailable)
+            //if (ObjectManager.instance.barkAvailable)
                 playerAnim.SetBool("isBarking", true);
 
             Invoke(nameof(FinishAction), 0.5f);
 
-            isGlowing = true;
-            glowTimer = 0f;
-            currentGlowColor = normalGlow;
-
+            if (ObjectManager.instance.barkAvailable)
+            {
+                isGlowing = true;
+                glowTimer = 0f;
+                currentGlowColor = normalGlow;
+            }
         }
     }
     private void UpdateGlowFade()

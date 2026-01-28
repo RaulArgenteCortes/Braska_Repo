@@ -16,6 +16,7 @@ public class KeyPick : MonoBehaviour
     [Header("Object References")]
     [SerializeField] GameObject currentKeySlot;
     [SerializeField] GameObject keyHold;
+    [SerializeField] ParticleSystem keyParticles;
 
     private void Start()
     {
@@ -85,7 +86,7 @@ public class KeyPick : MonoBehaviour
                         currentKeySlot.transform.rotation
                     );
                 }
-            }
+            } 
         }
     }
 
@@ -116,13 +117,7 @@ public class KeyPick : MonoBehaviour
             }
             else if (ObjectManager.instance.holdingKey) // Holding key.
             {
-                currentKeySlot = ObjectManager.instance.keySlot;
-                //transform.SetParent(currentKeySlot.transform);
-
-                ObjectManager.instance.holdingKey = false;
-                isHolded = false;
-
-                PlayVFX();
+                Invoke(nameof(DropKey), 0.1f);
             }   
         }
 
@@ -142,6 +137,17 @@ public class KeyPick : MonoBehaviour
 
             emissionIntensity = 1;
         }
+    }
+
+    private void DropKey()
+    {
+        currentKeySlot = ObjectManager.instance.keySlot;
+
+        if (!ObjectManager.instance.keySlotOnSight)
+            keyParticles.Play();
+
+        ObjectManager.instance.holdingKey = false;
+        isHolded = false;
     }
 
     private void PlayVFX()

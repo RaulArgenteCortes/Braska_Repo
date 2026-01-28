@@ -48,7 +48,7 @@ public class MegaRuneTrigger : MonoBehaviour
         {
             AudioManager.Instance.PlaySFX(4);
             ObjectManager.instance.megaRunePrepareMove();
-            Vector3 vfxPosition = transform.position + new Vector3(0, 0.4f, 0);
+            Vector3 vfxPosition = transform.position + new Vector3(0, 0.8f, 0);
             GameObject particlesystem = Instantiate(vfx_runaActiva, vfxPosition, transform.rotation);
 
             ShakeAllPlatforms();

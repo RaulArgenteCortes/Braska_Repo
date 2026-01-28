@@ -16,6 +16,7 @@ public class KeyPick : MonoBehaviour
     [Header("Object References")]
     [SerializeField] GameObject currentKeySlot;
     [SerializeField] GameObject keyHold;
+    [SerializeField] ParticleSystem keyParticles;
 
     private void Start()
     {
@@ -85,7 +86,7 @@ public class KeyPick : MonoBehaviour
                         currentKeySlot.transform.rotation
                     );
                 }
-            }
+            } 
         }
     }
 
@@ -141,6 +142,9 @@ public class KeyPick : MonoBehaviour
     private void DropKey()
     {
         currentKeySlot = ObjectManager.instance.keySlot;
+
+        if (!ObjectManager.instance.keySlotOnSight)
+            keyParticles.Play();
 
         ObjectManager.instance.holdingKey = false;
         isHolded = false;

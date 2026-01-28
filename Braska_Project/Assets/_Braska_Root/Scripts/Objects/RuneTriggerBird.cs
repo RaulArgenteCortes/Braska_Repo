@@ -66,10 +66,8 @@ public class RuneTriggerBird : MonoBehaviour
         DynamicGI.SetEmissive(PedestarlRedenderer, emission);
     }
 
-
     private void OnTriggerEnter(Collider other)
     {
-      
         if (!other.CompareTag("Bark")) return;
         if (!ObjectManager.instance.barkAvailable) return;
         if (!ObjectManager.instance.runeCanTrigger) return;
@@ -85,12 +83,10 @@ public class RuneTriggerBird : MonoBehaviour
 
         ShakeAllPlatforms();
 
-        ActivarIluminacion();
+        //ActivarIluminacion();
 
         Invoke(nameof(VolverABase), glowDuration);
     }
-    
-    
 
     private void ActivarIluminacion()
     {

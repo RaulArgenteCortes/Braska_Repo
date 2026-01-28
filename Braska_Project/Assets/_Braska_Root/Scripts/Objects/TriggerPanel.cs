@@ -141,9 +141,8 @@ public class TriggerPanel : MonoBehaviour
 
         if (dialogoTerminado) return;
 
-        // Fade-in de todos los hijos al entrar
         CancelInvoke(nameof(FadeOutHijos));
-        InvokeRepeating(nameof(FadeInHijos), 0f, 0.02f);
+        InvokeRepeating(nameof(FadeInHijos), 1f, 0.02f);
 
         dialogoEnCurso = true;
     }

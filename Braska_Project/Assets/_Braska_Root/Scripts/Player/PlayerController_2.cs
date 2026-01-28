@@ -370,10 +370,12 @@ public class PlayerController_2 : MonoBehaviour
 
             Invoke(nameof(FinishAction), 0.5f);
 
-            isGlowing = true;
-            glowTimer = 0f;
-            currentGlowColor = normalGlow;
-
+            if (ObjectManager.instance.barkAvailable)
+            {
+                isGlowing = true;
+                glowTimer = 0f;
+                currentGlowColor = normalGlow;
+            }
         }
     }
     private void UpdateGlowFade()

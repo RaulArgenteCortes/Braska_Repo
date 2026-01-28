@@ -75,6 +75,7 @@ public class MenuPausa : MonoBehaviour
     }
     public void MainMenu()
     {
+        GameState.IsPaused = false;
         if (isLoading) return;
         isLoading = true;
 

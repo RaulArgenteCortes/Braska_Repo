@@ -17,12 +17,41 @@ public class RuneTrigger : MonoBehaviour
     private Material runeMaterial2;
 
     private Color currentEmission;
+    [SerializeField] float emissionIntensity = 25f;
+    private Color targetEmission;
+    private bool increasing = false;
+    private bool decreasing = false;
+      private Color initialEmission;
 
 
+    void UpdateEmission()
+    {
+        if (!increasing && !decreasing) return;
+
+        // Lerp de la emisión actual hacia la target
+        currentEmission = Color.Lerp(currentEmission, targetEmission, Time.deltaTime * ObjectManager.instance.prebarkEmissionSpeed);
+
+        if (runeMaterial != null)
+            runeMaterial.SetColor("_EmissionColor", currentEmission);
+
+        if (runeMaterial2 != null)
+            runeMaterial2.SetColor("_EmissionColor", currentEmission);
+
+        // Si ya llegó casi al objetivo
+        if (Vector4.Distance(currentEmission, targetEmission) < 0.01f)
+        {
+            currentEmission = targetEmission;
+            increasing = false;
+            decreasing = false;
+            CancelInvoke(nameof(UpdateEmission));
+        }
+    }
 
     private void Start()
     {
         currentEmission = glowColor * ObjectManager.instance.runeLowEmission;
+        initialEmission = currentEmission;
+
 
         if (runeRenderer != null)
         {
@@ -52,41 +81,43 @@ public class RuneTrigger : MonoBehaviour
             GameObject particlesystem = Instantiate(vfx_runaActiva, vfxPosition, transform.rotation);
 
             ShakeAllPlatforms();
-
-
-            ActivarIluminacion();
-
-            Invoke(nameof(VolverABase), glowDuration);
         }
+        if(other.CompareTag("Prebark"))
+        {
+            ActivarIluminacion();
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+     
+      
+            VolverABase();
+        
     }
 
     private void ActivarIluminacion()
     {
-        if (runeMaterial != null)
-        {
-            runeMaterial.EnableKeyword("_EMISSION");
-            runeMaterial.SetColor("_EmissionColor", glowColor * ObjectManager.instance.runeHighEmission);  // Intensidad del brillo
-        }
-        if (runeMaterial2 != null)
-        {
-            runeMaterial2.EnableKeyword("_EMISSION");
-            runeMaterial2.SetColor("_EmissionColor", glowColor * ObjectManager.instance.runeHighEmission);  // Intensidad del brillo
-        }
+        targetEmission = glowColor * ObjectManager.instance.runeHighEmission * emissionIntensity;
+        increasing = true;
+        decreasing = false;
+
+      
+
+        runeMaterial.EnableKeyword("_EMISSION");
+        runeMaterial2.EnableKeyword("_EMISSION");
+
+        CancelInvoke(nameof(UpdateEmission));
+        InvokeRepeating(nameof(UpdateEmission), 0f, 0.02f);
     }
     private void VolverABase()
     {
-        if (runeMaterial != null)
-        {
-            runeMaterial.SetColor("_EmissionColor", currentEmission);
-            DynamicGI.SetEmissive(runeRenderer, currentEmission);
-        }
+        targetEmission = initialEmission; 
+        decreasing = true;
+        increasing = false;
 
-        if (runeMaterial2 != null)
-        {
 
-            runeMaterial2.SetColor("_EmissionColor", currentEmission);
-            DynamicGI.SetEmissive(PedestarlRedenderer, currentEmission);
-        }
+        CancelInvoke(nameof(UpdateEmission));
+        InvokeRepeating(nameof(UpdateEmission), 0f, 0.02f);
     }
     #region ShakePlatforms
 

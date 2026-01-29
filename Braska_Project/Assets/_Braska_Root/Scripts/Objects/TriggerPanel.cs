@@ -62,7 +62,13 @@ public class TriggerPanel : MonoBehaviour
         {
             if (dialogoTerminado) return;
 
-            CancelInvoke(nameof(MostrarLetra));
+            if (dialogoEnCurso && letraActual < textoActual.Length)
+            {
+                CancelInvoke(nameof(MostrarLetra));
+                textoDialogo.text = textoActual;
+                letraActual = textoActual.Length;
+                return;
+            }
 
             if (indiceDialogo < dialogosIniciales.Length)
             {
@@ -72,13 +78,13 @@ public class TriggerPanel : MonoBehaviour
                 indiceDialogo++;
                 dialogoEnCurso = true;
 
-                // Mostrar texto letra por letra
                 InvokeRepeating(nameof(MostrarLetra), 0f, velocidadLetra);
             }
             else
             {
                 dialogoTerminado = true;
                 dialogoEnCurso = false;
+                CancelInvoke(nameof(MostrarLetra));
                 InvokeRepeating(nameof(FadeOutHijos), 0f, 0.02f);
             }
         }

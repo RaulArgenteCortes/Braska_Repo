@@ -1,4 +1,5 @@
-﻿using Unity.Mathematics;
+﻿using System.Data;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class TopoMove : MonoBehaviour
@@ -9,6 +10,7 @@ public class TopoMove : MonoBehaviour
     public Transform player;
     public Transform lookTarget;
     public Quaternion defaultRotation;
+    public Transform parentTransform;
 
     [HideInInspector] public bool playerOnTop = false;
     [HideInInspector] public bool playerOnRange = false;
@@ -25,7 +27,7 @@ public class TopoMove : MonoBehaviour
     {
         defaultRotation = new quaternion(
             0,
-            transform.rotation.eulerAngles.y,
+            parentTransform.rotation.eulerAngles.y,
             0,
             1
         );
@@ -64,7 +66,7 @@ public class TopoMove : MonoBehaviour
 
         lookTarget.rotation = Quaternion.Slerp(
             lookTarget.rotation,
-            playerOnRange ? targetRot : defaultRotation,
+            playerOnRange ? targetRot : Quaternion.Euler(parentTransform.eulerAngles),
             Time.deltaTime * 2
         );
     }

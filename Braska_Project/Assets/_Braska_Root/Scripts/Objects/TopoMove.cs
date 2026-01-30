@@ -15,6 +15,7 @@ public class TopoMove : MonoBehaviour
     [HideInInspector] public bool playerOnTop = false;
     [HideInInspector] public bool playerOnRange = false;
 
+    public ParticleSystem dirtParticles;
 
     public Collider childCollider;
 
@@ -42,6 +43,7 @@ public class TopoMove : MonoBehaviour
         if (other.CompareTag("Bark") && ObjectManager.instance.barkAvailable)
         {
             if (goingUp) return;
+
             Burrow();
         }
     
@@ -85,6 +87,9 @@ public class TopoMove : MonoBehaviour
             animator.SetBool("Unburrow", false);
             animator.SetBool("Idle", false);
         }
+
+        dirtParticles.Play();
+
         CancelInvoke(nameof(TryUnburrow));
         Invoke(nameof(TryUnburrow), timeUnderground);
 
@@ -117,6 +122,8 @@ public class TopoMove : MonoBehaviour
             animator.SetBool("Unburrow", true);
             animator.SetBool("Idle", false);
         }
+
+        dirtParticles.Play();
 
         float unburrowDuration = animator.GetCurrentAnimatorStateInfo(0).length;
         Invoke(nameof(FinishUnburrow), unburrowDuration);

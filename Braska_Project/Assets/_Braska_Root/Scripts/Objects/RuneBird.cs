@@ -183,6 +183,7 @@ public class RuneBird : MonoBehaviour
 
     public void StartMove()
     {
+        
         if (!waitingForBark) return;
 
         waitingForBark = false;

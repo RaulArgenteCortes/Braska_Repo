@@ -14,12 +14,23 @@ public class MainMenu : MonoBehaviour
    
     public void Play()
     {
-        if (isLoading) return;
-        isLoading = true;
-        AudioManager.Instance.PlaySFX(0);
-        ScenesFade.Instance.FadeOutAndLoad(sceneToLoad1);
-        Time.timeScale = 1f;
-        
+        if (ScenesManager.instance.collectedOrbs < 0)
+        {
+
+            if (isLoading) return;
+            isLoading = true;
+            AudioManager.Instance.PlaySFX(0);
+            ScenesFade.Instance.FadeOutAndLoad(sceneToLoad1);
+            Time.timeScale = 1f;
+        }
+        if(ScenesManager.instance.collectedOrbs > -1)
+        {
+            if (isLoading) return;
+            isLoading = true;
+            AudioManager.Instance.PlaySFX(0);
+            ScenesFade.Instance.FadeOutAndLoad(sceneToLoad);
+            Time.timeScale = 1f;
+        }
     
     }
 
@@ -31,6 +42,10 @@ public class MainMenu : MonoBehaviour
         AudioManager.Instance.PlaySFX(0);
         Application.Quit();
       
+    }
+    public void Reseta()
+    {
+        ScenesManager.instance.collectedOrbs = -1;
     }
     public void Options()
     {

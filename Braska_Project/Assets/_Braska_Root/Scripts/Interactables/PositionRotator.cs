@@ -11,7 +11,7 @@ public class PositionRotator : MonoBehaviour
         // Rota el mesh dependiendo de su posición.
         transform.eulerAngles = new Vector3(
             transform.eulerAngles.x,
-            (transform.position.x + transform.position.y + transform.position.z) * minRotation,
+            (transform.position.x + transform.position.y + transform.position.z) * minRotation - 45,
             transform.eulerAngles.z
         );
     }

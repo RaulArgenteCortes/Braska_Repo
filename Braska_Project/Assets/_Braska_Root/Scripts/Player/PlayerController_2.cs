@@ -324,6 +324,8 @@ public class PlayerController_2 : MonoBehaviour
             );
            
             lastFootprintPos = transform.position;
+
+            Destroy(fp, 5f);
         }
     }
     private void LateUpdate()

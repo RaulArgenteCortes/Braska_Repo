@@ -37,6 +37,11 @@ public class RuneBird : MonoBehaviour
     private Color originalEmissionColor;
     private bool isGlowing = false;
 
+    [Header("Dust Effect")]
+    [SerializeField] private GameObject dustPrefab; // Prefab de partículas tipo polvo
+    [SerializeField] private float dustSpacing = 0.5f; // Cada cuánto espacio deja partículas
+    private Vector3 lastDustPos;
+
     void Start()
     {
 
@@ -68,6 +73,7 @@ public class RuneBird : MonoBehaviour
             path[currentIndex],
             speed * Time.deltaTime
         );
+        TrySpawnDust();
 
         if (Vector3.Distance(transform.position, path[currentIndex]) < 0.01f)
         {
@@ -85,7 +91,30 @@ public class RuneBird : MonoBehaviour
             }
         }
     }
+    void TrySpawnDust()
+    {
+        if (dustPrefab == null) return;
 
+        if (lastDustPos == Vector3.zero)
+        {
+            lastDustPos = transform.position;
+            return;
+        }
+
+        float distance = Vector3.Distance(transform.position, lastDustPos);
+        if (distance >= dustSpacing)
+        {
+            GameObject dust = Instantiate(
+                dustPrefab,
+                transform.position,
+                Quaternion.identity
+            );
+
+            Destroy(dust, 5f);
+
+            lastDustPos = transform.position;
+        }
+    }
 
 
     void ArrivedAtPoint()

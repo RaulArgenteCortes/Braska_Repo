@@ -22,6 +22,9 @@ public class RuneTrigger : MonoBehaviour
     private bool increasing = false;
     private bool decreasing = false;
       private Color initialEmission;
+    private bool isActive = false;
+    public float timemove = 4.5f;
+    public bool playersee = false;
 
 
     void UpdateEmission()
@@ -45,8 +48,16 @@ public class RuneTrigger : MonoBehaviour
             decreasing = false;
             CancelInvoke(nameof(UpdateEmission));
         }
+      
     }
+    private void Update()
+    {
+        if (playersee == true)
+        {
+            VolverABase();
+        }
 
+    }
     private void Start()
     {
         currentEmission = glowColor * ObjectManager.instance.runeLowEmission;
@@ -79,20 +90,40 @@ public class RuneTrigger : MonoBehaviour
             ObjectManager.instance.RunePrepareMove();
             Vector3 vfxPosition = transform.position + new Vector3(0, 0.4f, 0);
             GameObject particlesystem = Instantiate(vfx_runaActiva, vfxPosition, transform.rotation);
-
+            isActive = true;
+            playersee = true;
+            CancelInvoke(nameof(UpdateEmission));
+            increasing = false;
+            decreasing = false;
+            Invoke(nameof(Moveplatforms), timemove);
             ShakeAllPlatforms();
+
         }
-        if(other.CompareTag("Prebark"))
+        if(other.CompareTag("Prebark") && !isActive)
+        {
+            ActivarIluminacion();
+            
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Prebark") && !isActive && !playersee)
         {
             ActivarIluminacion();
         }
     }
+    void Moveplatforms()
+    {
+        isActive = false;
+        playersee = false;
+
+    }
     private void OnTriggerExit(Collider other)
     {
      
-      
-            VolverABase();
+        VolverABase();
         
+
     }
 
     private void ActivarIluminacion()

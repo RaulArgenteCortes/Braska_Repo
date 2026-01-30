@@ -21,7 +21,9 @@ public class MegaRuneTrigger : MonoBehaviour
     private Color initialEmission;
     private Color currentEmission;
     [SerializeField] float emissionIntensity = 25f;
-
+    private bool isActive = false;
+    public float timemove = 4.5f;
+    public bool playersee = false;
 
     void UpdateEmission()
     {
@@ -44,6 +46,14 @@ public class MegaRuneTrigger : MonoBehaviour
             decreasing = false;
             CancelInvoke(nameof(UpdateEmission));
         }
+    }
+    private void Update()
+    {
+        if (playersee == true)
+        {
+            VolverABase();
+        }
+
     }
 
     private void Start()
@@ -79,7 +89,12 @@ public class MegaRuneTrigger : MonoBehaviour
             GameObject particlesystem = Instantiate(vfx_runaActiva, vfxPosition, transform.rotation);
 
             ShakeAllPlatforms();
-
+            isActive = true;
+            playersee = true;
+            increasing = false;
+            decreasing = false;
+            Invoke(nameof(Moveplatforms), timemove);
+            CancelInvoke(nameof(UpdateEmission));
 
             ActivarIluminacion();
 
@@ -90,11 +105,23 @@ public class MegaRuneTrigger : MonoBehaviour
             ActivarIluminacion();
         }
     }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Prebark") && !isActive && !playersee)
+        {
+            ActivarIluminacion();
+        }
+    }
     private void OnTriggerExit(Collider other)
     {
         VolverABase();
     }
+    void Moveplatforms()
+    {
+        isActive = false;
+        playersee = false;
 
+    }
     private void ActivarIluminacion()
     {
         targetEmission = glowColor * ObjectManager.instance.runeHighEmission * emissionIntensity;

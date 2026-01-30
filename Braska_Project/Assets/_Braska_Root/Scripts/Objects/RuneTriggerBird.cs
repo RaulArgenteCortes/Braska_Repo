@@ -7,26 +7,27 @@ public class RuneTriggerBird : MonoBehaviour
     public float vfxDuration = 2f;
 
     public Renderer runeRenderer;
-    public Renderer PedestarlRedenderer;
+    public Renderer pedestalRenderer;
     public Color glowColor = Color.cyan;
 
     public float glowDuration = 4.5f;
 
+    private Material runeMaterial2;
+
+    private Color currentEmission;
 
     [Header("Object references")]
     [SerializeField] RuneBird bird;
 
-    Animator animator;
     private Material runeMaterial;
-    private Color currentEmission;
-    private Color targetEmission;
-    private Color baseEmission;
+    [Header("Emission Settings")]
+    [SerializeField] float baseEmissionIntensity = 4f;
+    [SerializeField] float highlightMultiplier = 1.5f;
 
-    private bool increasing = false;
-    private bool decreasing = false;
-    [SerializeField] float emissionIntensity = 25f;
-    [SerializeField] float prebarkEmissionSpeed = 3f;
-    [SerializeField] float baseEmissionIntensity = 10f;
+    public float currentIntensity;
+    public float targetIntensity;
+
+
 
 
     public void Awake()
@@ -34,49 +35,40 @@ public class RuneTriggerBird : MonoBehaviour
     }
     private void Start()
     {
+        if (pedestalRenderer == null) return;
 
-        if (PedestarlRedenderer == null) return;
-
-        runeMaterial = PedestarlRedenderer.material;
+        // Instancia única del material
+        runeMaterial = pedestalRenderer.material;
         runeMaterial.EnableKeyword("_EMISSION");
 
-        // Emission base GLOBAL
-        baseEmission = glowColor * baseEmissionIntensity;
-        currentEmission = baseEmission;
+        ApplyBaseEmission();
 
-        runeMaterial.SetColor("_EmissionColor", baseEmission);
-        DynamicGI.SetEmissive(PedestarlRedenderer, baseEmission);
-
-
-
+        currentIntensity = baseEmissionIntensity;
+        targetIntensity = baseEmissionIntensity;
     }
+
+
+
+
     private void Update()
     {
-        // Si puede ladrar → brillo alto
-        if (bird.currentRune == this && bird.waitingForBark)
-        {
-            targetEmission = glowColor * ObjectManager.instance.runeHighEmission * emissionIntensity;
-        }
-        else
-        {
-            // Si no, SIEMPRE base emission
-            targetEmission = baseEmission;
-        }
+        if (runeMaterial == null) return;
 
-        currentEmission = Color.Lerp(
-            currentEmission,
-            targetEmission,
-            Time.deltaTime * prebarkEmissionSpeed
+        currentIntensity = Mathf.Lerp(
+            currentIntensity,
+            targetIntensity,
+            Time.deltaTime * ObjectManager.instance.prebarkEmissionSpeed
         );
 
-        runeMaterial.SetColor("_EmissionColor", currentEmission);
-        DynamicGI.SetEmissive(PedestarlRedenderer, currentEmission);
-    }
+        ApplyEmission(currentIntensity);
 
+
+
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Prebark") && bird.currentRune == this && bird.waitingForBark)
+        if (other.CompareTag("Prebark") && bird.currentRune == this)
         {
             ActivarIluminacion();
         }
@@ -89,37 +81,42 @@ public class RuneTriggerBird : MonoBehaviour
         bird.StartMove();
         ObjectManager.instance.RunePrepareMove();
 
-        ShakeAllPlatforms();
-   
+        //Vector3 vfxPosition = transform.position + new Vector3(0, 0.4f, 0);
+        //GameObject particlesystem = Instantiate(vfx_runaActiva, vfxPosition, transform.rotation);
+        //AudioManager.Instance.PlaySFX(4);
 
-        if (other.CompareTag("Prebark"))
-        {
-            ActivarIluminacion();
-        }
+        ShakeAllPlatforms();
+
+       
+
     }
     private void OnTriggerExit(Collider other)
     {
         VolverABase();
-    }
 
+    }
+    private void ApplyBaseEmission()
+    {
+        Color emission = glowColor * baseEmissionIntensity;
+        runeMaterial.SetColor("_EmissionColor", emission);
+
+        // Solo una vez
+        DynamicGI.SetEmissive(pedestalRenderer, emission);
+    }
 
     private void ActivarIluminacion()
     {
-        targetEmission = glowColor * ObjectManager.instance.runeHighEmission * emissionIntensity;
-        increasing = true;
-        decreasing = false;
-
-        CancelInvoke(nameof(Update));
-        InvokeRepeating(nameof(Update), 0f, 0.02f);
+       targetIntensity = baseEmissionIntensity * highlightMultiplier;
     }
     private void VolverABase()
     {
-        targetEmission = baseEmission; 
-        decreasing = true;
-        increasing = false;
-
-        CancelInvoke(nameof(Update));
-        InvokeRepeating(nameof(Update), 0f, 0.02f);
+        targetIntensity = baseEmissionIntensity;
+    }
+    private void ApplyEmission(float intensity)
+    {
+        Color emission = glowColor * intensity;
+        runeMaterial.SetColor("_EmissionColor", emission);
+        DynamicGI.SetEmissive(pedestalRenderer, emission);
     }
     #region ShakePlatforms
 

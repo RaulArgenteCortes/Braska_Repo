@@ -28,14 +28,15 @@ public class TriggerPanel : MonoBehaviour
 
     private void Start()
     {
-        
+
+        panelAactivar.SetActive(true);
+
         foreach (var g in hijosPanel)
         {
             Color c = g.color;
             c.a = 0f;
             g.color = c;
         }
-        panelAactivar.SetActive(true);
     }
     private void Update()
     {
@@ -138,17 +139,15 @@ public class TriggerPanel : MonoBehaviour
     }
 
 
-
-    private void OnTriggerEnter(Collider other)
+    void ActivarDialogo(Collider other)
     {
-        if (!other.CompareTag("Player") || playerInside) return;
+        if (!other.CompareTag("Player") || playerInside || dialogoTerminado)
+            return;
 
         playerInside = true;
 
-        if (dialogoTerminado) return;
-
         CancelInvoke(nameof(FadeOutHijos));
-        InvokeRepeating(nameof(FadeInHijos), 1f, 0.02f);
+        InvokeRepeating(nameof(FadeInHijos), 0.5f, 0.02f);
 
         dialogoEnCurso = true;
     }
@@ -162,6 +161,15 @@ public class TriggerPanel : MonoBehaviour
         CancelInvoke(nameof(MostrarLetra));
         CancelInvoke(nameof(FadeInHijos));
         InvokeRepeating(nameof(FadeOutHijos), 0f, 0.02f);
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        ActivarDialogo(other);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        ActivarDialogo(other);
     }
 
 }

@@ -1,4 +1,4 @@
-using UnityEditor;
+ï»¿using UnityEditor;
 using UnityEngine;
 
 public class OrbFollow : MonoBehaviour
@@ -29,6 +29,15 @@ public class OrbFollow : MonoBehaviour
 
     [Header("Emission Settings")]
     [SerializeField] private float emissionIntensity = 2f;
+    [Header("Pulse Settings")]
+    [SerializeField] private float pulseSpeed = 1.5f;
+    [SerializeField] private float pulseAmplitude = 0.4f;
+
+    [Header("Trail Particle")]
+    [SerializeField] private ParticleSystem trailParticles;
+
+
+    private Color baseEmissionColor;
 
     private void Awake()
     {
@@ -36,7 +45,20 @@ public class OrbFollow : MonoBehaviour
        
 
     }
+    private void Update()
+    {
+        UpdateEmissionPulse();
+    }
+    private void UpdateEmissionPulse()
+    {
+        float pulse = Mathf.Sin(Time.time * pulseSpeed) * pulseAmplitude;
+        float finalIntensity = emissionIntensity + pulse;
 
+        Color emission = baseEmissionColor * finalIntensity;
+
+        orbMaterial.SetColor("_EmissionColor", emission);
+        orbMaterial2.SetColor("_EmissionColor", emission);
+    }
     private void Start()
     {
         if (orbRenderer == null)
@@ -50,7 +72,7 @@ public class OrbFollow : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
-
+        trailParticles.gameObject.SetActive(true);
 
     }
     private void SetEmissionByLevel()
@@ -76,11 +98,13 @@ public class OrbFollow : MonoBehaviour
                 break;
         }
 
-        // Activar emisión
+        baseEmissionColor = emissionColor;
+
         orbMaterial.EnableKeyword("_EMISSION");
         orbMaterial2.EnableKeyword("_EMISSION");
-        orbMaterial.SetColor("_EmissionColor", emissionColor * emissionIntensity);
-        orbMaterial2.SetColor("_EmissionColor", emissionColor * emissionIntensity);
+
+        orbMaterial.SetColor("_EmissionColor", baseEmissionColor * emissionIntensity);
+        orbMaterial2.SetColor("_EmissionColor", baseEmissionColor * emissionIntensity);
     }
 
     private void FixedUpdate()
@@ -126,6 +150,7 @@ public class OrbFollow : MonoBehaviour
 
     private void FollowStart()
     {
+        trailParticles.gameObject.SetActive(false);
         AudioManager.Instance.PlaySFX(3);
         followStart = true;
     }

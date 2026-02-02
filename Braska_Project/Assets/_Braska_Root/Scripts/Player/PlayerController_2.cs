@@ -324,6 +324,8 @@ public class PlayerController_2 : MonoBehaviour
             );
            
             lastFootprintPos = transform.position;
+
+            Destroy(fp, 5f);
         }
     }
     private void LateUpdate()
@@ -333,7 +335,7 @@ public class PlayerController_2 : MonoBehaviour
 
     private void Animator()
     {
-        if (moveInput != Vector2.zero && canMove && groundAhead)
+        if (moveSpeed > 0.5f && canMove && groundAhead)
         {
             playerAnim.SetBool("isWalking", true);
         }

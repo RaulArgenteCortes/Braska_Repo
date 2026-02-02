@@ -38,8 +38,8 @@ public class RuneBird : MonoBehaviour
     private bool isGlowing = false;
 
     [Header("Dust Effect")]
-    [SerializeField] private GameObject dustPrefab; // Prefab de partículas tipo polvo
-    [SerializeField] private float dustSpacing = 0.5f; // Cada cuánto espacio deja partículas
+    [SerializeField] private GameObject dustPrefab;
+    [SerializeField] private float dustSpacing = 0.5f; 
     private Vector3 lastDustPos;
 
     void Start()

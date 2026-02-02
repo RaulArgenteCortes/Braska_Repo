@@ -1,4 +1,5 @@
-﻿using Unity.VisualScripting;
+﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class RuneTriggerBird : MonoBehaviour
@@ -12,9 +13,8 @@ public class RuneTriggerBird : MonoBehaviour
 
     public float glowDuration = 4.5f;
 
-    private Material runeMaterial2;
 
-    private Color currentEmission;
+    
 
     [Header("Object references")]
     [SerializeField] RuneBird bird;
@@ -26,13 +26,13 @@ public class RuneTriggerBird : MonoBehaviour
 
     public float currentIntensity;
     public float targetIntensity;
+    private bool isActive = false;
+    public bool playersee = false;
+    public float timemove = 4.5f;
 
 
 
 
-    public void Awake()
-    {
-    }
     private void Start()
     {
         if (pedestalRenderer == null) return;
@@ -52,6 +52,10 @@ public class RuneTriggerBird : MonoBehaviour
 
     private void Update()
     {
+        if (playersee == true)
+        {
+            VolverABase();
+        }
         if (runeMaterial == null) return;
 
         currentIntensity = Mathf.Lerp(
@@ -68,32 +72,44 @@ public class RuneTriggerBird : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Prebark") && bird.currentRune == this)
+        if (other.CompareTag("Prebark") && bird.currentRune == this && ObjectManager.instance.barkAvailable && !isActive && bird.waitingForBark)
         {
             ActivarIluminacion();
         }
         if (!other.CompareTag("Bark")) return;
         if (!ObjectManager.instance.barkAvailable) return;
         if (!ObjectManager.instance.runeCanTrigger) return;
-
+        isActive = true;
+        playersee = true;
         if (bird.currentRune != this || !bird.waitingForBark) return;
-
         bird.StartMove();
         ObjectManager.instance.RunePrepareMove();
+        Invoke(nameof(ResetRune), timemove);
 
         //Vector3 vfxPosition = transform.position + new Vector3(0, 0.4f, 0);
         //GameObject particlesystem = Instantiate(vfx_runaActiva, vfxPosition, transform.rotation);
         //AudioManager.Instance.PlaySFX(4);
 
         ShakeAllPlatforms();
+    }
 
-       
-
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Prebark") && !isActive && !playersee && ObjectManager.instance.barkAvailable && bird.currentRune == this && bird.waitingForBark)
+        {
+            ActivarIluminacion();
+        }
     }
     private void OnTriggerExit(Collider other)
     {
         VolverABase();
 
+    }
+    private void ResetRune()
+    {
+        isActive = false;
+        playersee = false;
+        VolverABase();
     }
     private void ApplyBaseEmission()
     {

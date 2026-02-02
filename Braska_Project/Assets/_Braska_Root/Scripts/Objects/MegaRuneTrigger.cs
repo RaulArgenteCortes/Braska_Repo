@@ -100,14 +100,14 @@ public class MegaRuneTrigger : MonoBehaviour
 
             Invoke(nameof(VolverABase), glowDuration);
         }
-        if(other.CompareTag("Prebark"))
+        if(other.CompareTag("Prebark") && ObjectManager.instance.barkAvailable && !isActive)
         {
             ActivarIluminacion();
         }
     }
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Prebark") && !isActive && !playersee)
+        if (other.CompareTag("Prebark") && !isActive && !playersee && ObjectManager.instance.barkAvailable)
         {
             ActivarIluminacion();
         }

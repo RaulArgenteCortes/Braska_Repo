@@ -26,6 +26,8 @@ public class RuneTrigger : MonoBehaviour
     public float timemove = 4.5f;
     public bool playersee = false;
 
+   
+
 
     void UpdateEmission()
     {
@@ -99,15 +101,16 @@ public class RuneTrigger : MonoBehaviour
             ShakeAllPlatforms();
 
         }
-        if(other.CompareTag("Prebark") && !isActive)
+        if(other.CompareTag("Prebark") && !isActive && ObjectManager.instance.barkAvailable)
         {
             ActivarIluminacion();
             
         }
+        
     }
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Prebark") && !isActive && !playersee)
+        if (other.CompareTag("Prebark") && !isActive && !playersee && ObjectManager.instance.barkAvailable)
         {
             ActivarIluminacion();
         }

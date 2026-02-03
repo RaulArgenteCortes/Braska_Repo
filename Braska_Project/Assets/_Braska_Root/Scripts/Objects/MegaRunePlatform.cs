@@ -107,6 +107,8 @@ public class MegaRunePlatform : MonoBehaviour
 
     public void ActivarGlow()
     {
+        AudioManager.Instance.PlaySFX(14);
+
         if (!glowing && platformMaterial != null)
         {
             glowing = true;

@@ -42,8 +42,17 @@ public class RuneBird : MonoBehaviour
     [SerializeField] private float dustSpacing = 0.5f; 
     private Vector3 lastDustPos;
 
+    private bool BirdSoundPlaying = true;
+    private bool BirdSoundFly = true;
+
     void Start()
     {
+        BirdSoundFly = false;
+        if (BirdSoundPlaying)
+        {
+            AudioManager.Instance.PlaySFX(16);
+            BirdSoundPlaying = true;
+        }
 
         path = new Vector3[] { pointA.position, pointB.position, pointC.position };
         transform.position = path[0]; // empieza en A
@@ -55,7 +64,9 @@ public class RuneBird : MonoBehaviour
             animator.SetBool("IsLanding", false);
             animator.SetBool("Idle", true);
             animator.SetBool("TakeOff", false);
+           
         }
+
         if (birdRenderer != null)
         {
             birdMaterial = birdRenderer.material;
@@ -119,6 +130,7 @@ public class RuneBird : MonoBehaviour
 
     void ArrivedAtPoint()
     {
+
         if (currentIndex == 0 || currentIndex == 2)
         {
             moving = false;
@@ -137,6 +149,7 @@ public class RuneBird : MonoBehaviour
      }
     void HandleArrival()
     {
+
         Invoke(nameof(HandleArrival2), LandingTime);
         
 
@@ -162,11 +175,20 @@ public class RuneBird : MonoBehaviour
             animator.SetBool("IsLanding", true);
             animator.SetBool("Idle", false);
             animator.SetBool("TakeOff", false);
+            if (BirdSoundPlaying)
+            {
+                AudioManager.Instance.PlaySFX(16);
+                BirdSoundPlaying = true;
+            }
+            BirdSoundFly = false;
+
+
         }
     }
     void barking ()
     {
         waitingForBark = true;
+        
     }
     public Transform GetLookTarget()
     {
@@ -183,7 +205,16 @@ public class RuneBird : MonoBehaviour
 
     public void StartMove()
     {
-        
+        if (BirdSoundFly)
+        {
+            AudioManager.Instance.PlaySFX(17);
+            BirdSoundFly = true;
+        }
+
+
+        BirdSoundPlaying = false;
+     
+
         if (!waitingForBark) return;
 
         waitingForBark = false;

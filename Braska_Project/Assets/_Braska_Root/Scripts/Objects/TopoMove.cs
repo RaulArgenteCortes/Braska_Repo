@@ -75,7 +75,7 @@ public class TopoMove : MonoBehaviour
 
     private void Burrow()
     {
-        AudioManager.Instance.PlaySFX(22);
+        AudioManager.Instance.PlaySFX(21);
         if (goingDown) return;
 
         goingDown = true;
@@ -111,7 +111,7 @@ public class TopoMove : MonoBehaviour
 
     private void Unburrow()
     {
-        AudioManager.Instance.PlaySFX(22);
+        AudioManager.Instance.PlaySFX(21);
 
         if (goingUp) return;
 

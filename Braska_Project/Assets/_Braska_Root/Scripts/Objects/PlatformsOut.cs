@@ -11,7 +11,6 @@ public class PlatformsOut : MonoBehaviour
             other.transform.SetParent(null);
 
             spring.SetUp();
-            AudioManager.Instance.PlaySFX(21);
 
         }
     }

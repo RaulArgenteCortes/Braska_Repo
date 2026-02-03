@@ -11,6 +11,7 @@ public class ScenesManager : MonoBehaviour
 
     [Header("Progress stats")]
     public int collectedOrbs;
+    public int teleportedOrbs;
 
     private void Awake()
     {

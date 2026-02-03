@@ -1,4 +1,5 @@
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Audio;
 
 public class KeyWall : MonoBehaviour
 {
@@ -15,10 +16,20 @@ public class KeyWall : MonoBehaviour
     [Header("Object References")]
     [SerializeField] CapsuleCollider wallCollider;
     [SerializeField] GameObject wallMesh;
+    private bool lastHoldingKeyState = false;
+
+
+
 
     private void Update()
     {
         CheckUpdate();
+        if (ObjectManager.instance.holdingKey != lastHoldingKeyState)
+        {
+            AudioManager.Instance.PlaySFX(ObjectManager.instance.holdingKey ? 18 : 19);
+
+            lastHoldingKeyState = ObjectManager.instance.holdingKey;
+        }
     }
    
    
@@ -34,6 +45,7 @@ public class KeyWall : MonoBehaviour
 
     private void MoveWall()
     {
+   
         currentWallPosition = Mathf.SmoothDamp(
             currentWallPosition,
             ObjectManager.instance.openedWallPosition * (ObjectManager.instance.holdingKey || playerOnTop ? 0.75f : -0.25f),

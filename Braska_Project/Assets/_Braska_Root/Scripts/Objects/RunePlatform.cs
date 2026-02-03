@@ -28,7 +28,8 @@ public class RunePlatform : MonoBehaviour
     private bool isShaking = false;
     private float shakeElapsed = 0f;
     private Vector3 originalPos;
-    
+   public bool runemove = false;
+
 
     private void Start()
     {
@@ -108,6 +109,12 @@ public class RunePlatform : MonoBehaviour
 
     public void ActivarGlow()
     {
+        if (!runemove)
+        {
+            AudioManager.Instance.PlaySFX(15);
+            runemove = true;
+        }
+
         if (!glowing && platformMaterial != null)
         {
             glowing = true;
@@ -121,6 +128,11 @@ public class RunePlatform : MonoBehaviour
     }
     public void VolverAEmisionBase()
     {
+        if (runemove)
+        {
+            runemove = false;
+
+        }
         glowing = false;
 
         platformMaterial.SetColor("_EmissionColor", baseEmissionColor * ObjectManager.instance.runeLowEmission);

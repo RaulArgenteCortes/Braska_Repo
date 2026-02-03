@@ -108,6 +108,7 @@ public class KeyPick : MonoBehaviour
             if (ObjectManager.instance.keySlot != null)
             {
                 homePosition = ObjectManager.instance.keySlot.transform.position;
+                AudioManager.Instance.PlaySFX(12);
             }
 
             if (!ObjectManager.instance.holdingKey) // NOT holding key.
@@ -148,6 +149,7 @@ public class KeyPick : MonoBehaviour
 
         ObjectManager.instance.holdingKey = false;
         isHolded = false;
+        AudioManager.Instance.PlaySFX(13);
     }
 
     private void PlayVFX()

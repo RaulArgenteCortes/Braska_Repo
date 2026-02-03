@@ -16,13 +16,11 @@ public class SpringMove : MonoBehaviour
     private Vector3 startingPoint;
     private Vector3 loweredPoint;
 
-    private bool downSoundPlayed = false;
-    private bool upSoundPlayed = false;
-
     private bool shouldBeDown = false;
+    private bool soundPlayed = true;
 
     public Animator animator;
-    
+    [SerializeField] private float soundThreshold = 0.01f;
 
     public void Awake()
     {
@@ -73,20 +71,37 @@ public class SpringMove : MonoBehaviour
         );*/
 
         springPlatform.transform.position = new Vector3(springPlatform.transform.position.x, yyy.y, springPlatform.transform.position.z);
+        if (!soundPlayed)
+        {
+            if (shouldBeDown && springPlatform.transform.position.y <= loweredPoint.y + soundThreshold)
+            {
+                AudioManager.Instance.PlaySFX(20);
+                soundPlayed = true;
+            }
+            else if (!shouldBeDown && springPlatform.transform.position.y >= startingPoint.y - soundThreshold)
+            {
+                AudioManager.Instance.PlaySFX(20);
+                soundPlayed = true;
+            }
+        }
+
+        // Resetear para próximo movimiento **solo si la plataforma se aleja del objetivo**
+        if (shouldBeDown && springPlatform.transform.position.y > loweredPoint.y + soundThreshold)
+        {
+            soundPlayed = false;
+        }
+        else if (!shouldBeDown && springPlatform.transform.position.y < startingPoint.y - soundThreshold)
+        {
+            soundPlayed = false;
+        }
     }
+
 
 
     public void SetDown()
     {
         shouldBeDown = true;
         animator.SetBool("EstaAbajo?", false);
-        if (!downSoundPlayed)
-        {
-            AudioManager.Instance.PlaySFX(21); // sonido de bajar
-            downSoundPlayed = true;
-            upSoundPlayed = false; // resetea el de subir
-        }
-
     }
 
 
@@ -94,14 +109,6 @@ public class SpringMove : MonoBehaviour
     {
         shouldBeDown = false;
         animator.SetBool("EstaAbajo?", true);
-        if (!upSoundPlayed)
-        {
-            AudioManager.Instance.PlaySFX(20); // sonido de subir
-            upSoundPlayed = true;
-            downSoundPlayed = false; // resetea el de bajar
-        }
-
-
     }
 
 }

@@ -9,7 +9,7 @@ public class OrbTeleport : MonoBehaviour
     [SerializeField] int orbLevel;
 
     [Header("Object references")]
-    [SerializeField] CapsuleCollider capsuleCollider;
+    [SerializeField] ParticleSystem portalParticles;
     [SerializeField] GameObject portal;
     [SerializeField] GameObject orbFollow;
 
@@ -19,8 +19,6 @@ public class OrbTeleport : MonoBehaviour
         {
             portal = GameObject.Find("PortalCenter");
             orbFollow = GameObject.Find("OrbFollow");
-
-            capsuleCollider.enabled = true;
         }
     }
 
@@ -29,8 +27,6 @@ public class OrbTeleport : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "SCN_Lobby" && ScenesManager.instance.teleportedOrbs >= orbLevel)
         {
             gameObject.SetActive(false);
-
-            
         }
     }
 
@@ -45,6 +41,17 @@ public class OrbTeleport : MonoBehaviour
                 portal.transform.position,
                 2 * Time.deltaTime
             );
+
+            if (transform.position.z > 7.5f)
+            {
+                Debug.Log("pain2");
+
+                portalParticles.transform.position = transform.position;
+                portalParticles.Play();
+
+                ScenesManager.instance.teleportedOrbs += 1;
+                gameObject.SetActive(false);
+            }
         }
         else if (orbFollow != null)
         {

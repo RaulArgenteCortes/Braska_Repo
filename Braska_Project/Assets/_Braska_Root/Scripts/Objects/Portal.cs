@@ -31,19 +31,5 @@ public class Portal : MonoBehaviour
                 Debug.Log("fin");
             }
         }
-
-        if (other.CompareTag("Orb"))
-        {
-            Debug.Log("ob");
-            if (ScenesManager.instance.teleportedOrbs < 4)
-            {
-                portalParticles.transform.position = other.transform.position;
-
-                other.gameObject.SetActive(false);
-                ScenesManager.instance.teleportedOrbs += 1;
-
-                portalParticles.Play();
-            }
-        }
     }
 }

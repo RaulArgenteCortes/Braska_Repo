@@ -11,6 +11,7 @@ public class PlatformsUP : MonoBehaviour
 
             other.transform.SetParent(this.transform);
             spring.SetDown();
+
         }
     }
 

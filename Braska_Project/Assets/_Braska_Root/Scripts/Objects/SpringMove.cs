@@ -16,6 +16,9 @@ public class SpringMove : MonoBehaviour
     private Vector3 startingPoint;
     private Vector3 loweredPoint;
 
+    private bool downSoundPlayed = false;
+    private bool upSoundPlayed = false;
+
     private bool shouldBeDown = false;
 
     public Animator animator;
@@ -77,6 +80,13 @@ public class SpringMove : MonoBehaviour
     {
         shouldBeDown = true;
         animator.SetBool("EstaAbajo?", false);
+        if (!downSoundPlayed)
+        {
+            AudioManager.Instance.PlaySFX(21); // sonido de bajar
+            downSoundPlayed = true;
+            upSoundPlayed = false; // resetea el de subir
+        }
+
     }
 
 
@@ -84,9 +94,17 @@ public class SpringMove : MonoBehaviour
     {
         shouldBeDown = false;
         animator.SetBool("EstaAbajo?", true);
+        if (!upSoundPlayed)
+        {
+            AudioManager.Instance.PlaySFX(20); // sonido de subir
+            upSoundPlayed = true;
+            downSoundPlayed = false; // resetea el de bajar
+        }
+
+
     }
 
-   }
+}
 
 
 

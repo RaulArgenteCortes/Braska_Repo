@@ -22,21 +22,13 @@ public class Portal : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            Debug.Log("pla");
             if (ScenesManager.instance.collectedOrbs >= 4)
             {
-                Debug.Log("fin");
-            }
-        }
-        if (other.CompareTag("Orb"))
-        {
-            if (ScenesManager.instance.teleportedOrbs < 4)
-            {
                 portalParticles.transform.position = other.transform.position;
-
-                other.gameObject.SetActive(false);
-                ScenesManager.instance.teleportedOrbs += 1;
-
                 portalParticles.Play();
+
+                Debug.Log("fin");
             }
         }
     }

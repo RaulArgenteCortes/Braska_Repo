@@ -7,6 +7,7 @@ public class OrbTeleport : MonoBehaviour
 {
     [Header("Orb Stats")]
     [SerializeField] int orbLevel;
+    [SerializeField] bool teleportTheOrb;
 
     [Header("Object references")]
     [SerializeField] ParticleSystem portalParticles;
@@ -28,11 +29,14 @@ public class OrbTeleport : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
+        
+        teleportTheOrb =
+            orbLevel <= ScenesManager.instance.collectedOrbs;
     }
 
     private void FixedUpdate()
     {
-        if (portal != null && orbLevel < 4)
+        if (portal != null && teleportTheOrb && orbLevel != 4)
         {
             transform.SetParent(null);
 
@@ -53,7 +57,7 @@ public class OrbTeleport : MonoBehaviour
                 gameObject.SetActive(false);
             }
         }
-        else if (orbFollow != null)
+        else if (orbFollow != null && orbLevel == 4 && ScenesManager.instance.collectedOrbs == 4)
         {
             transform.position = Vector3.Lerp(
                 transform.position,

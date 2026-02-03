@@ -12,10 +12,11 @@ public class ColorOrbe : MonoBehaviour
     private Material orbMaterial;
     private Material orbMaterial2;
 
-    public Color orbColorLVl1;
-    public Color orbColorLVl2;
-    public Color orbColorLVl3;
-    public Color orbColorLVl4;
+    public Color orbColorLvl1;
+    public Color orbColorLvl2;
+    public Color orbColorLvl3;
+    public Color orbColorLvl4;
+    public Color orbColorInactive;
 
     [Header("Emission Settings")]
     [SerializeField] private float emissionIntensity = 2f;
@@ -42,17 +43,22 @@ public class ColorOrbe : MonoBehaviour
         switch (currentLevel)
         {
             case 1:
-                emissionColor = orbColorLVl1;
+                emissionColor = orbColorLvl1;
                 break;
             case 2:
-                emissionColor = orbColorLVl2;
+                emissionColor = orbColorLvl2;
                 break;
             case 3:
-                emissionColor = orbColorLVl3;
+                emissionColor = orbColorLvl3;
                 break;
             case 4:
-                emissionColor = orbColorLVl4;
+                emissionColor = orbColorLvl4;
                 break;
+        }
+
+        if (ScenesManager.instance.collectedOrbs < currentLevel)
+        {
+            emissionColor = orbColorInactive;
         }
 
         orbMaterial.EnableKeyword("_EMISSION");

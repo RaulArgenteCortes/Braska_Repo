@@ -478,7 +478,7 @@ public class PlayerController_2 : MonoBehaviour
 
         if (!context.canceled)
         {
-            playerAngle = Mathf.Atan2(moveInput.x, moveInput.y) * Mathf.Rad2Deg; // Transform the input vector 2 into a float .        
+            playerAngle = Mathf.Atan2(moveInput.x, moveInput.y) * Mathf.Rad2Deg; // Transform the input vector 2 into a float.        
         }
     }
 
@@ -489,7 +489,7 @@ public class PlayerController_2 : MonoBehaviour
 
     public void OnDig(InputAction.CallbackContext context)
     {
-        if (!ObjectManager.instance.hasOrb)
+        if (!ObjectManager.instance.hasOrb && SceneManager.GetActiveScene().name != "SCN_Lobby")
         {
             StartDig();
         } 

@@ -55,14 +55,18 @@ public class OrbTeleport : MonoBehaviour
 
             transform.position += new Vector3(0, 0.5f, 0) * Time.deltaTime;
 
+            if (ScenesManager.instance.teleportedOrbs < orbLevel)
+            {
+                ScenesManager.instance.teleportedOrbs = orbLevel;
+            }
+
             if (transform.position.z > 7.5f)
             {
                 Debug.Log("pain2");
 
                 portalParticles.transform.position = transform.position;
                 portalParticles.Play();
-
-                ScenesManager.instance.teleportedOrbs += 1;
+                
                 gameObject.SetActive(false);
             }
         }

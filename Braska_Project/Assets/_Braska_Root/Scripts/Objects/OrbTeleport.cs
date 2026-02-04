@@ -7,7 +7,8 @@ public class OrbTeleport : MonoBehaviour
 {
     [Header("Orb Stats")]
     [SerializeField] int orbLevel;
-    [SerializeField] bool teleportTheOrb;
+    [SerializeField] bool moveTheOrb;
+    private float orbSpeed;
 
     [Header("Object references")]
     [SerializeField] ParticleSystem portalParticles;
@@ -29,22 +30,30 @@ public class OrbTeleport : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
-        
-        teleportTheOrb =
-            orbLevel <= ScenesManager.instance.collectedOrbs;
+
+        if (orbLevel <= ScenesManager.instance.collectedOrbs)
+        {
+            Invoke("StartMoving", 2);
+        }
+    }
+
+    private void StartMoving()
+    {
+        moveTheOrb = true;
     }
 
     private void FixedUpdate()
     {
-        if (portal != null && teleportTheOrb && orbLevel != 4)
+        if (portal != null && moveTheOrb && orbLevel != 4)
         {
-            transform.SetParent(null);
-
             transform.position = Vector3.MoveTowards(
                 transform.position,
                 portal.transform.position,
-                2 * Time.deltaTime
+                orbSpeed * Time.deltaTime
             );
+            orbSpeed += 0.5f * Time.deltaTime;
+
+            transform.position += new Vector3(0, 0.5f, 0) * Time.deltaTime;
 
             if (transform.position.z > 7.5f)
             {
@@ -57,7 +66,7 @@ public class OrbTeleport : MonoBehaviour
                 gameObject.SetActive(false);
             }
         }
-        else if (orbFollow != null && orbLevel == 4 && ScenesManager.instance.collectedOrbs == 4)
+        else if (orbFollow != null && moveTheOrb && orbLevel == 4 && ScenesManager.instance.collectedOrbs == 4)
         {
             transform.position = Vector3.Lerp(
                 transform.position,

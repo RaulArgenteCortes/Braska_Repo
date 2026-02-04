@@ -21,6 +21,7 @@ public class ObjectManager : MonoBehaviour
     public float runeCooldownTime;
     public float runeLowEmission;
     public float runeHighEmission;
+    public bool restartTriggered = false;
 
     [Header("Geyser controls")]
     public float geyserOffset;
@@ -60,6 +61,7 @@ public class ObjectManager : MonoBehaviour
 
     private void Start()
     {
+
         barkAvailable = true;
 
         runeCanTrigger = true;

@@ -33,6 +33,11 @@ public class RunePlatform : MonoBehaviour
 
     private void Start()
     {
+        if (ObjectManager.instance.restartTriggered)
+        {
+            transform.position = point_A.transform.position;
+            runemove = false;
+        }
         transform.position = point_A.transform.position;
         distance = Vector3.Distance(point_A.transform.position, point_B.transform.position);
 
@@ -45,6 +50,7 @@ public class RunePlatform : MonoBehaviour
             platformMaterial.SetColor("_EmissionColor", baseEmissionColor * ObjectManager.instance.runeLowEmission);
             DynamicGI.SetEmissive(platformRenderer, baseEmissionColor * ObjectManager.instance.runeLowEmission);
         }
+        ObjectManager.instance.restartTriggered = false;
     }
 
     private void FixedUpdate()
@@ -71,9 +77,25 @@ public class RunePlatform : MonoBehaviour
 
       
     }
+    public void ResetToPointA()
+    {
+        runemove = false;
+        goingToB = false;
 
+        transform.position = point_A.transform.position;
 
-   public void MovePlatform()
+        isShaking = false;
+        glowing = false;
+
+        // Reset de material/emission si quieres
+        if (platformMaterial != null)
+        {
+            platformMaterial.SetColor("_EmissionColor", baseEmissionColor * ObjectManager.instance.runeLowEmission);
+            DynamicGI.SetEmissive(platformRenderer, baseEmissionColor * ObjectManager.instance.runeLowEmission);
+        }
+    }
+
+    public void MovePlatform()
     {
         if (ObjectManager.instance.runeOnPointA && ObjectManager.instance.runeCanMove)
         {

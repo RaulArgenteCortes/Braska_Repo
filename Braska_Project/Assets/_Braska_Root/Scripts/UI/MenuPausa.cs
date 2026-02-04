@@ -12,7 +12,7 @@ public class MenuPausa : MonoBehaviour
     public bool isLoading = false;
     [SerializeField] GameObject[] pausePanels;
     private bool musicaMenuAbierto = false;
-
+    [SerializeField] RunePlatform RunePlatform;
 
     private void Start()
     {
@@ -100,6 +100,14 @@ public class MenuPausa : MonoBehaviour
         GameState.IsPaused = false;
         Time.timeScale = 1f;
         isPaused = false;
+
+        RunePlatform.ResetToPointA();
+       
+        ObjectManager.instance.restartTriggered = true;
+        ObjectManager.instance.runeOnPointA = true;
+        ObjectManager.instance.megaRuneOnPointA = true;
+        ObjectManager.instance.runeCanMove = false;
+        ObjectManager.instance.runeCanTrigger = false;
         ScenesFade.Instance.FadeOutAndLoad(sceneToLoad1);
     }
     public void Musica()

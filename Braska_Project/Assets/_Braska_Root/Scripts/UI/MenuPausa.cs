@@ -11,6 +11,8 @@ public class MenuPausa : MonoBehaviour
     [SerializeField] string sceneToLoad1;
     public bool isLoading = false;
     [SerializeField] GameObject[] pausePanels;
+    private bool musicaMenuAbierto = false;
+
 
     private void Start()
     {
@@ -31,18 +33,22 @@ public class MenuPausa : MonoBehaviour
 
     void Update()
     {
+        if (musicaMenuAbierto)
+        {
+           
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                CerrarMusica();
+            }
+            return; 
+        }
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isPaused)
-            {
                 ResumeGame();
-            }
             else
-            {
                 PausaGame();
-                
-
-            }
         }
     }
     
@@ -100,6 +106,14 @@ public class MenuPausa : MonoBehaviour
     {
         PausaMenu.SetActive(false);
         MusicaMenu.SetActive(true);
+        musicaMenuAbierto = true;
+        
+    }
+    public void CerrarMusica()
+    {
+        MusicaMenu.SetActive(false);
+        musicaMenuAbierto = false;
+        PausaMenu.SetActive(true);
     }
     void SetPausePanels(bool active)
     {

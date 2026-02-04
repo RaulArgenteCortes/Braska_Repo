@@ -22,7 +22,6 @@ public class Portal : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("pla");
             if (ScenesManager.instance.collectedOrbs >= 4)
             {
                 portalParticles.transform.position = other.transform.position;

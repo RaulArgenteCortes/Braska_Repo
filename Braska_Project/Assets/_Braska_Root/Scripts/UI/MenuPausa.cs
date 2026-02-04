@@ -92,6 +92,7 @@ public class MenuPausa : MonoBehaviour
     }
     public void RestartLevel()
     {
+        AudioManager.Instance.StopAllSFX();
         Cursor.visible = false;
 
         if (isLoading) return;
@@ -106,9 +107,11 @@ public class MenuPausa : MonoBehaviour
         ObjectManager.instance.restartTriggered = true;
         ObjectManager.instance.runeOnPointA = true;
         ObjectManager.instance.megaRuneOnPointA = true;
-        ObjectManager.instance.runeCanMove = false;
+      
         ObjectManager.instance.runeCanTrigger = false;
         ScenesFade.Instance.FadeOutAndLoad(sceneToLoad1);
+        ObjectManager.instance.runeCanMove = false;
+
     }
     public void Musica()
     {

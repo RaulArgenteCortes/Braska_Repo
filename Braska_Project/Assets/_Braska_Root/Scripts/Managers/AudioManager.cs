@@ -79,7 +79,10 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-
+    public void StopAllSFX()
+    {
+        sfxSource.Stop(); 
+    }
     public void PlaySFX(int sfxIndex)
     {
         sfxSource.PlayOneShot(sfxList[sfxIndex]);

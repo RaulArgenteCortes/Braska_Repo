@@ -82,12 +82,12 @@ public class RunePlatform : MonoBehaviour
         runemove = false;
         goingToB = false;
 
-        transform.position = point_A.transform.position;
+        
 
         isShaking = false;
         glowing = false;
+        transform.position = point_A.transform.position;
 
-        // Reset de material/emission si quieres
         if (platformMaterial != null)
         {
             platformMaterial.SetColor("_EmissionColor", baseEmissionColor * ObjectManager.instance.runeLowEmission);

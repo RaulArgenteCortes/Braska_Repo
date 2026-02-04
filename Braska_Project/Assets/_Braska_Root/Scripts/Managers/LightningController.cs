@@ -87,7 +87,7 @@ public class LightningController : MonoBehaviour
                     dayLight.transform.eulerAngles.z
                 );
 
-                dayLight.GetComponent<Light>().intensity = 0.9f - (ScenesManager.instance.collectedOrbs * 0.1f);
+                dayLight.GetComponent<Light>().intensity = 0.85f - (ScenesManager.instance.collectedOrbs * 0.15f);
             }
             else
             {

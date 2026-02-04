@@ -108,7 +108,7 @@ public class KeyPick : MonoBehaviour
             if (ObjectManager.instance.keySlot != null)
             {
                 homePosition = ObjectManager.instance.keySlot.transform.position;
-                AudioManager.Instance.PlaySFX(12);
+                AudioManager.Instance.PlaySFX(13);
             }
 
             if (!ObjectManager.instance.holdingKey) // NOT holding key.

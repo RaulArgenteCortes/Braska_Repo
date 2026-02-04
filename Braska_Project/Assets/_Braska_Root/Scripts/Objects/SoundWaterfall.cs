@@ -5,7 +5,7 @@ public class SoundWaterfall : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Invoke(nameof(SoundWaterfallas) , 1f);
+        Invoke(nameof(SoundWaterfallas), 0.5f);
     }
 
     // Update is called once per frame
@@ -15,7 +15,7 @@ public class SoundWaterfall : MonoBehaviour
     }
     public void SoundWaterfallas()
     {
-        AudioManager.Instance.PlaySFX(11);
+        AudioManager.Instance.PlayMusic (2);
 
     }
 }

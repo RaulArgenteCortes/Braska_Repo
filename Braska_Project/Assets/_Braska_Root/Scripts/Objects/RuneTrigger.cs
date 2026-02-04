@@ -101,7 +101,7 @@ public class RuneTrigger : MonoBehaviour
             ShakeAllPlatforms();
 
         }
-        if(other.CompareTag("Prebark") && !isActive && ObjectManager.instance.barkAvailable)
+        if(other.CompareTag("Prebark") && !isActive && ObjectManager.instance.barkAvailable && !ObjectManager.instance.runeCanMove)
         {
             ActivarIluminacion();
             
@@ -110,7 +110,7 @@ public class RuneTrigger : MonoBehaviour
     }
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Prebark") && !isActive && !playersee && ObjectManager.instance.barkAvailable)
+        if (other.CompareTag("Prebark") && !isActive && !playersee && ObjectManager.instance.barkAvailable && !ObjectManager.instance.runeCanMove)
         {
             ActivarIluminacion();
         }

@@ -42,17 +42,12 @@ public class RuneBird : MonoBehaviour
     [SerializeField] private float dustSpacing = 0.5f; 
     private Vector3 lastDustPos;
 
-    private bool BirdSoundPlaying = true;
-    private bool BirdSoundFly = true;
+    private bool idleSoundPlaying = false;
+    private bool flyingSoundPlaying = false;
 
     void Start()
     {
-        BirdSoundFly = false;
-        if (BirdSoundPlaying)
-        {
-            AudioManager.Instance.PlaySFX(16);
-            BirdSoundPlaying = true;
-        }
+        PlayIdleSound();
 
         path = new Vector3[] { pointA.position, pointB.position, pointC.position };
         transform.position = path[0]; // empieza en A
@@ -127,7 +122,26 @@ public class RuneBird : MonoBehaviour
         }
     }
 
+    void PlayIdleSound()
+    {
+        if (idleSoundPlaying) return;
 
+        idleSoundPlaying = true;
+        flyingSoundPlaying = false;
+        AudioManager.Instance.PlayMusic(3);
+    }
+
+
+    void PlayFlySound()
+    {
+        if (flyingSoundPlaying) return;
+
+        flyingSoundPlaying = true;
+        idleSoundPlaying = false;
+
+        CancelInvoke(nameof(PlayIdleSound));
+        AudioManager.Instance.PlaySFX(17);
+    }
     void ArrivedAtPoint()
     {
 
@@ -167,6 +181,7 @@ public class RuneBird : MonoBehaviour
     }
     void HandleArrival2()
     {
+        PlayIdleSound();
         Invoke(nameof(barking), delayTiempoladrar);
 
         if (animator != null)
@@ -175,12 +190,7 @@ public class RuneBird : MonoBehaviour
             animator.SetBool("IsLanding", true);
             animator.SetBool("Idle", false);
             animator.SetBool("TakeOff", false);
-            if (BirdSoundPlaying)
-            {
-                AudioManager.Instance.PlaySFX(16);
-                BirdSoundPlaying = true;
-            }
-            BirdSoundFly = false;
+           
 
 
         }
@@ -202,18 +212,15 @@ public class RuneBird : MonoBehaviour
 
         return null;
     }
-
+    void StopIdleSound()
+    {
+        CancelInvoke(nameof(PlayIdleSound));
+        idleSoundPlaying = false;
+    }
     public void StartMove()
     {
-        if (BirdSoundFly)
-        {
-            AudioManager.Instance.PlaySFX(17);
-            BirdSoundFly = true;
-        }
-
-
-        BirdSoundPlaying = false;
-     
+        StopIdleSound();
+        PlayFlySound();
 
         if (!waitingForBark) return;
 

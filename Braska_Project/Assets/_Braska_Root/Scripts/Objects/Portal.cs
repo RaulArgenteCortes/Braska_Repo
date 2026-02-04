@@ -4,17 +4,20 @@ public class Portal : MonoBehaviour
 {
     [Header("Object references")]
     [SerializeField] GameObject portalVFX;
+    [SerializeField] ParticleSystem portalBurstParticles;
     [SerializeField] ParticleSystem portalParticles;
 
     void Start()
     {
         if (ScenesManager.instance.collectedOrbs >= 4)
         {
-            portalVFX.SetActive(true);
+            portalVFX.transform.localScale *= 1f;
+
+            portalParticles.Play();
         }
         else
         {
-            portalVFX.SetActive(false);
+            portalVFX.transform.localScale *= 0.5f;
         }
     }
 
@@ -24,11 +27,16 @@ public class Portal : MonoBehaviour
         {
             if (ScenesManager.instance.collectedOrbs >= 4)
             {
-                portalParticles.transform.position = other.transform.position;
-                portalParticles.Play();
+                portalBurstParticles.transform.position = other.transform.position;
+                portalBurstParticles.Play();
 
-                Debug.Log("fin");
+                Invoke("LoadEnding", 2);
             }
         }
+    }
+
+    private void LoadEnding()
+    {
+        Debug.Log("fin");
     }
 }

@@ -5,9 +5,11 @@ using UnityEngine.Video;
 public class Cinematicas : MonoBehaviour
 {
     public VideoPlayer vid;
+    [SerializeField] string sceneToLoad3;
+
     void Start()
     {
-
+        vid.loopPointReached += EndReached;
     }
 
     void Update()
@@ -29,7 +31,12 @@ public class Cinematicas : MonoBehaviour
             {
                 vid.Stop();
             }
-            SceneManager.LoadScene("SCN_MainMenu");
+            ScenesFade.Instance.FadeOutAndLoad(sceneToLoad3);
+
         }
+    }
+    void EndReached(VideoPlayer vp)
+    {
+        ScenesFade.Instance.FadeOutAndLoad(sceneToLoad3);
     }
 }

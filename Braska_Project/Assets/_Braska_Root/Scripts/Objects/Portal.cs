@@ -30,13 +30,14 @@ public class Portal : MonoBehaviour
                 portalBurstParticles.transform.position = other.transform.position;
                 portalBurstParticles.Play();
 
-                Invoke("LoadEnding", 2);
+                //Invoke("LoadEnding", 2);
+                LoadEnding();
             }
         }
     }
 
     private void LoadEnding()
     {
-        Debug.Log("fin");
+        ScenesFade.Instance.FadeOutAndLoad("SCN_Finale");
     }
 }

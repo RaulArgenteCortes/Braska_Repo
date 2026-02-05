@@ -83,6 +83,10 @@ public class AudioManager : MonoBehaviour
     {
         sfxSource.Stop(); 
     }
+    public void SotpAllMusic()
+    {
+        musicSource.Stop();
+    }
     public void PlaySFX(int sfxIndex)
     {
         sfxSource.PlayOneShot(sfxList[sfxIndex]);

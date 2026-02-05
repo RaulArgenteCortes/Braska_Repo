@@ -11,6 +11,8 @@ public class Cinematics : MonoBehaviour
     void Start()
     {
         vid.loopPointReached += EndReached;
+        AudioManager.Instance.StopAllSFX();
+        AudioManager.Instance.SotpAllMusic();
     }
 
     void Update()

@@ -6,6 +6,7 @@ public class Cinematicas : MonoBehaviour
 {
     public VideoPlayer vid;
     [SerializeField] string sceneToLoad3;
+    public GameObject skip;
 
     void Start()
     {
@@ -29,6 +30,8 @@ public class Cinematicas : MonoBehaviour
         {
             if (vid.isPlaying)
             {
+                skip.gameObject.SetActive(false);
+
                 vid.Stop();
             }
             ScenesFade.Instance.FadeOutAndLoad(sceneToLoad3);
@@ -37,6 +40,7 @@ public class Cinematicas : MonoBehaviour
     }
     void EndReached(VideoPlayer vp)
     {
+        skip.gameObject.SetActive(false);
         ScenesFade.Instance.FadeOutAndLoad(sceneToLoad3);
     }
 }

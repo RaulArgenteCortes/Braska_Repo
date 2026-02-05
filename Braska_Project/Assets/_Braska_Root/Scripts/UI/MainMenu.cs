@@ -45,6 +45,7 @@ public class MainMenu : MonoBehaviour
     }
     public void Reseta()
     {
+        ScenesManager.instance.SpawnTeleport = null;
         ScenesManager.instance.collectedOrbs = -1;
     }
     public void Options()

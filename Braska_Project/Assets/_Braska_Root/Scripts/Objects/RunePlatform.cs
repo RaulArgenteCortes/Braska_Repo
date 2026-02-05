@@ -30,7 +30,7 @@ public class RunePlatform : MonoBehaviour
     private Vector3 originalPos;
    public bool runemove = false;
     public bool lockInA = true;
-    private bool isResetting = false;
+    
 
 
     private void Start()
@@ -91,7 +91,6 @@ public class RunePlatform : MonoBehaviour
     {
         lockInA = true;
 
-        isResetting = true;
 
         CancelInvoke();
         isShaking = false;
@@ -113,7 +112,6 @@ public class RunePlatform : MonoBehaviour
     {
         ObjectManager.instance.runeOnPointA = true;
         ObjectManager.instance.runeCanTrigger = true;
-        isResetting = false;
     }
 
 

@@ -83,6 +83,8 @@ public class MegaRuneTrigger : MonoBehaviour
     {
         if (other.CompareTag("Bark") && ObjectManager.instance.megaRuneCanTrigger)
         {
+            UnlockAllPlatforms();
+
             AudioManager.Instance.PlaySFX(4);
             ObjectManager.instance.megaRunePrepareMove();
             Vector3 vfxPosition = transform.position + new Vector3(0, 0.8f, 0);
@@ -100,14 +102,14 @@ public class MegaRuneTrigger : MonoBehaviour
 
             Invoke(nameof(VolverABase), glowDuration);
         }
-        if(other.CompareTag("Prebark") && ObjectManager.instance.barkAvailable && !isActive && ObjectManager.instance.megaRuneCanMove)
+        if(other.CompareTag("Prebark") && ObjectManager.instance.barkAvailable && !isActive && !ObjectManager.instance.megaRuneCanMove)
         {
             ActivarIluminacion();
         }
     }
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Prebark") && !isActive && !playersee && ObjectManager.instance.barkAvailable && ObjectManager.instance.megaRuneCanMove)
+        if (other.CompareTag("Prebark") && !isActive && !playersee && ObjectManager.instance.barkAvailable && !ObjectManager.instance.megaRuneCanMove)
         {
             ActivarIluminacion();
         }
@@ -115,6 +117,22 @@ public class MegaRuneTrigger : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         VolverABase();
+    }
+
+    private void UnlockAllPlatforms()
+    {
+
+
+        GameObject[] platforms = GameObject.FindGameObjectsWithTag("MegaRunePlatform");
+
+        foreach (var go in platforms)
+        {
+            MegaRunePlatform platform = go.GetComponent<MegaRunePlatform>();
+            if (platform != null)
+            {
+                platform.UnlockmegaRune();
+            }
+        }
     }
     void Moveplatforms()
     {

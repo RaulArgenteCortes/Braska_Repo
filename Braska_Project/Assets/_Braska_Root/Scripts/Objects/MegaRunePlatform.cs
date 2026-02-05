@@ -27,10 +27,12 @@ public class MegaRunePlatform : MonoBehaviour
     private bool isShaking = false;
     private float shakeElapsed = 0f;
     private Vector3 originalPos;
-    
+    public bool lockInA = true;
+    public bool megaRunemove = false;
 
     private void Start()
     {
+        lockInA = true;
         transform.position = point_A.transform.position;
         distance = Vector3.Distance(point_A.transform.position, point_B.transform.position);
 
@@ -66,13 +68,21 @@ public class MegaRunePlatform : MonoBehaviour
                 isShaking = false;
             }
         }
+        if (lockInA)
+        {
+            transform.position = point_A.transform.position;
+            ObjectManager.instance.megaRuneOnPointA = true;
 
-      
+            return;
+        }
+
     }
 
 
    public void MovePlatform()
     {
+        if (lockInA)
+            return;
         if (ObjectManager.instance.megaRuneOnPointA && ObjectManager.instance.megaRuneCanMove)
         {
             if (!goingToB)
@@ -103,7 +113,31 @@ public class MegaRunePlatform : MonoBehaviour
 
     }
 
+    public void MegaResetToPointA()
+    {
+        lockInA = true;
 
+
+        CancelInvoke();
+        isShaking = false;
+        glowing = false;
+        goingToB = false;
+        megaRunemove = false;
+
+        ObjectManager.instance.megaRuneOnPointA = true;
+        ObjectManager.instance.megaRuneCanMove = false;
+
+
+        transform.position = point_A.transform.position;
+        mesh.transform.localPosition = Vector3.zero;
+
+        Invoke(nameof(FinishReset), 0.02f);
+    }
+    private void FinishReset()
+    {
+        ObjectManager.instance.megaRuneOnPointA = true;
+        ObjectManager.instance.megaRuneCanTrigger = true;
+    }
 
     public void ActivarGlow()
     {
@@ -127,7 +161,10 @@ public class MegaRunePlatform : MonoBehaviour
         DynamicGI.SetEmissive(platformRenderer, baseEmissionColor * ObjectManager.instance.megaRuneLowEmission);
     }
 
-
+    public void UnlockmegaRune()
+    {
+        lockInA = false;
+    }
 
     public void TriggerShakeOnly(float delay)
     {

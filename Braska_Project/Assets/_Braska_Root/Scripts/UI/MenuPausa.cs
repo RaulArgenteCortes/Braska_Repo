@@ -13,6 +13,7 @@ public class MenuPausa : MonoBehaviour
     [SerializeField] GameObject[] pausePanels;
     private bool musicaMenuAbierto = false;
     [SerializeField] RunePlatform RunePlatform;
+    [SerializeField] MegaRunePlatform MegaRunePlatform;
 
     private void Start()
     {
@@ -103,14 +104,18 @@ public class MenuPausa : MonoBehaviour
         isPaused = false;
 
         RunePlatform.ResetToPointA();
+        MegaRunePlatform.MegaResetToPointA();
        
         ObjectManager.instance.restartTriggered = true;
         ObjectManager.instance.runeOnPointA = true;
+        ObjectManager.instance.megaRuneOnPointA = true;
        
       
         ObjectManager.instance.runeCanTrigger = false;
+        ObjectManager.instance.megaRuneCanTrigger = false;
         ScenesFade.Instance.FadeOutAndLoad(sceneToLoad1);
         ObjectManager.instance.runeCanMove = false;
+        ObjectManager.instance.megaRuneCanMove = false;
 
     }
     public void Musica()

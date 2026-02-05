@@ -77,8 +77,11 @@ public class RuneTriggerBird : MonoBehaviour
             ActivarIluminacion();
         }
         if (!other.CompareTag("Bark")) return;
+
         if (!ObjectManager.instance.barkAvailable) return;
         if (!ObjectManager.instance.runeCanTrigger) return;
+        UnlockAllPlatforms();
+
         isActive = true;
         playersee = true;
         if (bird.currentRune != this || !bird.waitingForBark) return;
@@ -104,6 +107,21 @@ public class RuneTriggerBird : MonoBehaviour
     {
         VolverABase();
 
+    }
+    private void UnlockAllPlatforms()
+    {
+
+
+        GameObject[] platforms = GameObject.FindGameObjectsWithTag("RunePlatform");
+
+        foreach (var go in platforms)
+        {
+            RunePlatform platform = go.GetComponent<RunePlatform>();
+            if (platform != null)
+            {
+                platform.UnlockRune();
+            }
+        }
     }
     private void ResetRune()
     {

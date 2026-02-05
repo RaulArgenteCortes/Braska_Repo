@@ -106,7 +106,7 @@ public class MenuPausa : MonoBehaviour
        
         ObjectManager.instance.restartTriggered = true;
         ObjectManager.instance.runeOnPointA = true;
-        ObjectManager.instance.megaRuneOnPointA = true;
+       
       
         ObjectManager.instance.runeCanTrigger = false;
         ScenesFade.Instance.FadeOutAndLoad(sceneToLoad1);

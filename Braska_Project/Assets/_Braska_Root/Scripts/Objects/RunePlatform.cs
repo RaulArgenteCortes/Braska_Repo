@@ -29,10 +29,13 @@ public class RunePlatform : MonoBehaviour
     private float shakeElapsed = 0f;
     private Vector3 originalPos;
    public bool runemove = false;
+    public bool lockInA = true;
+    private bool isResetting = false;
 
 
     private void Start()
     {
+        lockInA = true;
         if (ObjectManager.instance.restartTriggered)
         {
             transform.position = point_A.transform.position;
@@ -74,29 +77,51 @@ public class RunePlatform : MonoBehaviour
                 isShaking = false;
             }
         }
+        if (lockInA)
+        {
+            transform.position = point_A.transform.position;
+            ObjectManager.instance.runeOnPointA = true;
 
-      
+            return;
+        }
+
+
     }
     public void ResetToPointA()
     {
-        runemove = false;
-        goingToB = false;
+        lockInA = true;
 
-        
+        isResetting = true;
 
+        CancelInvoke();
         isShaking = false;
         glowing = false;
-        transform.position = point_A.transform.position;
+        goingToB = false;
+        runemove = false;
 
-        if (platformMaterial != null)
-        {
-            platformMaterial.SetColor("_EmissionColor", baseEmissionColor * ObjectManager.instance.runeLowEmission);
-            DynamicGI.SetEmissive(platformRenderer, baseEmissionColor * ObjectManager.instance.runeLowEmission);
-        }
+        ObjectManager.instance.runeOnPointA = true;
+        ObjectManager.instance.runeCanMove = false;
+
+        ObjectManager.instance.runeCanTrigger = true;
+
+        transform.position = point_A.transform.position;
+        mesh.transform.localPosition = Vector3.zero;
+
+        Invoke(nameof(FinishReset), 0.02f);
     }
+    private void FinishReset()
+    {
+        ObjectManager.instance.runeOnPointA = true;
+        ObjectManager.instance.runeCanTrigger = true;
+        isResetting = false;
+    }
+
 
     public void MovePlatform()
     {
+        if (lockInA)
+            return;
+
         if (ObjectManager.instance.runeOnPointA && ObjectManager.instance.runeCanMove)
         {
             if (!goingToB)
@@ -125,6 +150,10 @@ public class RunePlatform : MonoBehaviour
                 ObjectManager.instance.runeMoveTime * Time.deltaTime * distance);
         }
 
+    }
+    public void UnlockRune()
+    {
+        lockInA = false;
     }
 
 

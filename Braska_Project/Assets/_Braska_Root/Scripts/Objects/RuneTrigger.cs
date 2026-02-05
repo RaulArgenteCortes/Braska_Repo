@@ -88,6 +88,9 @@ public class RuneTrigger : MonoBehaviour
     {
         if (other.CompareTag("Bark") && ObjectManager.instance.runeCanTrigger && ObjectManager.instance.barkAvailable)
         {
+            UnlockAllPlatforms();
+
+
             AudioManager.Instance.PlaySFX(4);
             ObjectManager.instance.RunePrepareMove();
             Vector3 vfxPosition = transform.position + new Vector3(0, 0.4f, 0);
@@ -103,11 +106,13 @@ public class RuneTrigger : MonoBehaviour
         }
         if(other.CompareTag("Prebark") && !isActive && ObjectManager.instance.barkAvailable && !ObjectManager.instance.runeCanMove)
         {
+
             ActivarIluminacion();
             
         }
         
     }
+
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Prebark") && !isActive && !playersee && ObjectManager.instance.barkAvailable && !ObjectManager.instance.runeCanMove)
@@ -115,6 +120,22 @@ public class RuneTrigger : MonoBehaviour
             ActivarIluminacion();
         }
     }
+    private void UnlockAllPlatforms()
+    {
+
+
+        GameObject[] platforms = GameObject.FindGameObjectsWithTag("RunePlatform");
+
+        foreach (var go in platforms)
+        {
+            RunePlatform platform = go.GetComponent<RunePlatform>();
+            if (platform != null)
+            {
+                platform.UnlockRune();
+            }
+        }
+    }
+
     void Moveplatforms()
     {
         isActive = false;

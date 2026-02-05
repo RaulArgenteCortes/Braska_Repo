@@ -5,6 +5,8 @@ using UnityEngine.Video;
 public class Cinematicas : MonoBehaviour
 {
     public VideoPlayer vid;
+    [SerializeField] string sceneToLoad;
+
     void Start()
     {
 
@@ -29,7 +31,7 @@ public class Cinematicas : MonoBehaviour
             {
                 vid.Stop();
             }
-            SceneManager.LoadScene("SCN_MainMenu");
+            SceneManager.LoadScene(sceneToLoad);
         }
     }
 }

@@ -7,6 +7,7 @@
     [Header("UI Settings")]
     public TMP_Text[] texts;
     public Image image;
+    public Image Panellvl;
     public float fadeDuration = 1f;
     public float fadeOutDuration = 0.3f;
     public float delayBeforeFade = 0.5f;
@@ -14,7 +15,6 @@
     float fadeSpeedIn;
     float fadeSpeedOut;
 
-    // Flag para saber si el fade in ya comenzó
     bool fadeInStarted = false;
 
     void Awake()
@@ -51,6 +51,12 @@
             Color c = image.color;
             c.a = alpha;
             image.color = c;
+        }
+        if (Panellvl != null)
+        {
+            Color c = Panellvl.color;
+            c.a = alpha;
+            Panellvl.color = c;
         }
 
     }
@@ -102,6 +108,8 @@
         }
         if (image != null)
             return image.color.a;
+        if (Panellvl != null)
+            return Panellvl.color.a;
 
         return 0f;
     }

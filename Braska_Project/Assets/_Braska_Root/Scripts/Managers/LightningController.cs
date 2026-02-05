@@ -124,7 +124,7 @@ public class LightningController : MonoBehaviour
 
         var cloudEmission = clouds.GetComponent<ParticleSystem>().emission;
 
-        cloudEmission.rateOverTime = 0.3f; //0.1f + ScenesManager.instance.collectedOrbs * 0.05f;
+        cloudEmission.rateOverTime = 0.1f; //0.1f + ScenesManager.instance.collectedOrbs * 0.05f;
 
         if (SceneManager.GetActiveScene().name != "SCN_Lobby")
         {

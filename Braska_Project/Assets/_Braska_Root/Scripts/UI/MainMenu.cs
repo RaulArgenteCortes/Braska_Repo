@@ -62,10 +62,7 @@ public class MainMenu : MonoBehaviour
         AudioManager.Instance.PlaySFX(0);
         ScenesFade.Instance.FadeOutAndLoad(sceneToLoad);
     }
-    public void Start()
-    {
-        AudioManager.Instance.PlayMusic(0);
-    }
+   
 
     public void Replay()
     {

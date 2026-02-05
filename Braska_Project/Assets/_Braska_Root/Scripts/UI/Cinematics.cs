@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Video;
 
-public class Cinematicas : MonoBehaviour
+public class Cinematics : MonoBehaviour
 {
     public VideoPlayer vid;
     [SerializeField] string sceneToLoad3;

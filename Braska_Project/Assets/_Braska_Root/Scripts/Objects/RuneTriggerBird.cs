@@ -12,10 +12,6 @@ public class RuneTriggerBird : MonoBehaviour
     public Color glowColor = Color.cyan;
 
     public float glowDuration = 4.5f;
-
-
-    
-
     [Header("Object references")]
     [SerializeField] RuneBird bird;
 
@@ -89,9 +85,7 @@ public class RuneTriggerBird : MonoBehaviour
         ObjectManager.instance.RunePrepareMove();
         Invoke(nameof(ResetRune), timemove);
 
-        //Vector3 vfxPosition = transform.position + new Vector3(0, 0.4f, 0);
-        //GameObject particlesystem = Instantiate(vfx_runaActiva, vfxPosition, transform.rotation);
-        //AudioManager.Instance.PlaySFX(4);
+       
 
         ShakeAllPlatforms();
     }

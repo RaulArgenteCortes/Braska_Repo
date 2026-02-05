@@ -44,6 +44,7 @@ public class RuneBird : MonoBehaviour
 
     private bool idleSoundPlaying = false;
     private bool flyingSoundPlaying = false;
+    public float tiempopaloma = 2f;
 
     void Start()
     {
@@ -68,6 +69,7 @@ public class RuneBird : MonoBehaviour
             originalEmissionColor = birdMaterial.GetColor("_EmissionColor");
             birdMaterial.EnableKeyword("_EMISSION"); 
         }
+        InvokeRepeating(nameof(SFXPaloma), tiempopaloma, tiempopaloma);
     }
 
     void Update()
@@ -128,10 +130,13 @@ public class RuneBird : MonoBehaviour
 
         idleSoundPlaying = true;
         flyingSoundPlaying = false;
-        AudioManager.Instance.PlayMusic(3);
+       
     }
 
-
+    public void SFXPaloma()
+    {
+        AudioManager.Instance.PlaySFX(16);
+    }
     void PlayFlySound()
     {
         if (flyingSoundPlaying) return;

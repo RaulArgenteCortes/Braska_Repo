@@ -62,8 +62,6 @@ public class OrbTeleport : MonoBehaviour
 
             if (transform.position.z > 7.5f)
             {
-                Debug.Log("pain2");
-
                 portalParticles.transform.position = transform.position;
                 portalParticles.Play();
                 

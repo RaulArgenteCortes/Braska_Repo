@@ -99,11 +99,11 @@ public class Teleport : MonoBehaviour
     {
         if (playerInside && isActive)
         {
-            targetEmissionIntensity = 4;
+            targetEmissionIntensity = 6;
         }
         else if (isActive)
         {
-            targetEmissionIntensity = 1;
+            targetEmissionIntensity = 2;
         }
         else
         {

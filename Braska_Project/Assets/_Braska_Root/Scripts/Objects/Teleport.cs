@@ -116,7 +116,7 @@ public class Teleport : MonoBehaviour
             Time.fixedDeltaTime * ObjectManager.instance.prebarkEmissionSpeed
         );
 
-        teleportRenderer.material.SetColor("_EmissionColor", Color.white * currentEmissionIntensity);
+        teleportRenderer.material.SetColor("_EmissionColor", Color.green * currentEmissionIntensity);
     }
 
     public void Highlight()

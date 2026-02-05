@@ -34,7 +34,7 @@ public class OrbFollow : MonoBehaviour
     [SerializeField] private float pulseAmplitude = 0.4f;
 
     [Header("Trail Particle")]
-    [SerializeField] private ParticleSystem trailParticles;
+    //[SerializeField] private ParticleSystem trailParticles;
 
 
     private Color baseEmissionColor;
@@ -72,7 +72,7 @@ public class OrbFollow : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
-        trailParticles.gameObject.SetActive(true);
+        //trailParticles.gameObject.SetActive(true);
 
     }
     private void SetEmissionByLevel()
@@ -150,7 +150,7 @@ public class OrbFollow : MonoBehaviour
 
     private void FollowStart()
     {
-        trailParticles.gameObject.SetActive(false);
+        //trailParticles.gameObject.SetActive(false);
         AudioManager.Instance.PlaySFX(3);
         followStart = true;
     }

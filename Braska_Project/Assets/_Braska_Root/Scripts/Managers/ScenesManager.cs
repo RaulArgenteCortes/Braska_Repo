@@ -1,0 +1,76 @@
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using System;
+
+public class ScenesManager : MonoBehaviour
+{
+    public static ScenesManager instance;
+
+    [Header("Spawn stats")]
+    public string SpawnTeleport;
+
+    [Header("Progress stats")]
+    public int collectedOrbs;
+    public int teleportedOrbs;
+
+    private void Awake()
+    {
+        // Makes sure that there's always 1 instance.
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        collectedOrbs = -1;
+
+        ProgressCorrector();
+    }
+
+    public void TeleportPlayer(string sceneToLoad, string newTeleportToSpawn)
+    {
+        SpawnTeleport = newTeleportToSpawn;
+
+        ObjectManager.instance.runeOnPointA = true; // Makes sure that the runes are on place.
+        ObjectManager.instance.geyserIsUp = false; // Makes sure that the geysers are on place.
+
+        if (ObjectManager.instance.hasOrb)
+        {
+            collectedOrbs += 1;
+        }
+        Time.timeScale = 1f;
+        ScenesFade.Instance.FadeOutAndLoad(sceneToLoad);
+    }
+    public static class GameState
+    {
+        public static bool IsPaused = false;
+        public static Action OnSceneFadeStart;
+    }
+    public void ProgressCorrector()
+    {
+        if ((SceneManager.GetActiveScene().name == "SCN_Level1" || SceneManager.GetActiveScene().name == "SCN_Lobby") && collectedOrbs < 0)
+        {
+            collectedOrbs = 0;
+        }
+        else if (SceneManager.GetActiveScene().name == "SCN_Level2" && collectedOrbs < 1)
+        {
+            collectedOrbs = 1;
+        }
+        else if (SceneManager.GetActiveScene().name == "SCN_Level3" && collectedOrbs < 2)
+        {
+            collectedOrbs = 2;
+        }
+        else if (SceneManager.GetActiveScene().name == "SCN_Level4" && collectedOrbs < 3)
+        {
+            collectedOrbs = 3;
+        }
+        else if (SceneManager.GetActiveScene().name == "SCN_Finale" && collectedOrbs < 4)
+        {
+            collectedOrbs = 4;
+        }
+    }
+}

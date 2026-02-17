@@ -32,7 +32,10 @@ public class KeySlot : MonoBehaviour
         {
             ObjectManager.instance.keySlotOnSight = true;
 
-            emissionIntensity = 3;
+            if (!ObjectManager.instance.barkAvailable)
+            {
+                emissionIntensity = 3;
+            }  
         }
     }
 

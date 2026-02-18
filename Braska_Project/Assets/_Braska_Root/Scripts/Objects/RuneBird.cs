@@ -184,6 +184,7 @@ public class RuneBird : MonoBehaviour
             }
         }
     }
+
     void HandleArrival2()
     {
         PlayIdleSound();

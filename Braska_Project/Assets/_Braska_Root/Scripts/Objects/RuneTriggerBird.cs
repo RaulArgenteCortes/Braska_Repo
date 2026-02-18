@@ -9,6 +9,7 @@ public class RuneTriggerBird : MonoBehaviour
 
     public Renderer runeRenderer;
     public Renderer pedestalRenderer;
+    public Renderer pedestalRenderer2;
     public Color glowColor = Color.cyan;
 
     public float glowDuration = 4.5f;
@@ -16,13 +17,14 @@ public class RuneTriggerBird : MonoBehaviour
     [SerializeField] RuneBird bird;
 
     private Material runeMaterial;
+    private Material runeMaterial2;
     [Header("Emission Settings")]
     [SerializeField] float baseEmissionIntensity = 4f;
     [SerializeField] float highlightMultiplier = 1.5f;
 
     public float currentIntensity;
     public float targetIntensity;
-    private bool isActive = false;
+    public bool isActive = false;
     public bool playersee = false;
     public float timemove = 4.5f;
 
@@ -32,10 +34,16 @@ public class RuneTriggerBird : MonoBehaviour
     private void Start()
     {
         if (pedestalRenderer == null) return;
+        if (pedestalRenderer2 == null) return;
 
         // Instancia única del material
-        runeMaterial = pedestalRenderer.material;
+        runeMaterial = new Material(pedestalRenderer.sharedMaterial);
+        pedestalRenderer.material = runeMaterial;
+        runeMaterial2 = new Material(pedestalRenderer2.sharedMaterial);
+        pedestalRenderer2.material = runeMaterial2;
+
         runeMaterial.EnableKeyword("_EMISSION");
+        runeMaterial2.EnableKeyword("_EMISSION");
 
         ApplyBaseEmission();
 
@@ -53,6 +61,7 @@ public class RuneTriggerBird : MonoBehaviour
             VolverABase();
         }
         if (runeMaterial == null) return;
+        if (runeMaterial2 == null) return;
 
         currentIntensity = Mathf.Lerp(
             currentIntensity,
@@ -68,6 +77,12 @@ public class RuneTriggerBird : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        RuneBird runeBird = other.GetComponent<RuneBird>();
+        if (runeBird != null)
+        {
+            runeBird.currentRune = this;
+
+        }
         if (other.CompareTag("Prebark") && bird.currentRune == this && ObjectManager.instance.barkAvailable && !isActive && bird.waitingForBark)
         {
             ActivarIluminacion();
@@ -127,12 +142,14 @@ public class RuneTriggerBird : MonoBehaviour
     {
         Color emission = glowColor * baseEmissionIntensity;
         runeMaterial.SetColor("_EmissionColor", emission);
+        runeMaterial2.SetColor("_EmissionColor", emission);
 
         // Solo una vez
         DynamicGI.SetEmissive(pedestalRenderer, emission);
+        DynamicGI.SetEmissive(pedestalRenderer2, emission);
     }
 
-    private void ActivarIluminacion()
+    public void ActivarIluminacion()
     {
        targetIntensity = baseEmissionIntensity * highlightMultiplier;
     }
@@ -144,7 +161,9 @@ public class RuneTriggerBird : MonoBehaviour
     {
         Color emission = glowColor * intensity;
         runeMaterial.SetColor("_EmissionColor", emission);
+        runeMaterial2.SetColor("_EmissionColor", emission);
         DynamicGI.SetEmissive(pedestalRenderer, emission);
+        DynamicGI.SetEmissive(pedestalRenderer2, emission);
     }
     #region ShakePlatforms
 

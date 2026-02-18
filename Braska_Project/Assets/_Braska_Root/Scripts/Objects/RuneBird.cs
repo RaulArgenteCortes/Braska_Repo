@@ -35,7 +35,7 @@ public class RuneBird : MonoBehaviour
     [SerializeField] float glowFadeSpeed = 2f;  
     private Material birdMaterial;
     private Color originalEmissionColor;
-    private bool isGlowing = false;
+    public bool isGlowing = false;
 
     [Header("Dust Effect")]
     [SerializeField] private GameObject dustPrefab;
@@ -256,6 +256,14 @@ public class RuneBird : MonoBehaviour
         animator.SetBool("IsLanding", false);
         animator.SetBool("Idle", false);
         animator.SetBool("TakeOff", false);
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        RuneTriggerBird rune = other.GetComponent<RuneTriggerBird>();
+        if (rune != null)
+        {
+            currentRune = rune;
+        }
     }
     void ActivateGlow()
     {

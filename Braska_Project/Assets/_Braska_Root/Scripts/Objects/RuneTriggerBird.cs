@@ -36,7 +36,6 @@ public class RuneTriggerBird : MonoBehaviour
         if (pedestalRenderer == null) return;
         if (pedestalRenderer2 == null) return;
 
-        // Instancia única del material
         runeMaterial = new Material(pedestalRenderer.sharedMaterial);
         pedestalRenderer.material = runeMaterial;
         runeMaterial2 = new Material(pedestalRenderer2.sharedMaterial);
@@ -77,15 +76,12 @@ public class RuneTriggerBird : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        RuneBird runeBird = other.GetComponent<RuneBird>();
-        if (runeBird != null)
-        {
-            runeBird.currentRune = this;
-
-        }
-        if (other.CompareTag("Prebark") && bird.currentRune == this && ObjectManager.instance.barkAvailable && !isActive && bird.waitingForBark)
+     
+        
+        if (other.CompareTag("Prebark") && ObjectManager.instance.barkAvailable && !isActive && bird.waitingForBark)
         {
             ActivarIluminacion();
+
         }
         if (!other.CompareTag("Bark")) return;
 
@@ -107,7 +103,7 @@ public class RuneTriggerBird : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Prebark") && !isActive && !playersee && ObjectManager.instance.barkAvailable && bird.currentRune == this && bird.waitingForBark)
+        if (other.CompareTag("Prebark") && !isActive && !playersee && ObjectManager.instance.barkAvailable && bird.waitingForBark)
         {
             ActivarIluminacion();
         }

@@ -19,7 +19,7 @@ public class RuneBird : MonoBehaviour
     public Animator animator;
     public float delay = 3f;
     public float delayTiempo = 1f;
-    public float delayTiempoladrar = 1f;
+    public float delayTiempoladrar = 0.5f;
     public float LandingTime = 0.75f;
     public float delayTiempoladrar2 = 0.15f;
 
@@ -37,10 +37,7 @@ public class RuneBird : MonoBehaviour
     private Color originalEmissionColor;
     private bool isGlowing = false;
 
-    [Header("Dust Effect")]
-    [SerializeField] private GameObject dustPrefab;
-    [SerializeField] private float dustSpacing = 0.5f; 
-    private Vector3 lastDustPos;
+
 
     private bool idleSoundPlaying = false;
     private bool flyingSoundPlaying = false;
@@ -81,7 +78,7 @@ public class RuneBird : MonoBehaviour
             path[currentIndex],
             speed * Time.deltaTime
         );
-        TrySpawnDust();
+   
 
         if (Vector3.Distance(transform.position, path[currentIndex]) < 0.01f)
         {
@@ -99,30 +96,7 @@ public class RuneBird : MonoBehaviour
             }
         }
     }
-    void TrySpawnDust()
-    {
-        if (dustPrefab == null) return;
 
-        if (lastDustPos == Vector3.zero)
-        {
-            lastDustPos = transform.position;
-            return;
-        }
-
-        float distance = Vector3.Distance(transform.position, lastDustPos);
-        if (distance >= dustSpacing)
-        {
-            GameObject dust = Instantiate(
-                dustPrefab,
-                transform.position,
-                Quaternion.identity
-            );
-
-            Destroy(dust, 5f);
-
-            lastDustPos = transform.position;
-        }
-    }
 
     void PlayIdleSound()
     {

@@ -17,10 +17,7 @@ public class KeyWall : MonoBehaviour
     [SerializeField] CapsuleCollider wallCollider;
     [SerializeField] GameObject wallMesh;
     private bool lastHoldingKeyState = false;
-
-
-
-
+    
     private void Update()
     {
         CheckUpdate();
@@ -31,7 +28,6 @@ public class KeyWall : MonoBehaviour
             lastHoldingKeyState = ObjectManager.instance.holdingKey;
         }
     }
-   
    
     private void FixedUpdate()
     {

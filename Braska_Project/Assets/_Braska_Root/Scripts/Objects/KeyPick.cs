@@ -5,7 +5,6 @@ public class KeyPick : MonoBehaviour
 {
     [Header("Key Stats")]
     [SerializeField] bool isHolded;
-    //[SerializeField] bool onMouth;
     public Vector3 homePosition;
 
     [Header("Render Stats")]
@@ -17,6 +16,7 @@ public class KeyPick : MonoBehaviour
     [SerializeField] GameObject currentKeySlot;
     [SerializeField] GameObject keyHold;
     [SerializeField] ParticleSystem keyParticles;
+    [SerializeField] ParticleSystem keySlotParticles;
 
     private void Start()
     {
@@ -60,6 +60,9 @@ public class KeyPick : MonoBehaviour
                     keyHold.transform.rotation
                 );
             }
+
+            if (keySlotParticles.isPlaying)
+                keySlotParticles.Stop();
         }
         else
         {
@@ -86,7 +89,9 @@ public class KeyPick : MonoBehaviour
                         currentKeySlot.transform.rotation
                     );
                 }
-            } 
+            }
+            if (!keySlotParticles.isPlaying)
+                keySlotParticles.Play();
         }
     }
 

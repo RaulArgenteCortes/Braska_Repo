@@ -3,7 +3,7 @@ using UnityEngine;
 public class KeySlot : MonoBehaviour
 {
     [Header("KeySlot Stats")]
-    public bool hasKey;
+    //public bool hasKey;
 
     [Header("Render Stats")]
     private float emissionIntensity = 1;
@@ -23,11 +23,6 @@ public class KeySlot : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Bark"))
-        {
-            ObjectManager.instance.keySlot = this.gameObject;
-        }
-
         if (other.CompareTag("Prebark"))
         {
             ObjectManager.instance.keySlotOnSight = true;
@@ -36,6 +31,11 @@ public class KeySlot : MonoBehaviour
             {
                 emissionIntensity = 3;
             }  
+        }
+
+        if (other.CompareTag("Bark"))
+        {
+            ObjectManager.instance.keySlot = this.gameObject;
         }
     }
 

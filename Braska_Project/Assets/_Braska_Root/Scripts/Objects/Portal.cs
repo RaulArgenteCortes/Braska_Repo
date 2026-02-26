@@ -17,7 +17,7 @@ public class Portal : MonoBehaviour
         }
         else
         {
-            portalVFX.transform.localScale *= 0.5f;
+            portalVFX.transform.localScale *= 0.4f;
         }
     }
 

@@ -79,16 +79,16 @@ public class LightningController : MonoBehaviour
         }
         else
         {
-            if (ScenesManager.instance.collectedOrbs < 4)
-            {
+            /*if (ScenesManager.instance.collectedOrbs < 4)
+            {*/
                 dayLight.transform.eulerAngles = new Vector3(
                     75 + 30 * ScenesManager.instance.collectedOrbs,
                     dayLight.transform.eulerAngles.y,
                     dayLight.transform.eulerAngles.z
                 );
 
-                dayLight.GetComponent<Light>().intensity = 0.85f - (ScenesManager.instance.collectedOrbs * 0.15f);
-            }
+                dayLight.GetComponent<Light>().intensity = 0.9f - (ScenesManager.instance.collectedOrbs * 0.1f);
+            /*}
             else
             {
                 dayLight.transform.eulerAngles = new Vector3(
@@ -98,7 +98,7 @@ public class LightningController : MonoBehaviour
                 );
 
                 dayLight.GetComponent<Light>().intensity = 0.2f;
-            }
+            }*/
         }
     }
 

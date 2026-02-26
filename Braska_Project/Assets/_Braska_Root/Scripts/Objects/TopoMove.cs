@@ -68,7 +68,7 @@ public class TopoMove : MonoBehaviour
 
         lookTarget.rotation = Quaternion.Slerp(
             lookTarget.rotation,
-            playerOnRange ? targetRot : Quaternion.Euler(parentTransform.eulerAngles),
+            playerOnRange && ObjectManager.instance.barkAvailable ? targetRot : Quaternion.Euler(parentTransform.eulerAngles),
             Time.deltaTime * 2
         );
     }

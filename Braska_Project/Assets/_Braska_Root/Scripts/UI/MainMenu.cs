@@ -7,11 +7,16 @@ public class MainMenu : MonoBehaviour
     [SerializeField] string sceneToLoad;
     [SerializeField] string sceneToLoad1;
     [SerializeField] string sceneToLoad2;
+    [SerializeField] string sceneToLoad3;
+
 
     public bool isLoading = false;
     #endregion
     #region "Voids"
-   
+    public void Start()
+    {
+        Cursor.visible = true;
+    }
     public void Play()
     {
         if (ScenesManager.instance.collectedOrbs < 0)
@@ -20,7 +25,7 @@ public class MainMenu : MonoBehaviour
             if (isLoading) return;
             isLoading = true;
             AudioManager.Instance.PlaySFX(0);
-            ScenesFade.Instance.FadeOutAndLoad(sceneToLoad1);
+            ScenesFade.Instance.FadeOutAndLoad(sceneToLoad3);
             Time.timeScale = 1f;
         }
         if(ScenesManager.instance.collectedOrbs > -1)
@@ -33,7 +38,6 @@ public class MainMenu : MonoBehaviour
         }
     
     }
-
 
     public void Quit()
     {
